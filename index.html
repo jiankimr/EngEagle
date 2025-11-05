@@ -507,6 +507,299 @@
     .hero .banner_text { animation-delay: .2s; }
     .hero .btn_main { animation-delay: .4s; }
     .hero .shadow-soft { animation-delay: .45s; }
+    
+    /* ========================================
+       MOBILE RESPONSIVE STYLES
+       ======================================== */
+    
+    @media (max-width: 991px) {
+      /* Hero Section */
+      .hero {
+        padding: 60px 0 50px;
+      }
+      
+      .hero .banner_taital {
+        font-size: 36px;
+        margin-bottom: 16px;
+      }
+      
+      .hero .banner_text {
+        font-size: 17px;
+        margin-bottom: 24px;
+      }
+      
+      /* Buttons - Stack vertically on mobile */
+      .btn_main {
+        flex-direction: column;
+        align-items: stretch !important;
+      }
+      
+      .btn-primary-ee,
+      .btn-ghost-ee {
+        width: 100%;
+        text-align: center;
+        margin-left: 0 !important;
+        margin-bottom: 12px;
+        padding: 14px 24px;
+        font-size: 15px;
+      }
+      
+      /* Section Titles */
+      .section-title {
+        font-size: 32px;
+        margin-bottom: 16px;
+      }
+      
+      .section-lead {
+        font-size: 16px;
+        margin-bottom: 36px;
+      }
+      
+      /* Layout Padding */
+      .layout_padding {
+        padding: 60px 0;
+      }
+      
+      /* Stats Section */
+      .stats_section {
+        padding: 40px 0;
+      }
+      
+      .stats_section .stat_num {
+        font-size: 42px;
+      }
+      
+      .stats_section .stat_label {
+        font-size: 14px;
+      }
+      
+      /* Feature Cards */
+      .daily_text, .daily_text_1 {
+        font-size: 20px;
+      }
+      
+      .health_text, .knowledge_text {
+        font-size: 15px;
+      }
+      
+      /* Icon Circle */
+      .icon-circle {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+      }
+      
+      .icon-circle img {
+        width: 32px;
+        height: 32px;
+      }
+      
+      /* Step Badge */
+      .step-badge {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        left: 16px;
+        top: -16px;
+      }
+      
+      /* Solution Cards */
+      .solution-card {
+        padding: 28px 24px;
+        margin-bottom: 20px;
+      }
+      
+      .solution-card h3 {
+        font-size: 20px;
+      }
+      
+      /* Form */
+      .form-control-ee {
+        padding: 14px 18px;
+        font-size: 15px;
+      }
+      
+      /* News Section */
+      .news_section .health_taital {
+        font-size: 32px;
+      }
+      
+      /* Feature/Accordion Cards - Mobile Optimized */
+      .feature-card h4 {
+        font-size: 20px !important;
+      }
+      
+      .accordion-content p {
+        font-size: 15px !important;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      /* Hero - Extra Small Screens */
+      .hero {
+        padding: 50px 0 40px;
+      }
+      
+      .hero .banner_taital {
+        font-size: 30px;
+        line-height: 1.25;
+      }
+      
+      .hero .banner_text {
+        font-size: 16px;
+      }
+      
+      .badge-chrome {
+        font-size: 11px;
+        padding: 6px 14px;
+      }
+      
+      /* Buttons */
+      .btn-primary-ee,
+      .btn-ghost-ee {
+        padding: 13px 20px;
+        font-size: 14px;
+      }
+      
+      /* Section Titles */
+      .section-title {
+        font-size: 28px;
+      }
+      
+      .section-lead {
+        font-size: 15px;
+      }
+      
+      /* Stats Section */
+      .stats_section .stat_num {
+        font-size: 36px;
+      }
+      
+      .stats_section .stat_label {
+        font-size: 13px;
+        margin-top: 12px;
+      }
+      
+      /* Cards */
+      .box_main {
+        padding: 28px 24px;
+      }
+      
+      /* Layout Padding */
+      .layout_padding {
+        padding: 50px 0;
+      }
+      
+      /* Navbar */
+      .header_section .navbar {
+        padding: 16px 0;
+      }
+      
+      .header_section .logo a {
+        font-size: 1.5em !important;
+      }
+      
+      /* Image margins */
+      .hero .image_1 {
+        margin-top: 30px;
+      }
+      
+      /* Feature rows - add spacing between image and text on mobile */
+      .knowledge_section .row {
+        margin-bottom: 60px !important;
+      }
+      
+      /* Step sections */
+      .steps .step-card {
+        margin-bottom: 30px;
+      }
+      
+      /* Solution cards h3 */
+      .solution-card h3 {
+        font-size: 18px;
+        flex-wrap: wrap;
+      }
+      
+      .solution-card h3::before {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+      
+      /* Form container */
+      .form-container {
+        padding: 0 15px;
+      }
+      
+      /* News section */
+      .news_section .health_taital {
+        font-size: 28px;
+      }
+      
+      /* Footer */
+      .footer_logo a {
+        font-size: 2em !important;
+      }
+      
+      /* Accordion/Feature cards mobile spacing */
+      .feature-card {
+        padding: 32px 28px !important;
+      }
+      
+      .feature-card h4 {
+        font-size: 18px !important;
+        flex-direction: column;
+        align-items: flex-start !important;
+      }
+      
+      .accordion-icon {
+        margin-top: 8px;
+        align-self: flex-end;
+      }
+    }
+    
+    @media (max-width: 575px) {
+      /* Extra small devices */
+      .hero .banner_taital {
+        font-size: 26px;
+      }
+      
+      .section-title {
+        font-size: 24px;
+      }
+      
+      .btn-primary-ee,
+      .btn-ghost-ee {
+        font-size: 14px;
+        padding: 12px 18px;
+      }
+      
+      .stats_section {
+        padding: 30px 0;
+      }
+      
+      .stats_section .stat_num {
+        font-size: 32px;
+      }
+      
+      .layout_padding {
+        padding: 40px 0;
+      }
+      
+      .box_main {
+        padding: 24px 20px;
+      }
+      
+      .feature-card {
+        padding: 28px 24px !important;
+      }
+      
+      /* Ensure proper spacing on very small screens */
+      .container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
   </style>
 </head>
 
@@ -530,7 +823,7 @@
      <div class="banner_section layout_padding hero">
         <div class="container">
            <div class="row align-items-center">
-              <div class="col-md-7">
+              <div class="col-lg-7 col-md-12 order-1 order-lg-1">
                  <span class="badge-chrome">Chrome Extension</span>
                  <h6 class="banner_taital">영문 작업의<br>마찰을 없애고,<br><span style="background: var(--ee-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">당신의 잠재력을 <br>최대로 끌어올립니다.</span></h1>
                  <p class="banner_text">번역·암기·작문을, 끊김 없는 한 흐름으로 생산성 UP<br>EngEagle은 지식 노동자를 위한 영문 생산성 도구입니다.</p>
@@ -539,7 +832,7 @@
                     <a class="btn-ghost-ee" href="#how">작동 방식 보기</a>
                  </div>
               </div>
-               <div class="col-md-5">
+               <div class="col-lg-5 col-md-12 order-2 order-lg-2">
                   <div class="image_1 shadow-soft" style="border-radius: 16px; overflow: hidden;"><img src="images/logo_new.png" style="width: 100%;"></div>
                </div>
            </div>
@@ -551,15 +844,15 @@
   <div class="stats_section">
      <div class="container">
         <div class="row text-center align-items-start">
-           <div class="col-md-4">
+           <div class="col-lg-4 col-md-6 col-sm-12 mb-4 mb-lg-0">
               <div class="stat_num">50%</div>
               <div class="stat_label">영어 비원어민 지식 노동자가<br>영문 읽기/쓰기에 어려움을 겪습니다</div>
            </div>
-           <div class="col-md-4">
+           <div class="col-lg-4 col-md-6 col-sm-12 mb-4 mb-lg-0">
               <div class="stat_num">10+</div>
               <div class="stat_label">설치 후 3일 안에<br>더블클릭으로 저장하게 될 단어 수</div>
            </div>
-           <div class="col-md-4">
+           <div class="col-lg-4 col-md-12 col-sm-12">
               <div class="stat_num">0↓</div>
               <div class="stat_label">같은 단어 재검색 횟수<br>한 번 저장하면 장기 기억으로</div>
            </div>
@@ -575,7 +868,7 @@
         <p class="section-lead">영어 원어민이 아닌 개발자, 연구자, PM, 마케터라면<br>하루에도 수십 번 마주하는 영어의 벽. 이제 허물어야 할 때입니다.</p>
         <div class="news_section_2" style="padding: 0; margin-top: 30px;">
            <div class="row">
-              <div class="col-lg-6 col-md-6 mb-4">
+              <div class="col-lg-6 col-md-12 mb-4">
                  <div class="feature-card accordion-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; transition: all 0.3s ease; padding: 40px 45px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); cursor: pointer;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'" onclick="toggleAccordion(this)">
                     <h4 style="color: #1e293b; font-size: 24px; font-weight: 800; margin-bottom: 0; line-height: 1.3; display: flex; justify-content: space-between; align-items: center;">
                        <span>🔄 100번 검색해도<br>늘지 않는 영어 어휘력</span>
@@ -598,7 +891,7 @@
                     </div>
                  </div>
               </div>
-              <div class="col-lg-6 col-md-6 mb-4">
+              <div class="col-lg-6 col-md-12 mb-4">
                  <div class="feature-card accordion-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; transition: all 0.3s ease; padding: 40px 45px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); cursor: pointer;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'" onclick="toggleAccordion(this)">
                     <h4 style="color: #1e293b; font-size: 24px; font-weight: 800; margin-bottom: 0; line-height: 1.3; display: flex; justify-content: space-between; align-items: center;">
                        <span>⏰ 영어 한 줄에 10분,<br>영작 하루 1시간 증발</span>
@@ -652,7 +945,7 @@
 
         <!-- Feature 1 -->
         <div class="row align-items-center" style="margin-bottom: 100px;">
-           <div class="col-md-6">
+           <div class="col-lg-6 col-md-12 order-2 order-lg-1">
               <div class="step-badge">1</div>
               <h3 class="daily_text" style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">즉시 번역하고<br>단어장에 저장</h3>
               <p class="health_text" style="font-size: 18px; line-height: 1.8; color: #64748b;">
@@ -661,7 +954,7 @@
                  페이지를 벗어나거나 번역기를 열 필요가 없어 학습 흐름이 끊기지 않습니다.
               </p>
            </div>
-           <div class="col-md-6">
+           <div class="col-lg-6 col-md-12 order-1 order-lg-2 mb-4 mb-lg-0">
               <div class="shadow-soft" style="border-radius: 12px; overflow: hidden;">
                  <img src="images/fuc3_translate_word.png" style="width: 100%; display: block;">
               </div>
@@ -669,8 +962,8 @@
         </div>
 
         <!-- Feature 2 -->
-        <div class="row align-items-center" style="margin-bottom: 100px; flex-direction: row-reverse;">
-           <div class="col-md-6">
+        <div class="row align-items-center" style="margin-bottom: 100px;">
+           <div class="col-lg-6 col-md-12 order-2 order-lg-2">
               <div class="step-badge">2</div>
               <h3 class="daily_text" style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">나만의 단어장과<br>과학적인 복습 알림</h3>
               <p class="health_text" style="font-size: 18px; line-height: 1.8; color: #64748b;">
@@ -679,7 +972,7 @@
                  단어 추가와 삭제가 자유로워 나만의 맞춤 학습이 가능합니다.
               </p>
            </div>
-           <div class="col-md-6">
+           <div class="col-lg-6 col-md-12 order-1 order-lg-1 mb-4 mb-lg-0">
               <div class="shadow-soft" style="border-radius: 12px; overflow: hidden;">
                  <img src="images/fuc2_voca.png" style="width: 100%; display: block;">
               </div>
@@ -688,7 +981,7 @@
 
         <!-- Feature 3 -->
         <div class="row align-items-center">
-           <div class="col-md-6">
+           <div class="col-lg-6 col-md-12 order-2 order-lg-1">
               <div class="step-badge">3</div>
               <h3 class="daily_text" style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">영작문도 즉시<br>한→영 변환</h3>
               <p class="health_text" style="font-size: 18px; line-height: 1.8; color: #64748b;">
@@ -697,7 +990,7 @@
                  고민 없이 빠르게 영문 작업을 완료할 수 있습니다.
               </p>
            </div>
-           <div class="col-md-6">
+           <div class="col-lg-6 col-md-12 order-1 order-lg-2 mb-4 mb-lg-0">
               <div class="shadow-soft" style="border-radius: 12px; overflow: hidden;">
                  <img src="images/fuc1_translate_message.png" style="width: 100%; display: block;">
               </div>
@@ -716,21 +1009,21 @@
          <p class="section-lead" style="color: #475569; font-size: 18px;">단순한 번역 툴을 넘어, 영어 능력과 업무 생산성을<br>근본적으로 변화시키는 성장 파트너입니다.</p>
        </div>
        <div class="row justify-content-center">
-           <div class="col-lg-4 col-md-6 mb-4">
+           <div class="col-lg-4 col-md-12 mb-4">
                <div class="feature-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; padding: 45px 35px; height: 100%; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); transition: all 0.3s ease;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'">
                    <div style="font-size: 40px; margin-bottom: 20px;">📈</div>
                    <h3 style="color: #1e293b; font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">자연스럽게 늘어나는<br>어휘력</h3>
                    <p style="color: #475569; font-size: 16px; line-height: 1.8; margin: 0; font-weight: 400;">3개월 후 수백 개의 단어가 장기 기억에 새겨집니다. 더 이상 같은 단어를 검색하지 않아도 되고, 영어 문서 읽기 속도가 2배 빨라집니다.</p>
                </div>
            </div>
-           <div class="col-lg-4 col-md-6 mb-4">
+           <div class="col-lg-4 col-md-12 mb-4">
                <div class="feature-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; padding: 45px 35px; height: 100%; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); transition: all 0.3s ease;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'">
                    <div style="font-size: 40px; margin-bottom: 20px;">⚡</div>
                    <h3 style="color: #1e293b; font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">영작 시간 70% 단축</h3>
                    <p style="color: #475569; font-size: 16px; line-height: 1.8; margin: 0; font-weight: 400;"><br>슬랙 메시지 10분 → 2분, 이메일 30분 → 10분. 하루 1-2시간을 절약하여 정작 중요한 업무에 집중할 수 있습니다.</p>
                </div>
            </div>
-           <div class="col-lg-4 col-md-6 mb-4">
+           <div class="col-lg-4 col-md-12 mb-4">
                <div class="feature-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; padding: 45px 35px; height: 100%; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); transition: all 0.3s ease;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'">
                    <div style="font-size: 40px; margin-bottom: 20px;">💪</div>
                    <h3 style="color: #1e293b; font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">영어에 대한<br>자신감 향상</h3>
