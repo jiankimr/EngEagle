@@ -374,16 +374,18 @@ function showResultPopup(range: Range, entry: {
     'conj': '접속사',
     'pron': '대명사',
     'interj': '감탄사',
+    'unknown': '',
+    '': '',
   };
 
-  const posLabel = posLabels[entry.pos] || entry.pos;
+  const posLabel = posLabels[entry.pos] ?? entry.pos;
   const meanings = entry.meanings.join(', ');
 
   const content = `
     <button class="engeagle-close" title="닫기">&times;</button>
     <div class="engeagle-header">
       <span class="engeagle-word">${escapeHtml(entry.word)}</span>
-      <span class="engeagle-pos">${escapeHtml(posLabel)}</span>
+      ${posLabel ? `<span class="engeagle-pos">${escapeHtml(posLabel)}</span>` : ''}
     </div>
     <div class="engeagle-meanings">${escapeHtml(meanings)}</div>
     ${entry.example ? `<div class="engeagle-example">${escapeHtml(entry.example)}</div>` : ''}

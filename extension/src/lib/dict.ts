@@ -86,6 +86,10 @@ let loadPromise: Promise<void> | null = null;
 // LRU 캐시 인스턴스 (500개 항목) - 로컬 + DeepL 결과 모두 캐시
 const lookupCache = new LRUCache<string, DictEntry | null>(500);
 
+// DeepL 실패 캐시 (5분 TTL) - 일시적 실패 시 재시도 가능하도록
+const failedLookupCache = new Map<string, number>();
+const FAILED_CACHE_TTL = 5 * 60 * 1000; // 5분
+
 /**
  * 사전 로드 (최초 1회)
  */
@@ -225,25 +229,31 @@ export async function lookupWord(word: string): Promise<LookupResult> {
     };
   }
 
-  // 3. DeepL API fallback
-  const deepLResult = await lookupWithDeepL(word);
+  // 3. DeepL API fallback (최근 실패한 경우 스킵)
+  const lastFailed = failedLookupCache.get(normalizedWord);
+  const shouldTryDeepL = !lastFailed || (Date.now() - lastFailed > FAILED_CACHE_TTL);
   
-  if (deepLResult) {
-    // 캐시에 저장
-    lookupCache.set(normalizedWord, deepLResult);
+  if (shouldTryDeepL) {
+    const deepLResult = await lookupWithDeepL(word);
     
-    const lookupTime = performance.now() - startTime;
-    return {
-      found: true,
-      entry: deepLResult,
-      cached: false,
-      lookupTime,
-      source: 'deepl',
-    };
+    if (deepLResult) {
+      // 성공 시 실패 캐시 제거 및 결과 캐시
+      failedLookupCache.delete(normalizedWord);
+      lookupCache.set(normalizedWord, deepLResult);
+      
+      const lookupTime = performance.now() - startTime;
+      return {
+        found: true,
+        entry: deepLResult,
+        cached: false,
+        lookupTime,
+        source: 'deepl',
+      };
+    }
+    
+    // DeepL 실패 시 5분간 재시도 방지 (영구 캐시 X)
+    failedLookupCache.set(normalizedWord, Date.now());
   }
-
-  // 4. 찾지 못함 - null로 캐시 (5분 후 재시도 가능하도록 TTL 없음)
-  lookupCache.set(normalizedWord, null);
   
   const lookupTime = performance.now() - startTime;
   return {
@@ -281,10 +291,11 @@ async function lookupWithDeepL(word: string): Promise<DictEntry | null> {
 }
 
 /**
- * 캐시 초기화
+ * 캐시 초기화 (API 키 변경 시 호출)
  */
 export function clearCache(): void {
   lookupCache.clear();
+  failedLookupCache.clear();
 }
 
 /**

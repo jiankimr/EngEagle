@@ -3,9 +3,9 @@
  * 메시지 라우팅, 사전 조회, 저장 I/O 처리
  */
 
-import { loadDictionary, lookupWord, isDictionaryLoaded, getDictionarySize } from '../lib/dict';
+import { loadDictionary, lookupWord, isDictionaryLoaded, getDictionarySize, clearCache } from '../lib/dict';
 import { saveWord, getAllWords, deleteWord, restoreWord, searchWords, exportToJSON, exportToCSV, importFromJSON, getWordCount, type VocabularyEntry } from '../lib/storage';
-import { isEnglishWord, toLemma } from '../lib/lemma';
+import { isEnglishWord } from '../lib/lemma';
 import { saveDeepLConfig, loadDeepLConfig, testDeepLConnection, isFreeApiKey, type DeepLConfig } from '../lib/deepl';
 
 // 메시지 타입 정의
@@ -375,6 +375,11 @@ async function handleDeepLSaveConfig(message: DeepLSaveConfigMessage): Promise<u
     };
     
     await saveDeepLConfig(config);
+    
+    // API 키 변경 시 실패 캐시 초기화 (새로운 API 키로 재시도 가능하도록)
+    clearCache();
+    console.log('[EngEagle] DeepL config saved, cache cleared');
+    
     return { success: true };
   } catch (error) {
     return {

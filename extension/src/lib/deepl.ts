@@ -170,7 +170,7 @@ export function deepLResultToDictEntry(
   return {
     word: word,
     lemma: word.toLowerCase(),
-    pos: 'unknown', // DeepL은 품사 정보를 제공하지 않음
+    pos: '', // DeepL은 품사 정보를 제공하지 않음 (UI에서 빈 값 처리)
     meanings: translation.meanings,
     example: '',
     source_url: 'deepl',
