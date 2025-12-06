@@ -438,23 +438,44 @@ function getSelectedWord(): { word: string; range: Range } | null {
   return { word: text, range };
 }
 
+// 트리거 설정
+interface TriggerConfig {
+  dblclick: boolean;
+  ctrlDblclick: boolean;
+  dblRightclick: boolean;
+  contextMenu: boolean;
+}
+
+let triggerConfig: TriggerConfig = {
+  dblclick: true,
+  ctrlDblclick: false,
+  dblRightclick: false,
+  contextMenu: true,
+};
+
+// 더블 우클릭 감지용
+let lastRightClickTime = 0;
+const DOUBLE_RIGHTCLICK_INTERVAL = 500; // 0.5초
+
 /**
- * 더블클릭 핸들러
+ * 트리거 설정 로드
  */
-async function handleDoubleClick(e: MouseEvent): Promise<void> {
-  // 입력 필드 내부에서는 무시
-  const target = e.target as HTMLElement;
-  if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
-    return;
+async function loadTriggerConfig(): Promise<void> {
+  try {
+    const response = await chrome.runtime.sendMessage({ type: 'TRIGGER_LOAD_CONFIG' });
+    if (response.success && response.config) {
+      triggerConfig = response.config;
+      console.log('[EngEagle] Trigger config loaded:', triggerConfig);
+    }
+  } catch (error) {
+    console.error('[EngEagle] Failed to load trigger config:', error);
   }
+}
 
-  // 선택된 단어 확인
-  const selected = getSelectedWord();
-  if (!selected) {
-    return;
-  }
-
-  const { word, range } = selected;
+/**
+ * 번역 실행
+ */
+async function performTranslation(word: string, range: Range): Promise<void> {
   const startTime = performance.now();
 
   // 로딩 표시
@@ -484,6 +505,56 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
 }
 
 /**
+ * 더블클릭 핸들러
+ */
+async function handleDoubleClick(e: MouseEvent): Promise<void> {
+  // 입력 필드 내부에서는 무시
+  const target = e.target as HTMLElement;
+  if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
+    return;
+  }
+
+  // Ctrl + 더블클릭 모드
+  if (e.ctrlKey || e.metaKey) {
+    if (!triggerConfig.ctrlDblclick) return;
+  } else {
+    // 일반 더블클릭 모드
+    if (!triggerConfig.dblclick) return;
+  }
+
+  // 선택된 단어 확인
+  const selected = getSelectedWord();
+  if (!selected) {
+    return;
+  }
+
+  await performTranslation(selected.word, selected.range);
+}
+
+/**
+ * 우클릭 핸들러 (더블 우클릭 감지)
+ */
+function handleContextMenu(e: MouseEvent): void {
+  if (!triggerConfig.dblRightclick) return;
+
+  const now = Date.now();
+  
+  if (now - lastRightClickTime < DOUBLE_RIGHTCLICK_INTERVAL) {
+    // 더블 우클릭 감지!
+    e.preventDefault();
+    
+    const selected = getSelectedWord();
+    if (selected) {
+      performTranslation(selected.word, selected.range);
+    }
+    
+    lastRightClickTime = 0; // 리셋
+  } else {
+    lastRightClickTime = now;
+  }
+}
+
+/**
  * ESC 키 핸들러
  */
 function handleKeyDown(e: KeyboardEvent): void {
@@ -493,10 +564,39 @@ function handleKeyDown(e: KeyboardEvent): void {
   }
 }
 
+/**
+ * 백그라운드 메시지 수신 (컨텍스트 메뉴, 설정 변경)
+ */
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  if (message.type === 'SHOW_TRANSLATION') {
+    // 컨텍스트 메뉴에서 번역 요청
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      
+      if (message.result && message.result.found && message.result.entry) {
+        showResultPopup(range, message.result.entry);
+        showToast('Saved to Vocabulary');
+      } else {
+        showErrorPopup(range, '사전에 없는 단어입니다');
+      }
+    }
+    sendResponse({ success: true });
+  } else if (message.type === 'TRIGGER_CONFIG_CHANGED') {
+    // 트리거 설정 변경
+    triggerConfig = message.config;
+    console.log('[EngEagle] Trigger config updated:', triggerConfig);
+    sendResponse({ success: true });
+  }
+  return true;
+});
+
 // 이벤트 리스너 등록
 document.addEventListener('dblclick', handleDoubleClick);
+document.addEventListener('contextmenu', handleContextMenu);
 document.addEventListener('keydown', handleKeyDown);
 
-// 초기화 로그
+// 초기화
+loadTriggerConfig();
 console.log('[EngEagle] Content script loaded');
 

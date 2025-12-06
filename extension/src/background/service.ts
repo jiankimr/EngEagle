@@ -74,6 +74,23 @@ interface DeepLTestMessage {
   config: DeepLConfig;
 }
 
+// 트리거 설정 타입
+interface TriggerConfig {
+  dblclick: boolean;
+  ctrlDblclick: boolean;
+  dblRightclick: boolean;
+  contextMenu: boolean;
+}
+
+interface TriggerSaveConfigMessage {
+  type: 'TRIGGER_SAVE_CONFIG';
+  config: TriggerConfig;
+}
+
+interface TriggerLoadConfigMessage {
+  type: 'TRIGGER_LOAD_CONFIG';
+}
+
 type Message = 
   | LookupMessage 
   | SaveMessage 
@@ -87,13 +104,89 @@ type Message =
   | StatusMessage
   | DeepLSaveConfigMessage
   | DeepLLoadConfigMessage
-  | DeepLTestMessage;
+  | DeepLTestMessage
+  | TriggerSaveConfigMessage
+  | TriggerLoadConfigMessage;
 
-// 확장 프로그램 설치/업데이트 시 사전 로드
+// 트리거 설정 저장 키
+const TRIGGER_CONFIG_KEY = 'engeagle_trigger_config';
+
+// 기본 트리거 설정
+const DEFAULT_TRIGGER_CONFIG: TriggerConfig = {
+  dblclick: true,
+  ctrlDblclick: false,
+  dblRightclick: false,
+  contextMenu: true,
+};
+
+// 확장 프로그램 설치/업데이트 시 사전 로드 및 컨텍스트 메뉴 설정
 chrome.runtime.onInstalled.addListener(async () => {
   console.log('[EngEagle] Extension installed/updated');
   await loadDictionary();
   console.log(`[EngEagle] Dictionary ready: ${getDictionarySize()} entries`);
+  
+  // 컨텍스트 메뉴 생성
+  await setupContextMenu();
+});
+
+/**
+ * 컨텍스트 메뉴 설정
+ */
+async function setupContextMenu(): Promise<void> {
+  // 기존 메뉴 제거
+  await chrome.contextMenus.removeAll();
+  
+  // 트리거 설정 확인
+  const config = await loadTriggerConfig();
+  
+  if (config.contextMenu) {
+    chrome.contextMenus.create({
+      id: 'engeagle-translate',
+      title: 'EngEagle로 번역',
+      contexts: ['selection'],
+    });
+    console.log('[EngEagle] Context menu created');
+  }
+}
+
+/**
+ * 트리거 설정 로드
+ */
+async function loadTriggerConfig(): Promise<TriggerConfig> {
+  try {
+    const result = await chrome.storage.local.get(TRIGGER_CONFIG_KEY);
+    return result[TRIGGER_CONFIG_KEY] || DEFAULT_TRIGGER_CONFIG;
+  } catch {
+    return DEFAULT_TRIGGER_CONFIG;
+  }
+}
+
+/**
+ * 트리거 설정 저장
+ */
+async function saveTriggerConfig(config: TriggerConfig): Promise<void> {
+  await chrome.storage.local.set({ [TRIGGER_CONFIG_KEY]: config });
+  // 컨텍스트 메뉴 업데이트
+  await setupContextMenu();
+}
+
+// 컨텍스트 메뉴 클릭 핸들러
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (info.menuItemId === 'engeagle-translate' && info.selectionText && tab?.id) {
+    const word = info.selectionText.trim().split(/\s+/)[0];
+    
+    if (isEnglishWord(word)) {
+      const result = await lookupWord(word);
+      
+      // 탭에 결과 전송
+      chrome.tabs.sendMessage(tab.id, {
+        type: 'SHOW_TRANSLATION',
+        word,
+        result,
+        sourceUrl: tab.url || '',
+      });
+    }
+  }
 });
 
 // 서비스 워커 시작 시 사전 로드
@@ -159,6 +252,13 @@ async function handleMessage(message: Message): Promise<unknown> {
     
     case 'DEEPL_TEST':
       return handleDeepLTest(message);
+    
+    // 트리거 설정
+    case 'TRIGGER_SAVE_CONFIG':
+      return handleTriggerSaveConfig(message);
+    
+    case 'TRIGGER_LOAD_CONFIG':
+      return handleTriggerLoadConfig();
     
     default:
       return { success: false, error: 'Unknown message type' };
@@ -456,6 +556,52 @@ async function handleDeepLTest(message: DeepLTestMessage): Promise<unknown> {
     return {
       success: false,
       message: (error as Error).message,
+    };
+  }
+}
+
+/**
+ * 트리거 설정 저장 핸들러
+ */
+async function handleTriggerSaveConfig(message: TriggerSaveConfigMessage): Promise<unknown> {
+  try {
+    await saveTriggerConfig(message.config);
+    
+    // 모든 탭에 설정 변경 알림
+    const tabs = await chrome.tabs.query({});
+    for (const tab of tabs) {
+      if (tab.id) {
+        try {
+          await chrome.tabs.sendMessage(tab.id, {
+            type: 'TRIGGER_CONFIG_CHANGED',
+            config: message.config,
+          });
+        } catch {
+          // 탭이 응답하지 않는 경우 무시
+        }
+      }
+    }
+    
+    return { success: true };
+  } catch (error) {
+    return {
+      success: false,
+      error: (error as Error).message,
+    };
+  }
+}
+
+/**
+ * 트리거 설정 로드 핸들러
+ */
+async function handleTriggerLoadConfig(): Promise<unknown> {
+  try {
+    const config = await loadTriggerConfig();
+    return { success: true, config };
+  } catch (error) {
+    return {
+      success: false,
+      error: (error as Error).message,
     };
   }
 }

@@ -21,6 +21,13 @@ interface DeepLConfig {
   useFreeApi: boolean;
 }
 
+interface TriggerConfig {
+  dblclick: boolean;
+  ctrlDblclick: boolean;
+  dblRightclick: boolean;
+  contextMenu: boolean;
+}
+
 // DOM 요소
 const wordCountEl = document.getElementById('word-count') as HTMLElement;
 const dictStatusEl = document.getElementById('dict-status') as HTMLElement;
@@ -52,6 +59,16 @@ const btnExport = document.getElementById('btn-export') as HTMLButtonElement;
 const exportMenu = document.getElementById('export-menu') as HTMLElement;
 const btnImport = document.getElementById('btn-import') as HTMLButtonElement;
 const fileImport = document.getElementById('file-import') as HTMLInputElement;
+
+// 트리거 설정 요소
+const triggerToggle = document.getElementById('trigger-toggle') as HTMLElement;
+const triggerContent = document.getElementById('trigger-content') as HTMLElement;
+const triggerDblclick = document.getElementById('trigger-dblclick') as HTMLInputElement;
+const triggerCtrlDblclick = document.getElementById('trigger-ctrl-dblclick') as HTMLInputElement;
+const triggerDblRightclick = document.getElementById('trigger-dbl-rightclick') as HTMLInputElement;
+const triggerContextMenu = document.getElementById('trigger-context-menu') as HTMLInputElement;
+const btnSaveTrigger = document.getElementById('btn-save-trigger') as HTMLButtonElement;
+const triggerStatus = document.getElementById('trigger-status') as HTMLElement;
 
 // 상태
 let allEntries: VocabularyEntry[] = [];
@@ -95,8 +112,10 @@ async function init(): Promise<void> {
   await loadStatus();
   await loadVocabulary();
   await loadDeepLConfig();
+  await loadTriggerConfig();
   setupEventListeners();
   setupDeepLEventListeners();
+  setupTriggerEventListeners();
 }
 
 /**
@@ -736,6 +755,83 @@ async function updatePos(id: string, newPos: string): Promise<void> {
   } catch (error) {
     console.error('Update failed:', error);
   }
+}
+
+/**
+ * 트리거 설정 로드
+ */
+async function loadTriggerConfig(): Promise<void> {
+  try {
+    const response = await chrome.runtime.sendMessage({ type: 'TRIGGER_LOAD_CONFIG' });
+    if (response.success && response.config) {
+      triggerDblclick.checked = response.config.dblclick ?? true;
+      triggerCtrlDblclick.checked = response.config.ctrlDblclick ?? false;
+      triggerDblRightclick.checked = response.config.dblRightclick ?? false;
+      triggerContextMenu.checked = response.config.contextMenu ?? true;
+    }
+  } catch (error) {
+    console.error('Trigger config load failed:', error);
+  }
+}
+
+/**
+ * 트리거 이벤트 리스너 설정
+ */
+function setupTriggerEventListeners(): void {
+  // 설정 토글
+  triggerToggle.addEventListener('click', () => {
+    const isOpen = triggerContent.style.display !== 'none';
+    triggerContent.style.display = isOpen ? 'none' : 'block';
+    triggerToggle.classList.toggle('open', !isOpen);
+  });
+
+  // 저장
+  btnSaveTrigger.addEventListener('click', saveTriggerConfig);
+}
+
+/**
+ * 트리거 설정 저장
+ */
+async function saveTriggerConfig(): Promise<void> {
+  const config: TriggerConfig = {
+    dblclick: triggerDblclick.checked,
+    ctrlDblclick: triggerCtrlDblclick.checked,
+    dblRightclick: triggerDblRightclick.checked,
+    contextMenu: triggerContextMenu.checked,
+  };
+
+  btnSaveTrigger.disabled = true;
+
+  try {
+    const response = await chrome.runtime.sendMessage({
+      type: 'TRIGGER_SAVE_CONFIG',
+      config,
+    });
+
+    if (response.success) {
+      showTriggerStatus('✅ 설정이 저장되었습니다.', 'success');
+    } else {
+      showTriggerStatus('❌ 저장 실패', 'error');
+    }
+  } catch (error) {
+    showTriggerStatus('❌ 저장 실패', 'error');
+    console.error('Trigger save failed:', error);
+  } finally {
+    btnSaveTrigger.disabled = false;
+  }
+}
+
+/**
+ * 트리거 상태 표시
+ */
+function showTriggerStatus(message: string, type: 'success' | 'error'): void {
+  triggerStatus.textContent = message;
+  triggerStatus.className = 'deepl-status ' + type;
+  triggerStatus.style.display = 'block';
+  
+  setTimeout(() => {
+    triggerStatus.style.display = 'none';
+  }, 3000);
 }
 
 // 초기화 실행

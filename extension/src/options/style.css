@@ -726,6 +726,55 @@ body {
   text-decoration: underline;
 }
 
+/* 트리거 옵션 */
+.trigger-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.trigger-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+
+.trigger-option:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-color);
+}
+
+.trigger-option input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--accent-primary);
+  cursor: pointer;
+}
+
+.trigger-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trigger-label strong {
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.trigger-desc {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
 .input-with-btn {
   display: flex;
   gap: 8px;
