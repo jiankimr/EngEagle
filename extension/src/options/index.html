@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EngEagle - 단어장</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- 헤더 -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="logo">
+          <span class="logo-icon">🦅</span>
+          <span class="logo-text">EngEagle</span>
+        </h1>
+        <p class="tagline">나만의 영어 단어장</p>
+      </div>
+      <div class="stats" id="stats">
+        <div class="stat-item">
+          <span class="stat-value" id="word-count">0</span>
+          <span class="stat-label">단어</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value" id="dict-status">-</span>
+          <span class="stat-label">사전 상태</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- 툴바 -->
+    <div class="toolbar">
+      <div class="search-box">
+        <input 
+          type="text" 
+          id="search-input" 
+          placeholder="단어 검색..." 
+          autocomplete="off"
+        >
+        <button id="search-clear" class="btn-icon" title="검색 초기화" style="display: none;">
+          ✕
+        </button>
+      </div>
+      <div class="toolbar-actions">
+        <button id="btn-add" class="btn btn-primary">
+          <span>+</span> 단어 추가
+        </button>
+        <div class="dropdown">
+          <button id="btn-export" class="btn btn-secondary">
+            내보내기 ▾
+          </button>
+          <div class="dropdown-menu" id="export-menu">
+            <button data-format="json">JSON으로 내보내기</button>
+            <button data-format="csv">CSV로 내보내기</button>
+          </div>
+        </div>
+        <button id="btn-import" class="btn btn-secondary">
+          가져오기
+        </button>
+        <input type="file" id="file-import" accept=".json" style="display: none;">
+      </div>
+    </div>
+
+    <!-- 테이블 -->
+    <div class="table-container">
+      <table class="vocab-table">
+        <thead>
+          <tr>
+            <th class="col-word" data-sort="word">단어</th>
+            <th class="col-meaning">뜻</th>
+            <th class="col-example">예문</th>
+            <th class="col-freq" data-sort="freq">빈도</th>
+            <th class="col-date" data-sort="created_at">등록일</th>
+            <th class="col-actions">관리</th>
+          </tr>
+        </thead>
+        <tbody id="vocab-body">
+          <!-- 동적으로 채워짐 -->
+        </tbody>
+      </table>
+      
+      <div id="empty-state" class="empty-state" style="display: none;">
+        <div class="empty-icon">📚</div>
+        <h3>단어장이 비어있습니다</h3>
+        <p>웹페이지에서 영어 단어를 더블클릭하면 자동으로 저장됩니다.</p>
+      </div>
+
+      <div id="loading-state" class="loading-state">
+        <div class="spinner"></div>
+        <p>단어장 불러오는 중...</p>
+      </div>
+    </div>
+
+    <!-- DeepL 설정 섹션 -->
+    <div class="settings-section">
+      <div class="settings-header" id="settings-toggle">
+        <h2>⚙️ DeepL API 설정</h2>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="settings-content" id="settings-content" style="display: none;">
+        <p class="settings-desc">
+          로컬 사전에 없는 단어는 DeepL API로 번역합니다. 
+          <a href="https://www.deepl.com/pro-api" target="_blank">무료 API 키 발급받기 →</a>
+        </p>
+        <div class="form-group">
+          <label for="deepl-api-key">API 키</label>
+          <div class="input-with-btn">
+            <input 
+              type="password" 
+              id="deepl-api-key" 
+              placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:fx"
+              autocomplete="off"
+            >
+            <button type="button" id="btn-toggle-key" class="btn-icon" title="API 키 표시/숨기기">👁</button>
+          </div>
+        </div>
+        <div class="settings-actions">
+          <button id="btn-test-deepl" class="btn btn-secondary">연결 테스트</button>
+          <button id="btn-save-deepl" class="btn btn-primary">저장</button>
+        </div>
+        <div id="deepl-status" class="deepl-status" style="display: none;"></div>
+        <div id="deepl-usage" class="deepl-usage" style="display: none;">
+          <span class="usage-label">사용량:</span>
+          <span class="usage-value" id="usage-count">-</span>
+          <span class="usage-separator">/</span>
+          <span class="usage-limit" id="usage-limit">-</span>
+          <span class="usage-unit">자</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Undo 토스트 -->
+    <div id="undo-toast" class="undo-toast" style="display: none;">
+      <span class="undo-message"></span>
+      <button id="btn-undo" class="btn-undo">실행취소</button>
+      <div class="undo-timer"></div>
+    </div>
+
+    <!-- 단어 추가 모달 -->
+    <div id="add-modal" class="modal" style="display: none;">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <h2>단어 추가</h2>
+        <form id="add-form">
+          <div class="form-group">
+            <label for="add-word">단어 *</label>
+            <input type="text" id="add-word" required>
+          </div>
+          <div class="form-group">
+            <label for="add-pos">품사</label>
+            <select id="add-pos">
+              <option value="noun">명사</option>
+              <option value="verb">동사</option>
+              <option value="adj">형용사</option>
+              <option value="adv">부사</option>
+              <option value="prep">전치사</option>
+              <option value="conj">접속사</option>
+              <option value="other">기타</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="add-meanings">뜻 * (쉼표로 구분)</label>
+            <input type="text" id="add-meanings" required placeholder="뜻1, 뜻2, ...">
+          </div>
+          <div class="form-group">
+            <label for="add-example">예문</label>
+            <input type="text" id="add-example" placeholder="This is an example.">
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="btn-cancel" class="btn btn-secondary">취소</button>
+            <button type="submit" class="btn btn-primary">추가</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="index.ts"></script>
+</body>
+</html>
+

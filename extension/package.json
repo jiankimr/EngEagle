@@ -1,0 +1,34 @@
+{
+  "name": "engeagle",
+  "version": "1.0.0",
+  "description": "EngEagle - 더블클릭 영어 번역 확장 프로그램 (오프라인 지원)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "postbuild": "node scripts/pack.js",
+    "zip": "node scripts/zip.js",
+    "checksum": "node scripts/checksum.js",
+    "dist": "npm run build && npm run zip && npm run checksum",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.260",
+    "archiver": "^7.0.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.12"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "",
+  "license": "MIT",
+  "keywords": [
+    "chrome-extension",
+    "dictionary",
+    "translation",
+    "vocabulary",
+    "english-korean"
+  ]
+}
+

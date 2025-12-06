@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <!-- basic -->
+   <meta charset="utf-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <!-- mobile metas -->
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+   <!-- site metas -->
+   <title>EngEagle - 영어 비원어민 지식 노동자를 위한 생산성 도구</title>
+   <meta name="keywords" content="EngEagle, 영어 학습, 크롬 확장 프로그램, 영어 번역, 영단어장">
+   <meta name="description" content="웹 페이지에서 단어를 더블클릭하여 번역하고, 자동으로 단어장을 만들고, 매일 복습하며, 한국어 입력을 즉시 영어로 변환하세요. 지식 노동자를 위한 최고의 영어 생산성 툴, EngEagle.">
+   <meta name="author" content="EngEagle Team">
+   <!-- bootstrap css -->
+   <link rel="stylesheet" href="css/bootstrap.min.css">
+   <!-- style css -->
+   <link rel="stylesheet" href="css/style.css">
+   <!-- Responsive-->
+   <link rel="stylesheet" href="css/responsive.css">
+   <!-- fevicon -->
+   <link rel="icon" href="images/fevicon.png" type="image/gif" />
+   <!-- Scrollbar Custom CSS -->
+   <link rel="stylesheet" href="css/jquery.mCustomScrollbar.min.css">
+   <!-- Tweaks for older IEs-->
+   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+   <!-- owl stylesheets -->
+   <link rel="stylesheet" href="css/owl.carousel.min.css">
+   <link rel="stylesheet" href="css/owl.theme.default.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+   <!-- Google Fonts -->
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+   
+   <!-- Functional Dependencies -->
+    <script src="js/jquery.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/busy-load/dist/app.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/busy-load/dist/app.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/dinoqqq/simple-popup@master/dist/jquery.simple-popup.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/gh/dinoqqq/simple-popup@master/dist/jquery.simple-popup.min.css" rel="stylesheet" type="text/css" />
+    
+    <!-- IP Address Script -->
+    <script type="application/javascript">
+        var ip = "null";
+        function getIP(json) {
+            try { ip = json.ip; } catch (e) { ip = 'unknown'; }
+        }
+    </script>
+    <script type="application/javascript" src="https://jsonip.com?format=jsonp&callback=getIP"></script>
+    
+  <style>
+    :root { 
+      --ee-primary: #1a73e8; 
+      --ee-accent: #0ea5e9; 
+      --ee-dark: #0f172a; 
+      --ee-gray: #64748b;
+      --ee-light-bg: #f8fafc;
+      --ee-gradient: linear-gradient(135deg, #6ea8ff 0%, #1a73e8 50%, #0ea5e9 100%);
+      --ee-gradient-soft: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
+    }
+    
+    * { box-sizing: border-box; }
+    
+    body { 
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
+      color: #1e293b; 
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Hero Section */
+    .hero { 
+      background: radial-gradient(1400px 700px at 10% -10%, #e3f5ff 0%, transparent 65%), 
+                  linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
+      padding: 100px 0 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(26,115,232,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 0;
+    }
+    .hero .container { position: relative; z-index: 1; }
+    .hero .banner_taital { 
+      font-size: 54px; 
+      line-height: 1.15; 
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      color: rgb(177, 211, 255);
+    }
+    .hero .banner_text {
+      font-size: 20px;
+      line-height: 1.7;
+      color: rgb(151, 196, 255);
+      font-weight: 500;
+      max-width: 580px;
+    }
+    
+    .btn_main {
+      display: flex;
+      align-items: center;
+    }
+    
+    /* Buttons */
+    .btn-primary-ee { 
+      background: var(--ee-gradient); 
+      border: none; 
+      color: #fff; 
+      padding: 16px 32px; 
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 10px 25px rgba(26,115,232,.3);
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary-ee::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .btn-primary-ee:hover { 
+      transform: translateY(-3px);
+      box-shadow: 0 14px 35px rgba(26,115,232,.4);
+      color: #fff;
+      text-decoration: none;
+    }
+    .btn-primary-ee:hover::before {
+      opacity: 1;
+    }
+    
+    .btn-ghost-ee { 
+      border: 2px solid #e2e8f0; 
+      color: var(--ee-dark); 
+      padding: 14px 30px; 
+      border-radius: 12px; 
+      margin-left: 12px; 
+      font-weight: 700;
+      font-size: 16px;
+      background: #fff;
+      display: inline-block;
+      transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+      text-decoration: none;
+    }
+    .btn-ghost-ee:hover {
+      border-color: var(--ee-primary);
+      color: var(--ee-primary);
+      background: #f1f5f9;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(26,115,232,.1);
+      text-decoration: none;
+    }
+    
+    /* Badge */
+    .badge-chrome { 
+      display: inline-block; 
+      background: var(--ee-gradient-soft);
+      color: var(--ee-primary); 
+      padding: 8px 18px; 
+      border-radius: 999px; 
+      font-weight: 800; 
+      font-size: 12px; 
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      border: 1px solid rgba(26,115,232,.15);
+    }
+    
+    .shadow-soft { 
+      box-shadow: 0 12px 45px rgba(2,6,23,.1); 
+      border-radius: 24px;
+      transition: transform .3s ease;
+    }
+    .shadow-soft:hover {
+      transform: scale(1.02);
+    }
+    
+    /* Stats Section */
+    .stats_section { 
+      background: linear-gradient(135deg, #0b1220 0%, #1e293b 100%);
+      color: #e5e7eb; 
+      padding: 60px 0;
+      position: relative;
+    }
+    .stats_section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.2), transparent);
+    }
+    .stats_section .stat_num { 
+      color: #fff; 
+      font-size: 56px; 
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .stats_section .stat_label { 
+      color: #cbd5e1; 
+      margin-top: 16px;
+      font-size: 15px;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+    
+    /* Section Styling */
+    .section-title { 
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      font-size: 44px;
+      margin-bottom: 20px;
+      color: var(--ee-dark);
+      line-height: 1.2;
+    }
+    .section-lead { 
+      color: var(--ee-slate);
+      font-size: 18px;
+      line-height: 1.75;
+      margin: 0 auto 48px;
+      font-weight: 500;
+      max-width: 760px;
+    }
+    
+    /* Cards */
+    .box_main { 
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(2,6,23,.06);
+      padding: 36px 32px;
+      background: #fff;
+      height: 100%;
+      border: 1px solid #f1f5f9;
+      position: relative;
+      overflow: hidden;
+      text-align: left;
+    }
+    .box_main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--ee-gradient);
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .box_main.active::before {
+      opacity: 1;
+    }
+    
+    .feature-card { 
+      transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .feature-card:hover { 
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px -10px rgba(2,6,23,.15);
+      border-color: #e2e8f0;
+    }
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+    
+    .icon-circle { 
+      width: 72px;
+      height: 72px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ee-gradient-soft);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .icon-circle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120%;
+      height: 120%;
+      background: radial-gradient(circle, rgba(26,115,232,.15) 0%, transparent 70%);
+    }
+    .icon-circle img { 
+      width: 40px;
+      height: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .daily_text, .daily_text_1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--ee-dark);
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    
+    .health_text {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--ee-gray);
+      font-weight: 500;
+    }
+    
+    .knowledge_text {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--ee-gray);
+      font-weight: 500;
+    }
+    
+    /* Steps */
+    .steps { background: var(--ee-light-bg); }
+    .steps .step-card { 
+      position: relative;
+      padding-top: 28px;
+    }
+    .step-badge { 
+      position: absolute;
+      top: -20px;
+      left: 24px;
+      background: var(--ee-gradient);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-weight: 900;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(26,115,232,.35);
+      border: 3px solid #fff;
+    }
+    
+    /* Solution Cards */
+    .solution-card { 
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 4px 20px rgba(2,6,23,.06);
+      margin-bottom: 24px;
+      border: 1px solid #f1f5f9;
+      transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .solution-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--ee-gradient);
+      border-radius: 20px 20px 0 0;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+    .solution-card:hover {
+      box-shadow: 0 16px 40px rgba(2,6,23,.12);
+      transform: translateY(-6px);
+      border-color: #e2e8f0;
+    }
+    .solution-card:hover::before {
+      opacity: 1;
+    }
+    .solution-card h3 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--ee-dark);
+      margin-bottom: 16px;
+      line-height: 1.3;
+      display: flex;
+      align-items: center;
+    }
+    .solution-card h3::before {
+      content: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>');
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: var(--ee-gradient);
+      border-radius: 50%;
+      margin-right: 14px;
+      flex-shrink: 0;
+    }
+    
+    /* Layout */
+    .layout_padding {
+      padding: 100px 0;
+    }
+    
+    /* Navbar */
+    .header_section .navbar {
+      padding: 24px 0;
+      box-shadow: 0 2px 12px rgba(2,6,23,.04);
+    }
+    .header_section .logo a {
+      transition: transform .3s ease;
+      display: inline-block;
+    }
+    .header_section .logo a:hover {
+      transform: scale(1.05);
+    }
+    
+    /* CTA Section & Form */
+    .news_section {
+      background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);
+    }
+    .news_section .health_taital {
+      font-size: 48px;
+      font-weight: 900;
+      line-height: 1.2;
+      letter-spacing: -0.035em;
+    }
+    .form-container {
+        max-width: 600px;
+        margin: 40px auto 0;
+    }
+    .form-control-ee {
+        width: 100%;
+        padding: 18px 24px;
+        border: 2px solid #e2e8f0;
+        border-radius: 14px;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        transition: all .3s ease;
+        background-color: #fff;
+    }
+    .form-control-ee::placeholder {
+        color: #94a3b8;
+    }
+    .form-control-ee:focus {
+        outline: none;
+        border-color: var(--ee-primary);
+        box-shadow: 0 0 0 4px rgba(26,115,232,.15);
+    }
+    .simple-popup-content {
+        border-radius: 24px !important;
+        box-shadow: 0 20px 60px -10px rgba(2,6,23,.2) !important;
+        padding: 48px !important;
+    }
+    
+    /* Footer */
+    .footer_section {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      position: relative;
+    }
+    .footer_section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+    }
+    
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .hero .banner_taital,
+    .hero .banner_text,
+    .hero .btn_main {
+      animation: fadeInUp .8s ease forwards;
+    }
+    
+    .hero .banner_text { animation-delay: .2s; }
+    .hero .btn_main { animation-delay: .4s; }
+    .hero .shadow-soft { animation-delay: .45s; }
+    
+    /* ========================================
+       MOBILE RESPONSIVE STYLES
+       ======================================== */
+    
+    @media (max-width: 991px) {
+      /* Hero Section */
+      .hero {
+        padding: 60px 0 50px;
+      }
+      
+      .hero .banner_taital {
+        font-size: 36px;
+        margin-bottom: 16px;
+      }
+      
+      .hero .banner_text {
+        font-size: 17px;
+        margin-bottom: 24px;
+      }
+      
+      /* Buttons - Stack vertically on mobile */
+      .btn_main {
+        flex-direction: column;
+        align-items: stretch !important;
+      }
+      
+      .btn-primary-ee,
+      .btn-ghost-ee {
+        width: 100%;
+        text-align: center;
+        margin-left: 0 !important;
+        margin-bottom: 12px;
+        padding: 14px 24px;
+        font-size: 15px;
+      }
+      
+      /* Section Titles */
+      .section-title {
+        font-size: 32px;
+        margin-bottom: 16px;
+      }
+      
+      .section-lead {
+        font-size: 16px;
+        margin-bottom: 36px;
+      }
+      
+      /* Layout Padding */
+      .layout_padding {
+        padding: 60px 0;
+      }
+      
+      /* Stats Section */
+      .stats_section {
+        padding: 40px 0;
+      }
+      
+      .stats_section .stat_num {
+        font-size: 42px;
+      }
+      
+      .stats_section .stat_label {
+        font-size: 14px;
+      }
+      
+      /* Feature Cards */
+      .daily_text, .daily_text_1 {
+        font-size: 20px;
+      }
+      
+      .health_text, .knowledge_text {
+        font-size: 15px;
+      }
+      
+      /* Icon Circle */
+      .icon-circle {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+      }
+      
+      .icon-circle img {
+        width: 32px;
+        height: 32px;
+      }
+      
+      /* Step Badge */
+      .step-badge {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        left: 16px;
+        top: -16px;
+      }
+      
+      /* Solution Cards */
+      .solution-card {
+        padding: 28px 24px;
+        margin-bottom: 20px;
+      }
+      
+      .solution-card h3 {
+        font-size: 20px;
+      }
+      
+      /* Form */
+      .form-control-ee {
+        padding: 14px 18px;
+        font-size: 15px;
+      }
+      
+      /* News Section */
+      .news_section .health_taital {
+        font-size: 32px;
+      }
+      
+      /* Feature/Accordion Cards - Mobile Optimized */
+      .feature-card h4 {
+        font-size: 20px !important;
+      }
+      
+      .accordion-content p {
+        font-size: 15px !important;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      /* Hero - Extra Small Screens */
+      .hero {
+        padding: 50px 0 40px;
+      }
+      
+      .hero .banner_taital {
+        font-size: 30px;
+        line-height: 1.25;
+      }
+      
+      .hero .banner_text {
+        font-size: 16px;
+      }
+      
+      .badge-chrome {
+        font-size: 11px;
+        padding: 6px 14px;
+      }
+      
+      /* Buttons */
+      .btn-primary-ee,
+      .btn-ghost-ee {
+        padding: 13px 20px;
+        font-size: 14px;
+      }
+      
+      /* Section Titles */
+      .section-title {
+        font-size: 28px;
+      }
+      
+      .section-lead {
+        font-size: 15px;
+      }
+      
+      /* Stats Section */
+      .stats_section .stat_num {
+        font-size: 36px;
+      }
+      
+      .stats_section .stat_label {
+        font-size: 13px;
+        margin-top: 12px;
+      }
+      
+      /* Cards */
+      .box_main {
+        padding: 28px 24px;
+      }
+      
+      /* Layout Padding */
+      .layout_padding {
+        padding: 50px 0;
+      }
+      
+      /* Navbar */
+      .header_section .navbar {
+        padding: 16px 0;
+      }
+      
+      .header_section .logo a {
+        font-size: 1.5em !important;
+      }
+      
+      /* Image margins */
+      .hero .image_1 {
+        margin-top: 30px;
+      }
+      
+      /* Feature rows - add spacing between image and text on mobile */
+      .knowledge_section .row {
+        margin-bottom: 60px !important;
+      }
+      
+      /* Step sections */
+      .steps .step-card {
+        margin-bottom: 30px;
+      }
+      
+      /* Solution cards h3 */
+      .solution-card h3 {
+        font-size: 18px;
+        flex-wrap: wrap;
+      }
+      
+      .solution-card h3::before {
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+      }
+      
+      /* Form container */
+      .form-container {
+        padding: 0 15px;
+      }
+      
+      /* News section */
+      .news_section .health_taital {
+        font-size: 28px;
+      }
+      
+      /* Footer */
+      .footer_logo a {
+        font-size: 2em !important;
+      }
+      
+      /* Accordion/Feature cards mobile spacing */
+      .feature-card {
+        padding: 32px 28px !important;
+      }
+      
+      .feature-card h4 {
+        font-size: 18px !important;
+        flex-direction: column;
+        align-items: flex-start !important;
+      }
+      
+      .accordion-icon {
+        margin-top: 8px;
+        align-self: flex-end;
+      }
+    }
+    
+    @media (max-width: 575px) {
+      /* Extra small devices */
+      .hero .banner_taital {
+        font-size: 26px;
+      }
+      
+      .section-title {
+        font-size: 24px;
+      }
+      
+      .btn-primary-ee,
+      .btn-ghost-ee {
+        font-size: 14px;
+        padding: 12px 18px;
+      }
+      
+      .stats_section {
+        padding: 30px 0;
+      }
+      
+      .stats_section .stat_num {
+        font-size: 32px;
+      }
+      
+      .layout_padding {
+        padding: 40px 0;
+      }
+      
+      .box_main {
+        padding: 24px 20px;
+      }
+      
+      .feature-card {
+        padding: 28px 24px !important;
+      }
+      
+      /* Ensure proper spacing on very small screens */
+      .container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+   <!-- header section start -->
+   <div class="header_section">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+         <div class="container">
+            <div class="logo"><a href="index.html" style="font-size: 2em; color: #1b77e9; font-weight: 800;">EngEagle 🦅</a></div>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            </div>
+         </div>
+      </nav>
+   </div>
+   <!-- header section end -->
+   
+   <!-- banner section start -->
+     <div class="banner_section layout_padding hero">
+        <div class="container">
+           <div class="row align-items-center">
+              <div class="col-lg-7 col-md-12 order-1 order-lg-1">
+                 <span class="badge-chrome">Chrome Extension</span>
+                 <h6 class="banner_taital">영문 작업의<br>마찰을 없애고,<br><span style="background: var(--ee-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">당신의 잠재력을 <br>최대로 끌어올립니다.</span></h1>
+                 <p class="banner_text">번역·암기·작문을, 끊김 없는 한 흐름으로 생산성 UP<br>EngEagle은 지식 노동자를 위한 영문 생산성 도구입니다.</p>
+                 <div class="btn_main" style="margin-top: 32px;">
+                    <a class="btn-primary-ee" href="#form">지금 무료로 시작하기 →</a>
+                    <a class="btn-ghost-ee" href="#how">작동 방식 보기</a>
+                 </div>
+              </div>
+               <div class="col-lg-5 col-md-12 order-2 order-lg-2">
+                  <div class="image_1 shadow-soft" style="border-radius: 16px; overflow: hidden;"><img src="images/logo_new.png" style="width: 100%;"></div>
+               </div>
+           </div>
+        </div>
+     </div>
+  <!-- banner section end -->
+  
+  <!-- stats section start -->
+  <div class="stats_section">
+     <div class="container">
+        <div class="row text-center align-items-start">
+           <div class="col-lg-4 col-md-6 col-sm-12 mb-4 mb-lg-0">
+              <div class="stat_num">50%</div>
+              <div class="stat_label">영어 비원어민 지식 노동자가<br>영문 읽기/쓰기에 어려움을 겪습니다</div>
+           </div>
+           <div class="col-lg-4 col-md-6 col-sm-12 mb-4 mb-lg-0">
+              <div class="stat_num">10+</div>
+              <div class="stat_label">설치 후 3일 안에<br>더블클릭으로 저장하게 될 단어 수</div>
+           </div>
+           <div class="col-lg-4 col-md-12 col-sm-12">
+              <div class="stat_num">0↓</div>
+              <div class="stat_label">같은 단어 재검색 횟수<br>한 번 저장하면 장기 기억으로</div>
+           </div>
+        </div>
+     </div>
+  </div>
+  <!-- stats section end -->
+  
+  <!-- problem section start -->
+  <div class="health_section layout_padding">
+     <div class="container text-center">
+        <h1 class="section-title">논문 읽고, 코드 문서 보고, 슬랙 쓰는<br>지식 노동자의 가장 큰 고민 🤯</h1>
+        <p class="section-lead">영어 원어민이 아닌 개발자, 연구자, PM, 마케터라면<br>하루에도 수십 번 마주하는 영어의 벽. 이제 허물어야 할 때입니다.</p>
+        <div class="news_section_2" style="padding: 0; margin-top: 30px;">
+           <div class="row">
+              <div class="col-lg-6 col-md-12 mb-4">
+                 <div class="feature-card accordion-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; transition: all 0.3s ease; padding: 40px 45px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); cursor: pointer;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'" onclick="toggleAccordion(this)">
+                    <h4 style="color: #1e293b; font-size: 24px; font-weight: 800; margin-bottom: 0; line-height: 1.3; display: flex; justify-content: space-between; align-items: center;">
+                       <span>🔄 100번 검색해도<br>늘지 않는 영어 어휘력</span>
+                       <span class="accordion-icon" style="font-size: 20px; transition: transform 0.3s ease;">▼</span>
+                    </h4>
+                    <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
+                       <p style="color: #475569; font-size: 17px; line-height: 1.8; margin-top: 24px; margin-bottom: 16px; font-weight: 500;">
+                          어제 논문에서 검색했던 'elaborate', 오늘 기술 문서에서 또 만났습니다. 
+                          또 구글에 검색하고, 탭을 오가며 확인합니다. 
+                          지난 3개월 동안 'implement', 'acquire' 같은 단어를 수십 번 찾아봤지만 여전히 헷갈립니다.
+                       </p>
+                       <p style="color: #475569; font-size: 17px; line-height: 1.8; margin-bottom: 16px; font-weight: 500;">
+                          <strong style="color: #1a73e8;">기존 번역 툴은 그 순간만 해결할 뿐, 단어를 기억해주지 않습니다.</strong> 
+                          단어장도 없고, 복습 알림도 없어서 배운 내용이 장기 기억으로 정착되지 못합니다.
+                       </p>
+                       <p style="color: #475569; font-size: 17px; line-height: 1.8; margin: 0; font-weight: 500;">
+                          같은 단어를 반복 검색하는 데 하루 30분씩, 1년이 지나도 영어 실력은 제자리. 
+                          끊임없이 번역에 의존하는 악순환이 계속됩니다.
+                       </p>
+                    </div>
+                 </div>
+              </div>
+              <div class="col-lg-6 col-md-12 mb-4">
+                 <div class="feature-card accordion-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; transition: all 0.3s ease; padding: 40px 45px; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); cursor: pointer;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'" onclick="toggleAccordion(this)">
+                    <h4 style="color: #1e293b; font-size: 24px; font-weight: 800; margin-bottom: 0; line-height: 1.3; display: flex; justify-content: space-between; align-items: center;">
+                       <span>⏰ 영어 한 줄에 10분,<br>영작 하루 1시간 증발</span>
+                       <span class="accordion-icon" style="font-size: 20px; transition: transform 0.3s ease;">▼</span>
+                    </h4>
+                    <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease;">
+                       <p style="color: #475569; font-size: 17px; line-height: 1.8; margin-top: 24px; margin-bottom: 16px; font-weight: 500;">
+                          슬랙에 "회의 일정 변경 요청드립니다" 한 줄 쓰려다가 10분이 지나갑니다. 
+                          파파고 열고, 입력하고, 복사하고, 다시 슬랙으로 돌아오고, 문맥을 확인하고… 
+                          영어 이메일 하나 작성하는 데만 30분씩 소요됩니다.
+                       </p>
+                       <p style="color: #475569; font-size: 17px; line-height: 1.8; margin-bottom: 16px; font-weight: 500;">
+                          <strong style="color: #1a73e8;">번역기와 문서를 오가며 맥락이 끊기고, 하루 1-2시간이 영작에만 증발합니다.</strong> 
+                          단 한 줄을 쓰는 것도 스트레스가 되고, 영어 커뮤니케이션을 미루게 됩니다.
+                       </p>
+                       <p style="color: #475569; font-size: 17px; line-height: 1.8; margin: 0; font-weight: 500;">
+                          영어가 업무의 흐름을 막는 가장 큰 병목이 되어, 정작 중요한 일에 집중하지 못합니다.
+                       </p>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </div>
+  <!-- problem section end -->
+  
+  <script>
+  function toggleAccordion(element) {
+     const content = element.querySelector('.accordion-content');
+     const icon = element.querySelector('.accordion-icon');
+     const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+     
+     if (isOpen) {
+        content.style.maxHeight = '0';
+        icon.style.transform = 'rotate(0deg)';
+     } else {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        icon.style.transform = 'rotate(180deg)';
+     }
+  }
+  </script>
+  
+  <!-- how section start -->
+  <div id="how" class="knowledge_section layout_padding steps">
+     <div class="container">
+        <div class="text-center" style="margin-bottom: 80px;">
+           <h1 class="section-title">EngEagle의 핵심 기능</h1>
+           <p class="section-lead">번역부터 암기, 작문까지. 영문 작업의 모든 과정을<br>하나의 흐름으로 연결합니다.</p>
+        </div>
+
+        <!-- Feature 1 -->
+        <div class="row align-items-center" style="margin-bottom: 100px;">
+           <div class="col-lg-6 col-md-12 order-2 order-lg-1">
+              <div class="step-badge">1</div>
+              <h3 class="daily_text" style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">즉시 번역하고<br>단어장에 저장</h3>
+              <p class="health_text" style="font-size: 18px; line-height: 1.8; color: #64748b;">
+                 웹페이지를 읽다가 모르는 단어를 발견했나요? 단어를 드래그하거나 더블 클릭하면 바로 정확한 뜻이 팝업으로 표시됩니다. 
+                 클릭 한 번으로 나만의 단어장에 추가하여 나중에 다시 복습할 수 있습니다. 
+                 페이지를 벗어나거나 번역기를 열 필요가 없어 학습 흐름이 끊기지 않습니다.
+              </p>
+           </div>
+           <div class="col-lg-6 col-md-12 order-1 order-lg-2 mb-4 mb-lg-0">
+              <div class="shadow-soft" style="border-radius: 12px; overflow: hidden;">
+                 <img src="images/fuc3_translate_word.png" style="width: 100%; display: block;">
+              </div>
+           </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="row align-items-center" style="margin-bottom: 100px;">
+           <div class="col-lg-6 col-md-12 order-2 order-lg-2">
+              <div class="step-badge">2</div>
+              <h3 class="daily_text" style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">나만의 단어장과<br>과학적인 복습 알림</h3>
+              <p class="health_text" style="font-size: 18px; line-height: 1.8; color: #64748b;">
+                 저장한 단어들을 한눈에 모아볼 수 있는 단어장에서 학습을 관리하세요. 
+                 에빙하우스 망각곡선을 기반으로 최적의 타이밍에 복습 알림을 받아 장기 기억으로 정착시킬 수 있습니다. 
+                 단어 추가와 삭제가 자유로워 나만의 맞춤 학습이 가능합니다.
+              </p>
+           </div>
+           <div class="col-lg-6 col-md-12 order-1 order-lg-1 mb-4 mb-lg-0">
+              <div class="shadow-soft" style="border-radius: 12px; overflow: hidden;">
+                 <img src="images/fuc2_voca.png" style="width: 100%; display: block;">
+              </div>
+           </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="row align-items-center">
+           <div class="col-lg-6 col-md-12 order-2 order-lg-1">
+              <div class="step-badge">3</div>
+              <h3 class="daily_text" style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">영작문도 즉시<br>한→영 변환</h3>
+              <p class="health_text" style="font-size: 18px; line-height: 1.8; color: #64748b;">
+                 영어로 이메일이나 문서를 작성해야 할 때, Option+E 키를 누르면 번역 팝업이 나타납니다. 
+                 한국어로 생각한 내용을 입력하면 자연스러운 영어 문장으로 즉시 변환되어 입력창에 삽입됩니다. 
+                 고민 없이 빠르게 영문 작업을 완료할 수 있습니다.
+              </p>
+           </div>
+           <div class="col-lg-6 col-md-12 order-1 order-lg-2 mb-4 mb-lg-0">
+              <div class="shadow-soft" style="border-radius: 12px; overflow: hidden;">
+                 <img src="images/fuc1_translate_message.png" style="width: 100%; display: block;">
+              </div>
+           </div>
+        </div>
+
+     </div>
+  </div>
+  <!-- how section end -->
+  
+  <!-- solution section start -->
+  <div class="knowledge_section layout_padding" style="background: linear-gradient(180deg, #fafbfc 0%, #f8f9fa 100%);">
+     <div class="container">
+       <div class="text-center" style="margin-bottom: 60px;">
+         <h1 class="section-title">EngEagle과 함께하면<br>이렇게 달라집니다</h1>
+         <p class="section-lead" style="color: #475569; font-size: 18px;">단순한 번역 툴을 넘어, 영어 능력과 업무 생산성을<br>근본적으로 변화시키는 성장 파트너입니다.</p>
+       </div>
+       <div class="row justify-content-center">
+           <div class="col-lg-4 col-md-12 mb-4">
+               <div class="feature-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; padding: 45px 35px; height: 100%; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); transition: all 0.3s ease;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'">
+                   <div style="font-size: 40px; margin-bottom: 20px;">📈</div>
+                   <h3 style="color: #1e293b; font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">자연스럽게 늘어나는<br>어휘력</h3>
+                   <p style="color: #475569; font-size: 16px; line-height: 1.8; margin: 0; font-weight: 400;">3개월 후 수백 개의 단어가 장기 기억에 새겨집니다. 더 이상 같은 단어를 검색하지 않아도 되고, 영어 문서 읽기 속도가 2배 빨라집니다.</p>
+               </div>
+           </div>
+           <div class="col-lg-4 col-md-12 mb-4">
+               <div class="feature-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; padding: 45px 35px; height: 100%; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); transition: all 0.3s ease;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'">
+                   <div style="font-size: 40px; margin-bottom: 20px;">⚡</div>
+                   <h3 style="color: #1e293b; font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">영작 시간 70% 단축</h3>
+                   <p style="color: #475569; font-size: 16px; line-height: 1.8; margin: 0; font-weight: 400;"><br>슬랙 메시지 10분 → 2분, 이메일 30분 → 10분. 하루 1-2시간을 절약하여 정작 중요한 업무에 집중할 수 있습니다.</p>
+               </div>
+           </div>
+           <div class="col-lg-4 col-md-12 mb-4">
+               <div class="feature-card" style="background: #ffffff; border: 2px solid #e2e8f0; border-top: 4px solid #e2e8f0; padding: 45px 35px; height: 100%; border-radius: 12px; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); transition: all 0.3s ease;" onmouseover="this.style.borderTop='4px solid #1a73e8'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 8px 24px rgba(26, 115, 232, 0.12)'" onmouseout="this.style.borderTop='4px solid #e2e8f0'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 12px rgba(0, 0, 0, 0.04)'">
+                   <div style="font-size: 40px; margin-bottom: 20px;">💪</div>
+                   <h3 style="color: #1e293b; font-size: 22px; font-weight: 700; margin-bottom: 16px; line-height: 1.4;">영어에 대한<br>자신감 향상</h3>
+                   <p style="color: #475569; font-size: 16px; line-height: 1.8; margin: 0; font-weight: 400;">어휘력이 향상하고, 자유로운 영작으로 영어 소통을 더 이상 미루지 않게 됩니다. 영문서 작업, 오픈 소스 기여, 글로벌 협업이 자연스러워집니다.</p>
+               </div>
+           </div>
+       </div>
+     </div>
+  </div>
+  <!-- solution section end -->
+   <!-- CTA section start -->
+   <div class="news_section layout_padding">
+      <div id="form" class="container text-center">
+         <h1 class="section-title">EngEagle 출시,<br>가장 먼저 소식을 받아보세요</h1>
+         <p class="section-lead">정식 버전이 출시되면 가장 먼저 알림과 3개월 무료 이용권을 보내드립니다.<br>서비스 개선을 위한 소중한 의견도 남겨주세요.</p>
+         <div class="form-container">
+            <input id="submit-email" type="email" placeholder="알림을 받으실 이메일 주소" class="form-control-ee">
+            <textarea id="submit-advice" rows="4" placeholder="서비스에 대한 조언을 자유롭게 남겨주세요 (선택 사항)" class="form-control-ee"></textarea>
+            <button id="submit" class="btn-primary-ee" style="width: 100%; font-size: 18px; padding: 20px;">출시 알림 신청하기 →</button>
+         </div>
+         <p style="margin-top: 20px; color: var(--ee-gray); font-size: 14px;">💳 카드 등록 불필요  · ⚡️ 5초 만에 신청 완료  · 🔒 개인정보 안전 보장</p>
+      </div>
+   </div>
+   <!-- CTA section end -->
+   
+   <!-- Popup -->
+    <div id="popup" style="display:none; text-align: center;">
+        <h1 style="font-weight: 800; font-size: 36px; color: var(--ee-dark);">감사합니다!</h1>
+        <p style="font-size: 18px; color: var(--ee-gray); margin-top: 16px;">소중한 의견이 EngEagle을 더 나은 서비스로 만듭니다.<br>출시 소식으로 가장 먼저 찾아뵙겠습니다.</p>
+    </div>
+   
+   <!-- footer section start -->
+   <div class="footer_section layout_padding">
+      <div class="container">
+         <div class="row" style="justify-content: center;">
+            <div class="col-lg-6 col-sm-12 text-center">
+               <div class="footer_logo"><a href="index.html" style="font-size: 2.5em; color: white; font-weight: bold;">EngEagle 🦅</a></div>
+               <p class="copyright_text">영문 작업의 마찰을 없애고,<br>당신의 잠재력을 최대로 끌어올립니다.</p>
+            </div>
+         </div>
+      </div>
+   </div>
+   <!-- footer section end -->
+   <!-- copyright section start -->
+   <div class="copyright_section">
+      <div class="container text-center">
+         <p class="copyright_text">© 2025 EngEagle. All Rights Reserved.</p>
+      </div>
+   </div>
+   <!-- copyright section end -->
+   <!-- Javascript files-->
+   <!-- jQuery moved to <head> to ensure plugins load correctly -->
+   <script src="js/popper.min.js"></script>
+   <script src="js/bootstrap.bundle.min.js"></script>
+   <script src="js/plugin.js"></script>
+   <!-- sidebar -->
+   <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+   <script src="js/custom.js"></script>
+   <!-- javascript -->
+   <script src="js/owl.carousel.js"></script>
+   <script src="https:cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+   
+   <!-- Visitor Tracking & Form Submission Script -->
+    <script>
+        $(document).ready(function () {
+            // TODO: 본인의 Google Apps Script 웹 앱 URL을 여기에 입력하세요.
+            var addrScript = "https://script.google.com/macros/s/AKfycbwv5OugAFwRuIp6K6_kpBRn3LF1nZb-t28g2s-jh9cv5NtOR07SAAfyDrSj6spsGVTM/exec";
+
+            var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
+            var queryString = location.search;
+            const urlParams = new URLSearchParams(queryString);
+            const utm = urlParams.get("utm");
+
+            function padValue(value) {
+                return (value < 10) ? "0" + value : value;
+            }
+
+            function getTimeStamp() {
+                const date = new Date();
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const hours = date.getHours();
+                const minutes = date.getMinutes();
+                const seconds = date.getSeconds();
+                return `${padValue(year)}-${padValue(month)}-${padValue(day)} ${padValue(hours)}:${padValue(minutes)}:${padValue(seconds)}`;
+            }
+
+            function getCookieValue(name) {
+                const value = "; " + document.cookie;
+                const parts = value.split("; " + name + "=");
+                if (parts.length === 2) return parts.pop().split(";").shift();
+            }
+
+            function setCookieValue(name, value, days) {
+                let expires = "";
+                if (days) {
+                    const date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            function getUVfromCookie() {
+                const existingHash = getCookieValue("user");
+                if (!existingHash) {
+                    const hash = Math.random().toString(36).substring(2, 8).toUpperCase();
+                    setCookieValue("user", hash, 180); // 6개월 유지
+                    return hash;
+                }
+                return existingHash;
+            }
+
+            var visitorData = JSON.stringify({
+                "id": getUVfromCookie(),
+                "landingUrl": window.location.href,
+                "ip": ip,
+                "referer": document.referrer,
+                "time_stamp": getTimeStamp(),
+                "utm": utm,
+                "device": mobile
+            });
+
+            if(addrScript) {
+                $.ajax({
+                    url: addrScript + '?action=insert&table=visitors&data=' + encodeURIComponent(visitorData),
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        console.log('Visitor tracked:', data);
+                    },
+                    error: function (xhr) {
+                        console.error('Tracking error:', xhr);
+                    }
+                });
+            }
+
+            $("#submit").on("click", function () {
+                const email = $("#submit-email").val();
+                const advice = $("#submit-advice").val();
+
+                function validateEmail(email) {
+                    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                    return re.test(email);
+                }
+
+                if (!validateEmail(email)) {
+                    alert("유효하지 않은 이메일 주소입니다. 다시 확인해주세요.");
+                    return;
+                }
+
+                if (!addrScript) {
+                    alert("데이터를 전송할 수 없습니다. 관리자에게 문의하세요.");
+                    return;
+                }
+
+                var finalData = JSON.stringify({
+                    "id": getUVfromCookie(),
+                    "email": email,
+                    "advice": advice
+                });
+
+                $.busyLoadFull("show", { text: "전송 중..." });
+                $.ajax({
+                    url: addrScript + '?action=insert&table=tab_final&data=' + encodeURIComponent(finalData),
+                    dataType: 'jsonp',
+                    success: function (data) {
+                        console.log('Submission successful:', data);
+                        $('#submit-email').val('');
+                        $('#submit-advice').val('');
+                        $.busyLoadFull("hide");
+                        $.fn.simplePopup({ type: "html", htmlSelector: "#popup" });
+                    },
+                    error: function (xhr) {
+                        console.error('Submission error:', xhr);
+                        $.busyLoadFull("hide");
+                        alert("전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

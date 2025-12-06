@@ -1,0 +1,395 @@
+{
+  "salient": {
+    "word": "salient",
+    "lemma": "salient",
+    "pos": "adj",
+    "meanings": ["핵심적인", "두드러진", "현저한"],
+    "example": "The salient feature of this design is its simplicity.",
+    "source_url": "https://en.wiktionary.org/wiki/salient"
+  },
+  "ubiquitous": {
+    "word": "ubiquitous",
+    "lemma": "ubiquitous",
+    "pos": "adj",
+    "meanings": ["어디에나 있는", "편재하는"],
+    "example": "Smartphones have become ubiquitous in modern society.",
+    "source_url": "https://en.wiktionary.org/wiki/ubiquitous"
+  },
+  "pragmatic": {
+    "word": "pragmatic",
+    "lemma": "pragmatic",
+    "pos": "adj",
+    "meanings": ["실용적인", "현실적인"],
+    "example": "We need a pragmatic approach to solve this problem.",
+    "source_url": "https://en.wiktionary.org/wiki/pragmatic"
+  },
+  "ephemeral": {
+    "word": "ephemeral",
+    "lemma": "ephemeral",
+    "pos": "adj",
+    "meanings": ["일시적인", "순간적인", "덧없는"],
+    "example": "Fame can be ephemeral in the entertainment industry.",
+    "source_url": "https://en.wiktionary.org/wiki/ephemeral"
+  },
+  "eloquent": {
+    "word": "eloquent",
+    "lemma": "eloquent",
+    "pos": "adj",
+    "meanings": ["웅변의", "유창한", "감동적인"],
+    "example": "She gave an eloquent speech at the ceremony.",
+    "source_url": "https://en.wiktionary.org/wiki/eloquent"
+  },
+  "meticulous": {
+    "word": "meticulous",
+    "lemma": "meticulous",
+    "pos": "adj",
+    "meanings": ["꼼꼼한", "세심한", "정밀한"],
+    "example": "He is meticulous about keeping records.",
+    "source_url": "https://en.wiktionary.org/wiki/meticulous"
+  },
+  "resilient": {
+    "word": "resilient",
+    "lemma": "resilient",
+    "pos": "adj",
+    "meanings": ["회복력 있는", "탄력 있는"],
+    "example": "Children are often more resilient than adults.",
+    "source_url": "https://en.wiktionary.org/wiki/resilient"
+  },
+  "ambiguous": {
+    "word": "ambiguous",
+    "lemma": "ambiguous",
+    "pos": "adj",
+    "meanings": ["모호한", "애매한", "다의적인"],
+    "example": "The contract language was deliberately ambiguous.",
+    "source_url": "https://en.wiktionary.org/wiki/ambiguous"
+  },
+  "concise": {
+    "word": "concise",
+    "lemma": "concise",
+    "pos": "adj",
+    "meanings": ["간결한", "간명한"],
+    "example": "Please write a concise summary of the report.",
+    "source_url": "https://en.wiktionary.org/wiki/concise"
+  },
+  "diligent": {
+    "word": "diligent",
+    "lemma": "diligent",
+    "pos": "adj",
+    "meanings": ["부지런한", "근면한"],
+    "example": "She is a diligent student who never misses class.",
+    "source_url": "https://en.wiktionary.org/wiki/diligent"
+  },
+  "implement": {
+    "word": "implement",
+    "lemma": "implement",
+    "pos": "verb",
+    "meanings": ["시행하다", "구현하다", "실행하다"],
+    "example": "We need to implement the new policy next month.",
+    "source_url": "https://en.wiktionary.org/wiki/implement"
+  },
+  "acquire": {
+    "word": "acquire",
+    "lemma": "acquire",
+    "pos": "verb",
+    "meanings": ["얻다", "획득하다", "습득하다"],
+    "example": "She acquired fluency in French within two years.",
+    "source_url": "https://en.wiktionary.org/wiki/acquire"
+  },
+  "comprehend": {
+    "word": "comprehend",
+    "lemma": "comprehend",
+    "pos": "verb",
+    "meanings": ["이해하다", "파악하다"],
+    "example": "It's difficult to comprehend the scale of the universe.",
+    "source_url": "https://en.wiktionary.org/wiki/comprehend"
+  },
+  "facilitate": {
+    "word": "facilitate",
+    "lemma": "facilitate",
+    "pos": "verb",
+    "meanings": ["촉진하다", "용이하게 하다"],
+    "example": "Technology can facilitate learning.",
+    "source_url": "https://en.wiktionary.org/wiki/facilitate"
+  },
+  "enhance": {
+    "word": "enhance",
+    "lemma": "enhance",
+    "pos": "verb",
+    "meanings": ["향상시키다", "강화하다"],
+    "example": "Exercise can enhance your mood.",
+    "source_url": "https://en.wiktionary.org/wiki/enhance"
+  },
+  "mitigate": {
+    "word": "mitigate",
+    "lemma": "mitigate",
+    "pos": "verb",
+    "meanings": ["완화하다", "경감하다"],
+    "example": "We need to mitigate the risks of climate change.",
+    "source_url": "https://en.wiktionary.org/wiki/mitigate"
+  },
+  "perceive": {
+    "word": "perceive",
+    "lemma": "perceive",
+    "pos": "verb",
+    "meanings": ["인식하다", "지각하다", "감지하다"],
+    "example": "How do you perceive the current situation?",
+    "source_url": "https://en.wiktionary.org/wiki/perceive"
+  },
+  "sustain": {
+    "word": "sustain",
+    "lemma": "sustain",
+    "pos": "verb",
+    "meanings": ["유지하다", "지속하다", "지탱하다"],
+    "example": "It's hard to sustain this level of effort.",
+    "source_url": "https://en.wiktionary.org/wiki/sustain"
+  },
+  "analyze": {
+    "word": "analyze",
+    "lemma": "analyze",
+    "pos": "verb",
+    "meanings": ["분석하다", "해석하다"],
+    "example": "Let's analyze the data before making a decision.",
+    "source_url": "https://en.wiktionary.org/wiki/analyze"
+  },
+  "evaluate": {
+    "word": "evaluate",
+    "lemma": "evaluate",
+    "pos": "verb",
+    "meanings": ["평가하다", "가치를 매기다"],
+    "example": "We need to evaluate the effectiveness of the program.",
+    "source_url": "https://en.wiktionary.org/wiki/evaluate"
+  },
+  "paradigm": {
+    "word": "paradigm",
+    "lemma": "paradigm",
+    "pos": "noun",
+    "meanings": ["패러다임", "전형", "모범"],
+    "example": "This discovery represents a paradigm shift in physics.",
+    "source_url": "https://en.wiktionary.org/wiki/paradigm"
+  },
+  "hypothesis": {
+    "word": "hypothesis",
+    "lemma": "hypothesis",
+    "pos": "noun",
+    "meanings": ["가설", "가정"],
+    "example": "The scientist tested her hypothesis through experiments.",
+    "source_url": "https://en.wiktionary.org/wiki/hypothesis"
+  },
+  "phenomenon": {
+    "word": "phenomenon",
+    "lemma": "phenomenon",
+    "pos": "noun",
+    "meanings": ["현상", "사건"],
+    "example": "This is a natural phenomenon that occurs every spring.",
+    "source_url": "https://en.wiktionary.org/wiki/phenomenon"
+  },
+  "perspective": {
+    "word": "perspective",
+    "lemma": "perspective",
+    "pos": "noun",
+    "meanings": ["관점", "시각", "견해"],
+    "example": "Try to see things from a different perspective.",
+    "source_url": "https://en.wiktionary.org/wiki/perspective"
+  },
+  "consensus": {
+    "word": "consensus",
+    "lemma": "consensus",
+    "pos": "noun",
+    "meanings": ["합의", "일치", "여론"],
+    "example": "We reached a consensus after hours of discussion.",
+    "source_url": "https://en.wiktionary.org/wiki/consensus"
+  },
+  "infrastructure": {
+    "word": "infrastructure",
+    "lemma": "infrastructure",
+    "pos": "noun",
+    "meanings": ["기반 시설", "인프라"],
+    "example": "The city needs to invest in infrastructure.",
+    "source_url": "https://en.wiktionary.org/wiki/infrastructure"
+  },
+  "algorithm": {
+    "word": "algorithm",
+    "lemma": "algorithm",
+    "pos": "noun",
+    "meanings": ["알고리즘", "연산 방식"],
+    "example": "The algorithm efficiently sorts the data.",
+    "source_url": "https://en.wiktionary.org/wiki/algorithm"
+  },
+  "hierarchy": {
+    "word": "hierarchy",
+    "lemma": "hierarchy",
+    "pos": "noun",
+    "meanings": ["계층", "계급", "서열"],
+    "example": "The company has a strict hierarchy.",
+    "source_url": "https://en.wiktionary.org/wiki/hierarchy"
+  },
+  "innovation": {
+    "word": "innovation",
+    "lemma": "innovation",
+    "pos": "noun",
+    "meanings": ["혁신", "새로운 것"],
+    "example": "Innovation drives economic growth.",
+    "source_url": "https://en.wiktionary.org/wiki/innovation"
+  },
+  "synthesis": {
+    "word": "synthesis",
+    "lemma": "synthesis",
+    "pos": "noun",
+    "meanings": ["종합", "합성", "통합"],
+    "example": "His essay was a synthesis of multiple theories.",
+    "source_url": "https://en.wiktionary.org/wiki/synthesis"
+  },
+  "study": {
+    "word": "study",
+    "lemma": "study",
+    "pos": "verb",
+    "meanings": ["공부하다", "연구하다"],
+    "example": "I study English every day.",
+    "source_url": "https://en.wiktionary.org/wiki/study"
+  },
+  "studies": {
+    "word": "studies",
+    "lemma": "study",
+    "pos": "verb",
+    "meanings": ["공부하다", "연구하다"],
+    "example": "She studies at the library.",
+    "source_url": "https://en.wiktionary.org/wiki/study"
+  },
+  "studied": {
+    "word": "studied",
+    "lemma": "study",
+    "pos": "verb",
+    "meanings": ["공부했다", "연구했다"],
+    "example": "He studied hard for the exam.",
+    "source_url": "https://en.wiktionary.org/wiki/study"
+  },
+  "studying": {
+    "word": "studying",
+    "lemma": "study",
+    "pos": "verb",
+    "meanings": ["공부하는 중", "연구하는 중"],
+    "example": "I am studying for my finals.",
+    "source_url": "https://en.wiktionary.org/wiki/study"
+  },
+  "run": {
+    "word": "run",
+    "lemma": "run",
+    "pos": "verb",
+    "meanings": ["달리다", "운영하다", "실행하다"],
+    "example": "I run every morning for exercise.",
+    "source_url": "https://en.wiktionary.org/wiki/run"
+  },
+  "running": {
+    "word": "running",
+    "lemma": "run",
+    "pos": "verb",
+    "meanings": ["달리는", "운영하는"],
+    "example": "Running is good for your health.",
+    "source_url": "https://en.wiktionary.org/wiki/run"
+  },
+  "runs": {
+    "word": "runs",
+    "lemma": "run",
+    "pos": "verb",
+    "meanings": ["달린다", "운영한다"],
+    "example": "She runs a small business.",
+    "source_url": "https://en.wiktionary.org/wiki/run"
+  },
+  "beautiful": {
+    "word": "beautiful",
+    "lemma": "beautiful",
+    "pos": "adj",
+    "meanings": ["아름다운", "멋진"],
+    "example": "The sunset was absolutely beautiful.",
+    "source_url": "https://en.wiktionary.org/wiki/beautiful"
+  },
+  "important": {
+    "word": "important",
+    "lemma": "important",
+    "pos": "adj",
+    "meanings": ["중요한", "의미 있는"],
+    "example": "Education is important for success.",
+    "source_url": "https://en.wiktionary.org/wiki/important"
+  },
+  "example": {
+    "word": "example",
+    "lemma": "example",
+    "pos": "noun",
+    "meanings": ["예", "사례", "본보기"],
+    "example": "This is a good example of modern architecture.",
+    "source_url": "https://en.wiktionary.org/wiki/example"
+  },
+  "language": {
+    "word": "language",
+    "lemma": "language",
+    "pos": "noun",
+    "meanings": ["언어", "말"],
+    "example": "Learning a new language takes time.",
+    "source_url": "https://en.wiktionary.org/wiki/language"
+  },
+  "translate": {
+    "word": "translate",
+    "lemma": "translate",
+    "pos": "verb",
+    "meanings": ["번역하다", "옮기다"],
+    "example": "Can you translate this document for me?",
+    "source_url": "https://en.wiktionary.org/wiki/translate"
+  },
+  "dictionary": {
+    "word": "dictionary",
+    "lemma": "dictionary",
+    "pos": "noun",
+    "meanings": ["사전", "사서"],
+    "example": "I looked up the word in the dictionary.",
+    "source_url": "https://en.wiktionary.org/wiki/dictionary"
+  },
+  "vocabulary": {
+    "word": "vocabulary",
+    "lemma": "vocabulary",
+    "pos": "noun",
+    "meanings": ["어휘", "단어"],
+    "example": "Reading helps expand your vocabulary.",
+    "source_url": "https://en.wiktionary.org/wiki/vocabulary"
+  },
+  "learn": {
+    "word": "learn",
+    "lemma": "learn",
+    "pos": "verb",
+    "meanings": ["배우다", "학습하다", "알게 되다"],
+    "example": "I want to learn how to play the piano.",
+    "source_url": "https://en.wiktionary.org/wiki/learn"
+  },
+  "learning": {
+    "word": "learning",
+    "lemma": "learn",
+    "pos": "noun",
+    "meanings": ["학습", "배움"],
+    "example": "Learning is a lifelong process.",
+    "source_url": "https://en.wiktionary.org/wiki/learning"
+  },
+  "knowledge": {
+    "word": "knowledge",
+    "lemma": "knowledge",
+    "pos": "noun",
+    "meanings": ["지식", "정보", "앎"],
+    "example": "Knowledge is power.",
+    "source_url": "https://en.wiktionary.org/wiki/knowledge"
+  },
+  "understand": {
+    "word": "understand",
+    "lemma": "understand",
+    "pos": "verb",
+    "meanings": ["이해하다", "알다"],
+    "example": "I understand what you mean.",
+    "source_url": "https://en.wiktionary.org/wiki/understand"
+  },
+  "understanding": {
+    "word": "understanding",
+    "lemma": "understand",
+    "pos": "noun",
+    "meanings": ["이해", "이해력"],
+    "example": "We need a better understanding of the issue.",
+    "source_url": "https://en.wiktionary.org/wiki/understanding"
+  }
+}
+

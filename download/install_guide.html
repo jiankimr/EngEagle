@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EngEagle 설치 가이드</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --border: #1e1e2a;
+      --text: #e8e8ec;
+      --text-dim: #8888a0;
+      --accent: #00c8ff;
+      --accent-glow: rgba(0, 200, 255, 0.15);
+      --success: #22c55e;
+      --warning: #f59e0b;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 60px 24px 80px;
+    }
+
+    /* 네비게이션 */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 32px;
+      transition: opacity 0.2s;
+    }
+
+    .back-link:hover {
+      opacity: 0.8;
+    }
+
+    /* 헤더 */
+    header {
+      margin-bottom: 48px;
+    }
+
+    h1 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    h1 .icon {
+      font-size: 40px;
+    }
+
+    .intro {
+      font-size: 18px;
+      color: var(--text-dim);
+    }
+
+    /* 단계 카드 */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .step {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+    }
+
+    .step-number {
+      position: absolute;
+      top: -12px;
+      left: 24px;
+      background: linear-gradient(135deg, var(--accent), #a855f7);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .step h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      padding-top: 8px;
+    }
+
+    .step p {
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+
+    .step p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 코드 블록 */
+    .code-block {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-family: 'SF Mono', Monaco, Consolas, monospace;
+      font-size: 14px;
+      color: var(--accent);
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+
+    /* 체크리스트 */
+    .checklist {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+    }
+
+    .checklist li::before {
+      content: '☐';
+      font-size: 18px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* 경고 박스 */
+    .warning {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .warning::before {
+      content: '⚠️';
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .warning p {
+      margin: 0;
+      color: var(--warning);
+    }
+
+    /* 성공 박스 */
+    .success {
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .success::before {
+      content: '✅';
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .success p {
+      margin: 0;
+      color: var(--success);
+    }
+
+    /* 체크섬 섹션 */
+    .checksum-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-top: 40px;
+    }
+
+    .checksum-section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .checksum-section h2::before {
+      content: '🔐';
+    }
+
+    /* FAQ */
+    .faq {
+      margin-top: 48px;
+    }
+
+    .faq h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+
+    .faq-item h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--accent);
+    }
+
+    .faq-item p {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    /* 반응형 */
+    @media (max-width: 640px) {
+      h1 { font-size: 28px; }
+      .step { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="back-link">← 다운로드 페이지로 돌아가기</a>
+
+    <header>
+      <h1>
+        <span class="icon">📋</span>
+        EngEagle 설치 가이드
+      </h1>
+      <p class="intro">Chrome에 EngEagle 확장 프로그램을 설치하는 단계별 가이드입니다.</p>
+    </header>
+
+    <div class="steps">
+      <!-- 단계 1 -->
+      <div class="step">
+        <div class="step-number">1</div>
+        <h2>ZIP 파일 다운로드</h2>
+        <p>다운로드 페이지에서 최신 버전의 ZIP 파일을 다운로드합니다.</p>
+        <div class="code-block">EngEagle_v1.0.0_mv3.zip</div>
+      </div>
+
+      <!-- 단계 2 -->
+      <div class="step">
+        <div class="step-number">2</div>
+        <h2>ZIP 파일 압축 해제</h2>
+        <p>다운로드한 ZIP 파일을 원하는 위치에 압축 해제합니다.</p>
+        <div class="warning">
+          <p>압축 해제한 폴더를 삭제하면 확장 프로그램이 동작하지 않습니다. 안전한 위치에 보관하세요.</p>
+        </div>
+      </div>
+
+      <!-- 단계 3 -->
+      <div class="step">
+        <div class="step-number">3</div>
+        <h2>Chrome 확장 프로그램 페이지 열기</h2>
+        <p>Chrome 주소창에 다음을 입력하고 Enter를 누릅니다:</p>
+        <div class="code-block">chrome://extensions</div>
+        <p>또는 Chrome 메뉴 → 도구 더보기 → 확장 프로그램을 선택합니다.</p>
+      </div>
+
+      <!-- 단계 4 -->
+      <div class="step">
+        <div class="step-number">4</div>
+        <h2>개발자 모드 활성화</h2>
+        <p>확장 프로그램 페이지 우측 상단의 <strong>"개발자 모드"</strong> 토글을 켭니다.</p>
+      </div>
+
+      <!-- 단계 5 -->
+      <div class="step">
+        <div class="step-number">5</div>
+        <h2>확장 프로그램 로드</h2>
+        <p><strong>"압축해제된 확장 프로그램을 로드합니다"</strong> 버튼을 클릭합니다.</p>
+        <p>파일 선택 창에서 압축 해제한 EngEagle 폴더를 선택합니다.</p>
+        <div class="success">
+          <p>EngEagle 아이콘이 도구 모음에 나타나면 설치 완료!</p>
+        </div>
+      </div>
+
+      <!-- 단계 6 -->
+      <div class="step">
+        <div class="step-number">6</div>
+        <h2>DeepL API 설정 (선택)</h2>
+        <p>더 많은 단어 번역을 위해 DeepL API를 설정하세요.</p>
+        <ul class="checklist">
+          <li><a href="https://www.deepl.com/pro-api" target="_blank" style="color: var(--accent);">DeepL 무료 API 키 발급받기</a></li>
+          <li>확장 프로그램 옵션 페이지 열기</li>
+          <li>DeepL API 설정 섹션에 API 키 입력</li>
+          <li>연결 테스트 후 저장</li>
+        </ul>
+      </div>
+
+      <!-- 단계 7 -->
+      <div class="step">
+        <div class="step-number">7</div>
+        <h2>사용 시작</h2>
+        <p>이제 EngEagle을 사용할 준비가 되었습니다!</p>
+        <ul class="checklist">
+          <li>영문 웹페이지에서 단어를 더블클릭하세요</li>
+          <li>번역 팝업이 표시됩니다</li>
+          <li>단어가 자동으로 단어장에 저장됩니다</li>
+          <li>옵션 페이지에서 단어장을 관리하세요</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 체크섬 검증 -->
+    <div class="checksum-section">
+      <h2>파일 무결성 검증 (선택)</h2>
+      <p>다운로드한 파일이 변조되지 않았는지 확인하려면 SHA256 체크섬을 검증하세요.</p>
+      
+      <h3 style="margin-top: 16px; font-size: 14px; color: var(--text-dim);">Windows (PowerShell)</h3>
+      <div class="code-block">Get-FileHash EngEagle_v1.0.0_mv3.zip -Algorithm SHA256</div>
+      
+      <h3 style="margin-top: 16px; font-size: 14px; color: var(--text-dim);">macOS / Linux</h3>
+      <div class="code-block">sha256sum EngEagle_v1.0.0_mv3.zip</div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="faq">
+      <h2>자주 묻는 질문</h2>
+      
+      <div class="faq-item">
+        <h3>확장 프로그램이 동작하지 않아요</h3>
+        <p>페이지를 새로고침하거나, chrome://extensions에서 확장 프로그램을 비활성화했다가 다시 활성화해 보세요.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h3>단어가 사전에 없다고 나와요</h3>
+        <p>DeepL API를 설정하면 모든 영어 단어를 번역할 수 있습니다. 옵션 페이지에서 API 키를 설정하세요.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h3>단어장 데이터는 어디에 저장되나요?</h3>
+        <p>모든 데이터는 브라우저의 IndexedDB에 로컬 저장됩니다. 외부 서버로 전송되지 않습니다.</p>
+      </div>
+      
+      <div class="faq-item">
+        <h3>다른 PC로 단어장을 옮길 수 있나요?</h3>
+        <p>옵션 페이지에서 JSON 또는 CSV로 내보내기 후, 다른 PC에서 가져오기 하면 됩니다.</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

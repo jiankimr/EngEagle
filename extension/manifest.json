@@ -1,0 +1,39 @@
+{
+  "name": "EngEagle",
+  "version": "1.0.0",
+  "manifest_version": 3,
+  "description": "더블클릭으로 영어 단어 번역 및 자동 단어장 저장 (오프라인 지원)",
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png",
+    "256": "icons/256.png"
+  },
+  "background": {
+    "service_worker": "src/background/service.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/selection.js"],
+      "css": ["src/content/popup.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>",
+    "https://api-free.deepl.com/*",
+    "https://api.deepl.com/*"
+  ],
+  "options_page": "src/options/index.html",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
+

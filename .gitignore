@@ -1,0 +1,26 @@
+# Dependencies
+extension/node_modules/
+
+# Build output (keep releases for download)
+extension/dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test
+coverage/
+
+# Temp
+*.tmp
+*.temp
