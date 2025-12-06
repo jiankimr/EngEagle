@@ -447,16 +447,28 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+      /* 한국어 텍스트 단어 중간 줄바꿈 방지 */
+      body {
+        word-break: keep-all;
+        overflow-wrap: break-word;
+      }
+
       .hero {
         padding: 120px 0 60px;
       }
 
       h1 {
         font-size: 32px;
+        word-break: keep-all;
+      }
+
+      h2, h3 {
+        word-break: keep-all;
       }
 
       .tagline {
         font-size: 17px;
+        word-break: keep-all;
       }
 
       .hero-logo-img {
@@ -486,16 +498,66 @@
         flex-direction: column;
         gap: 12px;
       }
+
+      /* Step 카드 제목 줄바꿈 방지 */
+      .step h3 {
+        word-break: keep-all;
+        font-size: 18px;
+      }
+
+      .step p {
+        word-break: keep-all;
+        font-size: 14px;
+      }
+
+      /* FAQ 제목 줄바꿈 방지 */
+      .faq-item summary {
+        word-break: keep-all;
+      }
+
+      /* 섹션 타이틀 */
+      .section-title {
+        word-break: keep-all;
+        font-size: 28px !important;
+      }
+
+      .section-lead {
+        word-break: keep-all;
+      }
     }
 
     @media (max-width: 480px) {
       h1 {
-        font-size: 28px;
+        font-size: 26px;
+        word-break: keep-all;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      h3 {
+        font-size: 18px;
       }
 
       .download-btn {
         padding: 18px 24px;
         font-size: 16px;
+      }
+
+      .step {
+        padding: 24px 20px 24px 70px !important;
+      }
+
+      .step-number {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 18px !important;
+        left: 14px !important;
+      }
+
+      .hint {
+        font-size: 13px;
       }
     }
 
