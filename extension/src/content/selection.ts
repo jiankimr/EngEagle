@@ -134,6 +134,31 @@ function injectStyles(): void {
       color: #888;
     }
 
+    #${POPUP_ID} .engeagle-save-btn {
+      display: block;
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px 16px;
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    #${POPUP_ID} .engeagle-save-btn:hover {
+      background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+      transform: translateY(-1px);
+    }
+
+    #${POPUP_ID} .engeagle-save-btn:disabled {
+      cursor: default;
+      transform: none;
+    }
+
     #${TOAST_ID} {
       position: fixed;
       bottom: 24px;
@@ -389,8 +414,42 @@ function showResultPopup(range: Range, entry: {
     </div>
     <div class="engeagle-meanings">${escapeHtml(meanings)}</div>
     ${entry.example ? `<div class="engeagle-example">${escapeHtml(entry.example)}</div>` : ''}
+    <button class="engeagle-save-btn" data-word="${escapeHtml(entry.word)}" data-entry='${JSON.stringify(entry).replace(/'/g, "&#39;")}'>📥 단어장에 저장</button>
   `;
   showPopup(range, content);
+
+  // 저장 버튼 이벤트 등록
+  setTimeout(() => {
+    const saveBtn = document.querySelector('.engeagle-save-btn');
+    if (saveBtn) {
+      saveBtn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const btn = e.target as HTMLButtonElement;
+        const entryData = JSON.parse(btn.dataset.entry || '{}');
+        
+        try {
+          await chrome.runtime.sendMessage({
+            type: 'SAVE',
+            entry: {
+              word: entryData.word,
+              lemma: entryData.lemma || entryData.word.toLowerCase(),
+              pos: entryData.pos,
+              meanings: entryData.meanings,
+              example: entryData.example || '',
+              source_url: window.location.href,
+            },
+          });
+          btn.textContent = '✅ 저장됨';
+          btn.disabled = true;
+          btn.style.background = '#10b981';
+          showToast('단어장에 저장됨');
+        } catch (error) {
+          console.error('[EngEagle] Save error:', error);
+          btn.textContent = '❌ 저장 실패';
+        }
+      });
+    }
+  }, 50);
 }
 
 /**
@@ -440,22 +499,17 @@ function getSelectedWord(): { word: string; range: Range } | null {
 
 // 트리거 설정
 interface TriggerConfig {
-  dblclick: boolean;
-  ctrlDblclick: boolean;
-  dblRightclick: boolean;
+  altDblclick: boolean;   // Alt(Windows) / Option(Mac) + 더블클릭
+  shiftDblclick: boolean; // Shift + 더블클릭
   contextMenu: boolean;
 }
 
 let triggerConfig: TriggerConfig = {
-  dblclick: false,
-  ctrlDblclick: true,  // Ctrl + 더블 우클릭 = 번역 + 저장
-  dblRightclick: true, // 더블 우클릭 = 번역만
+  altDblclick: false,   // Alt/Option + 더블클릭 = 번역
+  shiftDblclick: true,  // Shift + 더블클릭 = 번역 (기본)
   contextMenu: true,
 };
 
-// 더블 우클릭 감지용
-let lastRightClickTime = 0;
-const DOUBLE_RIGHTCLICK_INTERVAL = 500; // 0.5초
 
 /**
  * 트리거 설정 로드
@@ -473,32 +527,28 @@ async function loadTriggerConfig(): Promise<void> {
 }
 
 /**
- * 번역 실행
- * @param saveToVocabulary - true면 단어장에 저장, false면 번역만
+ * 번역 실행 (저장은 팝업의 버튼으로)
  */
-async function performTranslation(word: string, range: Range, saveToVocabulary: boolean = false): Promise<void> {
+async function performTranslation(word: string, range: Range): Promise<void> {
   const startTime = performance.now();
 
   // 로딩 표시
   showLoadingPopup(range);
 
   try {
-    // 백그라운드에 조회 요청
+    // 백그라운드에 조회 요청 (저장하지 않음)
     const response = await chrome.runtime.sendMessage({
       type: 'LOOKUP',
       word: word,
       sourceUrl: window.location.href,
-      saveToVocabulary: saveToVocabulary,
+      saveToVocabulary: false,
     });
 
     const elapsed = performance.now() - startTime;
-    console.log(`[EngEagle] Lookup completed in ${elapsed.toFixed(1)}ms, saved: ${saveToVocabulary}`);
+    console.log(`[EngEagle] Lookup completed in ${elapsed.toFixed(1)}ms`);
 
     if (response.success && response.entry) {
       showResultPopup(range, response.entry);
-      if (saveToVocabulary) {
-        showToast('단어장에 저장됨');
-      }
     } else {
       showErrorPopup(range, '사전에 없는 단어입니다');
     }
@@ -518,16 +568,16 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
     return;
   }
 
-  let saveToVocabulary = false;
+  // 수정키 체크 (Alt/Option, Shift)
+  let shouldTranslate = false;
 
-  // Ctrl + 더블클릭 모드 = 번역 + 저장
-  if (e.ctrlKey || e.metaKey) {
-    if (!triggerConfig.ctrlDblclick) return;
-    saveToVocabulary = true;
-  } else {
-    // 일반 더블클릭 모드 = 번역만
-    if (!triggerConfig.dblclick) return;
+  if (e.altKey && triggerConfig.altDblclick) {
+    shouldTranslate = true;
+  } else if (e.shiftKey && triggerConfig.shiftDblclick) {
+    shouldTranslate = true;
   }
+
+  if (!shouldTranslate) return;
 
   // 선택된 단어 확인
   const selected = getSelectedWord();
@@ -535,35 +585,9 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
     return;
   }
 
-  await performTranslation(selected.word, selected.range, saveToVocabulary);
+  await performTranslation(selected.word, selected.range);
 }
 
-/**
- * 우클릭 핸들러 (더블 우클릭 감지)
- * 더블 우클릭 = 번역만 (저장 X)
- * Ctrl + 더블 우클릭 = 번역 + 저장
- */
-function handleContextMenu(e: MouseEvent): void {
-  if (!triggerConfig.dblRightclick) return;
-
-  const now = Date.now();
-  
-  if (now - lastRightClickTime < DOUBLE_RIGHTCLICK_INTERVAL) {
-    // 더블 우클릭 감지!
-    e.preventDefault();
-    
-    const selected = getSelectedWord();
-    if (selected) {
-      // Ctrl 키를 누르고 있으면 저장도 함
-      const saveToVocabulary = e.ctrlKey || e.metaKey;
-      performTranslation(selected.word, selected.range, saveToVocabulary);
-    }
-    
-    lastRightClickTime = 0; // 리셋
-  } else {
-    lastRightClickTime = now;
-  }
-}
 
 /**
  * ESC 키 핸들러
@@ -604,7 +628,6 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
 
 // 이벤트 리스너 등록
 document.addEventListener('dblclick', handleDoubleClick);
-document.addEventListener('contextmenu', handleContextMenu);
 document.addEventListener('keydown', handleKeyDown);
 
 // 초기화

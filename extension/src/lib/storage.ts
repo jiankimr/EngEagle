@@ -18,6 +18,7 @@ export interface VocabularyEntry {
   source_url: string;
   created_at: number;
   freq: number;
+  favorite?: boolean;  // 즐겨찾기 (퀴즈에서 어려운 단어 표시)
 }
 
 /**
@@ -225,7 +226,7 @@ export async function restoreWord(entry: VocabularyEntry): Promise<boolean> {
 /**
  * 단어 업데이트 (품사 등 수정)
  */
-export async function updateWord(id: string, updates: Partial<Pick<VocabularyEntry, 'pos' | 'meanings' | 'example'>>): Promise<VocabularyEntry | null> {
+export async function updateWord(id: string, updates: Partial<Pick<VocabularyEntry, 'pos' | 'meanings' | 'example' | 'favorite'>>): Promise<VocabularyEntry | null> {
   try {
     const db = await openDatabase();
     

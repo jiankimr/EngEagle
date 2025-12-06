@@ -70,9 +70,8 @@
     
     /* Hero Section */
     .hero { 
-      background: radial-gradient(1400px 700px at 10% -10%, #e3f5ff 0%, transparent 65%), 
-                  linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
-      padding: 100px 0 80px;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      padding: 120px 0 100px;
       position: relative;
       overflow: hidden;
     }
@@ -81,27 +80,68 @@
       position: absolute;
       top: -50%;
       right: -20%;
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, rgba(26,115,232,0.08) 0%, transparent 70%);
+      width: 900px;
+      height: 900px;
+      background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 60%);
       border-radius: 50%;
       z-index: 0;
+      animation: pulse-glow 8s ease-in-out infinite;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(16,185,129,0.1) 0%, transparent 60%);
+      border-radius: 50%;
+      z-index: 0;
+      animation: pulse-glow 10s ease-in-out infinite reverse;
+    }
+    @keyframes pulse-glow {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 0.8; }
     }
     .hero .container { position: relative; z-index: 1; }
     .hero .banner_taital { 
-      font-size: 54px; 
-      line-height: 1.15; 
+      font-size: 58px; 
+      line-height: 1.1; 
       font-weight: 900;
       letter-spacing: -0.03em;
-      margin-bottom: 24px;
-      color: rgb(177, 211, 255);
+      margin-bottom: 28px;
+      background: linear-gradient(135deg, #60a5fa 0%, #34d399 50%, #60a5fa 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradient-shift 4s ease-in-out infinite;
+    }
+    @keyframes gradient-shift {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
     }
     .hero .banner_text {
       font-size: 20px;
-      line-height: 1.7;
-      color: rgb(151, 196, 255);
+      line-height: 1.8;
+      color: rgba(226, 232, 240, 0.9);
       font-weight: 500;
-      max-width: 580px;
+      max-width: 600px;
+    }
+    
+    /* Floating Elements */
+    .hero-floating {
+      position: absolute;
+      opacity: 0.1;
+      font-size: 80px;
+      animation: float-element 6s ease-in-out infinite;
+    }
+    .hero-floating:nth-child(1) { top: 20%; left: 5%; animation-delay: 0s; }
+    .hero-floating:nth-child(2) { top: 60%; right: 8%; animation-delay: 2s; }
+    .hero-floating:nth-child(3) { bottom: 20%; left: 15%; animation-delay: 4s; font-size: 60px; }
+    @keyframes float-element {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(5deg); }
     }
     
     .btn_main {
@@ -111,17 +151,19 @@
     
     /* Buttons */
     .btn-primary-ee { 
-      background: var(--ee-gradient); 
+      background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
       border: none; 
       color: #fff; 
-      padding: 16px 32px; 
-      border-radius: 12px;
+      padding: 18px 36px; 
+      border-radius: 14px;
       font-weight: 700;
-      font-size: 16px;
-      box-shadow: 0 10px 25px rgba(26,115,232,.3);
+      font-size: 17px;
+      box-shadow: 0 10px 30px rgba(59,130,246,.4), 0 0 0 0 rgba(59,130,246,0.4);
       transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       position: relative;
       overflow: hidden;
     }
@@ -129,42 +171,44 @@
       content: '';
       position: absolute;
       top: 0;
-      left: 0;
+      left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, rgba(255,255,255,.2) 0%, transparent 100%);
-      opacity: 0;
-      transition: opacity .3s ease;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left .5s ease;
     }
     .btn-primary-ee:hover { 
-      transform: translateY(-3px);
-      box-shadow: 0 14px 35px rgba(26,115,232,.4);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(59,130,246,.5), 0 0 30px rgba(16,185,129,0.3);
       color: #fff;
       text-decoration: none;
     }
     .btn-primary-ee:hover::before {
-      opacity: 1;
+      left: 100%;
     }
     
     .btn-ghost-ee { 
-      border: 2px solid #e2e8f0; 
-      color: var(--ee-dark); 
-      padding: 14px 30px; 
-      border-radius: 12px; 
-      margin-left: 12px; 
+      border: 2px solid rgba(255,255,255,0.2); 
+      color: #fff; 
+      padding: 16px 32px; 
+      border-radius: 14px; 
+      margin-left: 16px; 
       font-weight: 700;
       font-size: 16px;
-      background: #fff;
-      display: inline-block;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
       transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
     }
     .btn-ghost-ee:hover {
-      border-color: var(--ee-primary);
-      color: var(--ee-primary);
-      background: #f1f5f9;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(26,115,232,.1);
+      border-color: rgba(255,255,255,0.5);
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(0,0,0,.2);
       text-decoration: none;
     }
     
@@ -231,16 +275,23 @@
     .section-title { 
       font-weight: 900;
       letter-spacing: -0.03em;
-      font-size: 44px;
+      font-size: 46px;
       margin-bottom: 20px;
       color: var(--ee-dark);
-      line-height: 1.2;
+      line-height: 1.15;
+      position: relative;
+    }
+    .section-title span {
+      background: linear-gradient(135deg, #3b82f6 0%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
     .section-lead { 
       color: var(--ee-slate);
       font-size: 18px;
-      line-height: 1.75;
-      margin: 0 auto 48px;
+      line-height: 1.8;
+      margin: 0 auto 52px;
       font-weight: 500;
       max-width: 760px;
     }
@@ -273,12 +324,29 @@
     }
     
     .feature-card { 
-      transition: all .35s cubic-bezier(0.4, 0, 0.2, 1);
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+      border-radius: 20px;
+      padding: 36px 28px;
+      border: 1px solid rgba(226,232,240,0.8);
+      transition: all .4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+      opacity: 0;
+      transition: opacity .3s ease;
     }
     .feature-card:hover { 
-      transform: translateY(-10px);
-      box-shadow: 0 20px 50px -10px rgba(2,6,23,.15);
-      border-color: #e2e8f0;
+      transform: translateY(-12px);
+      box-shadow: 0 25px 60px -15px rgba(59,130,246,.15), 0 10px 30px -10px rgba(0,0,0,.08);
+      border-color: rgba(59,130,246,0.2);
     }
     .feature-card:hover::before {
       opacity: 1;
@@ -287,14 +355,15 @@
     .icon-circle { 
       width: 72px;
       height: 72px;
-      border-radius: 20px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--ee-gradient-soft);
+      background: linear-gradient(135deg, #eff6ff 0%, #ecfdf5 100%);
       margin-bottom: 24px;
       position: relative;
       overflow: hidden;
+      box-shadow: 0 8px 20px rgba(59,130,246,0.1);
     }
     .icon-circle::before {
       content: '';
@@ -304,11 +373,16 @@
       transform: translate(-50%, -50%);
       width: 120%;
       height: 120%;
-      background: radial-gradient(circle, rgba(26,115,232,.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(59,130,246,.1) 0%, transparent 70%);
     }
     .icon-circle img { 
       width: 40px;
       height: 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .icon-circle .emoji-icon {
+      font-size: 36px;
       position: relative;
       z-index: 1;
     }
@@ -819,18 +893,25 @@
    
    <!-- banner section start -->
      <div class="banner_section layout_padding hero">
+        <!-- Floating decorative elements -->
+        <div class="hero-floating">📚</div>
+        <div class="hero-floating">🦅</div>
+        <div class="hero-floating">✨</div>
+        
         <div class="container">
            <div class="row align-items-center">
               <div class="col-lg-7 col-md-12 order-1 order-lg-1">
-                 <span class="badge-chrome">Chrome Extension</span>
-                 <h6 class="banner_taital">영문 작업의<br>마찰을 없애고,<br><span style="background: var(--ee-gradient); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">당신의 잠재력을 <br>최대로 끌어올립니다.</span></h1>
+                 <span class="badge-chrome" style="background: linear-gradient(135deg, rgba(59,130,246,0.2) 0%, rgba(16,185,129,0.2) 100%); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; display: inline-block; margin-bottom: 20px; backdrop-filter: blur(10px);">✨ Chrome Extension</span>
+                 <h6 class="banner_taital">영문 작업의<br>마찰을 없애고,<br>당신의 잠재력을<br>최대로 끌어올립니다.</h1>
                  <p class="banner_text">번역·암기·작문을, 끊김 없는 한 흐름으로 생산성 UP<br>EngEagle은 지식 노동자를 위한 영문 생산성 도구입니다.</p>
-                 <div class="btn_main" style="margin-top: 32px;">
-                    <a class="btn-primary-ee" href="download/">지금 무료로 시작하기 →</a>
-                    <a class="btn-ghost-ee" href="#how">작동 방식 보기</a>
+                 <div class="btn_main" style="margin-top: 36px;">
+                    <a class="btn-primary-ee" href="download/">🚀 지금 무료로 시작하기</a>
+                    <a class="btn-ghost-ee" href="#how">📖 작동 방식 보기</a>
                  </div>
-                 <br>
-                 <p style="margin-top: 8px; font-size: 14px; color: rgba(255,255,255,0.7); display: block; clear: both;">💡 Chrome 확장 프로그램을 바로 다운로드하여 사용해보세요</p>
+                 <p style="margin-top: 20px; font-size: 14px; color: rgba(255,255,255,0.6); display: block;">
+                   <span style="background: rgba(16,185,129,0.2); padding: 4px 12px; border-radius: 12px; margin-right: 8px;">💡 Shift + 더블클릭</span>
+                   으로 바로 번역하세요
+                 </p>
               </div>
                <div class="col-lg-5 col-md-12 order-2 order-lg-2">
                   <div class="image_1 shadow-soft" style="border-radius: 16px; overflow: hidden;"><img src="images/logo_new.png" style="width: 100%;"></div>
@@ -949,8 +1030,8 @@
               <div class="step-badge">1</div>
               <h3 class="daily_text" style="font-size: 28px; margin-bottom: 20px; font-weight: 700;">즉시 번역하고<br>단어장에 저장</h3>
               <p class="health_text" style="font-size: 18px; line-height: 1.8; color: #64748b;">
-                 웹페이지를 읽다가 모르는 단어를 발견했나요? 단어를 선택한 후 <strong>더블 우클릭</strong>하면 바로 정확한 뜻이 팝업으로 표시됩니다. 
-                 <strong>Ctrl + 더블 우클릭</strong>으로 나만의 단어장에 추가하여 나중에 다시 복습할 수 있습니다. 
+                 웹페이지를 읽다가 모르는 단어를 발견했나요? 단어를 선택한 후 <strong>Shift + 더블클릭</strong>하면 바로 정확한 뜻이 팝업으로 표시됩니다. 
+                 팝업의 <strong>"저장" 버튼</strong>을 눌러 나만의 단어장에 추가하여 나중에 다시 복습할 수 있습니다. 
                  페이지를 벗어나거나 번역기를 열 필요가 없어 학습 흐름이 끊기지 않습니다.
               </p>
            </div>

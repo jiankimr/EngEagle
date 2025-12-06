@@ -57,7 +57,7 @@ interface StatusMessage {
 interface UpdateMessage {
   type: 'UPDATE';
   id: string;
-  updates: { pos?: string; meanings?: string[]; example?: string };
+  updates: { pos?: string; meanings?: string[]; example?: string; favorite?: boolean };
 }
 
 // DeepL 관련 메시지 타입
@@ -77,9 +77,8 @@ interface DeepLTestMessage {
 
 // 트리거 설정 타입
 interface TriggerConfig {
-  dblclick: boolean;
-  ctrlDblclick: boolean;
-  dblRightclick: boolean;
+  altDblclick: boolean;   // Alt(Windows) / Option(Mac)
+  shiftDblclick: boolean;
   contextMenu: boolean;
 }
 
@@ -114,9 +113,8 @@ const TRIGGER_CONFIG_KEY = 'engeagle_trigger_config';
 
 // 기본 트리거 설정
 const DEFAULT_TRIGGER_CONFIG: TriggerConfig = {
-  dblclick: true,
-  ctrlDblclick: false,
-  dblRightclick: false,
+  altDblclick: false,   // Alt/Option + 더블클릭
+  shiftDblclick: true,  // Shift + 더블클릭 (기본)
   contextMenu: true,
 };
 

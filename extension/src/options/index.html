@@ -92,6 +92,95 @@
       </div>
     </div>
 
+    <!-- 퀴즈 섹션 -->
+    <div class="settings-section">
+      <div class="settings-header" id="quiz-toggle">
+        <h2>🎯 단어 퀴즈</h2>
+        <span class="toggle-icon">▼</span>
+      </div>
+      <div class="settings-content" id="quiz-content" style="display: none;">
+        <p class="settings-desc">
+          단어장에 저장된 단어로 퀴즈를 풀어보세요. 어려운 단어는 ⭐ 즐겨찾기로 표시할 수 있습니다.
+        </p>
+        
+        <!-- 퀴즈 시작 화면 -->
+        <div id="quiz-start" class="quiz-start">
+          <div class="quiz-stats">
+            <div class="quiz-stat">
+              <span class="quiz-stat-value" id="quiz-total-count">0</span>
+              <span class="quiz-stat-label">전체 단어</span>
+            </div>
+            <div class="quiz-stat">
+              <span class="quiz-stat-value" id="quiz-favorite-count">0</span>
+              <span class="quiz-stat-label">⭐ 즐겨찾기</span>
+            </div>
+          </div>
+          <div class="quiz-options">
+            <label class="quiz-option">
+              <input type="radio" name="quiz-mode" value="all" checked>
+              <span>전체 단어</span>
+            </label>
+            <label class="quiz-option">
+              <input type="radio" name="quiz-mode" value="favorites">
+              <span>⭐ 즐겨찾기만</span>
+            </label>
+          </div>
+          <button id="btn-start-quiz" class="btn btn-primary quiz-start-btn">🎯 퀴즈 시작</button>
+        </div>
+        
+        <!-- 퀴즈 진행 화면 -->
+        <div id="quiz-play" class="quiz-play" style="display: none;">
+          <div class="quiz-progress">
+            <span id="quiz-current">1</span> / <span id="quiz-total">10</span>
+          </div>
+          
+          <div class="quiz-card">
+            <div class="quiz-word" id="quiz-word">example</div>
+            <div class="quiz-pos" id="quiz-pos">noun</div>
+            
+            <div id="quiz-answer" class="quiz-answer" style="display: none;">
+              <div class="quiz-meanings" id="quiz-meanings">예시, 본보기</div>
+              <div class="quiz-example" id="quiz-example">"This is an example sentence."</div>
+            </div>
+            
+            <button id="btn-show-answer" class="btn btn-secondary quiz-btn">👀 정답 보기</button>
+            
+            <div id="quiz-actions" class="quiz-actions" style="display: none;">
+              <button id="btn-quiz-favorite" class="btn quiz-action-btn favorite">
+                <span class="btn-icon">⭐</span> 즐겨찾기
+              </button>
+              <button id="btn-quiz-delete" class="btn quiz-action-btn delete">
+                <span class="btn-icon">🗑️</span> 삭제
+              </button>
+            </div>
+          </div>
+          
+          <div class="quiz-nav">
+            <button id="btn-quiz-next" class="btn btn-primary">➡️ 다음 단어</button>
+            <button id="btn-quiz-end" class="btn btn-ghost">🚪 종료하기</button>
+          </div>
+        </div>
+        
+        <!-- 퀴즈 결과 화면 -->
+        <div id="quiz-result" class="quiz-result" style="display: none;">
+          <div class="quiz-result-icon">🎉</div>
+          <h3>퀴즈 완료!</h3>
+          <p><span id="quiz-reviewed-count">0</span>개의 단어를 복습했습니다.</p>
+          <div class="quiz-result-stats">
+            <div class="result-stat">
+              <span class="result-value" id="result-favorited">0</span>
+              <span class="result-label">즐겨찾기 추가</span>
+            </div>
+            <div class="result-stat">
+              <span class="result-value" id="result-deleted">0</span>
+              <span class="result-label">삭제됨</span>
+            </div>
+          </div>
+          <button id="btn-quiz-restart" class="btn btn-primary">🔄 다시 시작</button>
+        </div>
+      </div>
+    </div>
+
     <!-- 트리거 설정 섹션 -->
     <div class="settings-section">
       <div class="settings-header" id="trigger-toggle">
@@ -102,26 +191,30 @@
         <p class="settings-desc">
           단어 번역을 실행할 방식을 선택하세요. 여러 개를 동시에 활성화할 수 있습니다.
         </p>
+        
+        <!-- 기본 동작 안내 -->
+        <div class="api-info-box" style="margin-bottom: 20px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border-left: 4px solid #10b981;">
+          <p style="margin: 0 0 8px 0;"><strong>📌 사용 방법</strong></p>
+          <p style="margin: 0; font-size: 13px; line-height: 1.8;">
+            1. 아래에서 원하는 트리거 방식을 선택하세요<br>
+            2. 웹페이지에서 단어를 선택하고 해당 동작을 수행하면 <strong>번역 팝업</strong>이 표시됩니다<br>
+            3. 팝업의 <strong>"📥 단어장에 저장"</strong> 버튼을 누르면 단어장에 저장됩니다
+          </p>
+        </div>
+        
         <div class="trigger-options">
           <label class="trigger-option">
-            <input type="checkbox" id="trigger-dblclick" checked>
+            <input type="checkbox" id="trigger-shift-dblclick" checked>
             <span class="trigger-label">
-              <strong>더블클릭</strong>
-              <span class="trigger-desc">단어를 더블클릭하면 번역</span>
+              <strong>Shift + 더블클릭</strong>
+              <span class="trigger-desc">Shift 키를 누른 상태로 단어를 더블클릭 (기본)</span>
             </span>
           </label>
           <label class="trigger-option">
-            <input type="checkbox" id="trigger-ctrl-dblclick">
+            <input type="checkbox" id="trigger-alt-dblclick">
             <span class="trigger-label">
-              <strong>Ctrl + 더블클릭</strong>
-              <span class="trigger-desc">Ctrl 키를 누른 상태로 더블클릭하면 번역</span>
-            </span>
-          </label>
-          <label class="trigger-option">
-            <input type="checkbox" id="trigger-dbl-rightclick">
-            <span class="trigger-label">
-              <strong>더블 우클릭</strong>
-              <span class="trigger-desc">0.5초 내에 우클릭 두 번하면 번역</span>
+              <strong>Alt/Option + 더블클릭</strong>
+              <span class="trigger-desc">Alt(Windows) / Option(Mac) 키를 누른 상태로 단어를 더블클릭</span>
             </span>
           </label>
           <label class="trigger-option">

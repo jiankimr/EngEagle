@@ -14,6 +14,7 @@ interface VocabularyEntry {
   source_url: string;
   created_at: number;
   freq: number;
+  favorite?: boolean;
 }
 
 interface DeepLConfig {
@@ -22,9 +23,8 @@ interface DeepLConfig {
 }
 
 interface TriggerConfig {
-  dblclick: boolean;
-  ctrlDblclick: boolean;
-  dblRightclick: boolean;
+  altDblclick: boolean;
+  shiftDblclick: boolean;
   contextMenu: boolean;
 }
 
@@ -63,9 +63,8 @@ const fileImport = document.getElementById('file-import') as HTMLInputElement;
 // 트리거 설정 요소
 const triggerToggle = document.getElementById('trigger-toggle') as HTMLElement;
 const triggerContent = document.getElementById('trigger-content') as HTMLElement;
-const triggerDblclick = document.getElementById('trigger-dblclick') as HTMLInputElement;
-const triggerCtrlDblclick = document.getElementById('trigger-ctrl-dblclick') as HTMLInputElement;
-const triggerDblRightclick = document.getElementById('trigger-dbl-rightclick') as HTMLInputElement;
+const triggerAltDblclick = document.getElementById('trigger-alt-dblclick') as HTMLInputElement;
+const triggerShiftDblclick = document.getElementById('trigger-shift-dblclick') as HTMLInputElement;
 const triggerContextMenu = document.getElementById('trigger-context-menu') as HTMLInputElement;
 const btnSaveTrigger = document.getElementById('btn-save-trigger') as HTMLButtonElement;
 const triggerStatus = document.getElementById('trigger-status') as HTMLElement;
@@ -764,9 +763,9 @@ async function loadTriggerConfig(): Promise<void> {
   try {
     const response = await chrome.runtime.sendMessage({ type: 'TRIGGER_LOAD_CONFIG' });
     if (response.success && response.config) {
-      triggerDblclick.checked = response.config.dblclick ?? true;
-      triggerCtrlDblclick.checked = response.config.ctrlDblclick ?? false;
-      triggerDblRightclick.checked = response.config.dblRightclick ?? false;
+      triggerAltDblclick.checked = response.config.altDblclick ?? false;
+      triggerShiftDblclick.checked = response.config.shiftDblclick ?? true;
+      triggerShiftDblclick.checked = response.config.shiftDblclick ?? false;
       triggerContextMenu.checked = response.config.contextMenu ?? true;
     }
   } catch (error) {
@@ -794,9 +793,8 @@ function setupTriggerEventListeners(): void {
  */
 async function saveTriggerConfig(): Promise<void> {
   const config: TriggerConfig = {
-    dblclick: triggerDblclick.checked,
-    ctrlDblclick: triggerCtrlDblclick.checked,
-    dblRightclick: triggerDblRightclick.checked,
+    altDblclick: triggerAltDblclick.checked,
+    shiftDblclick: triggerShiftDblclick.checked,
     contextMenu: triggerContextMenu.checked,
   };
 
@@ -833,6 +831,302 @@ function showTriggerStatus(message: string, type: 'success' | 'error'): void {
     triggerStatus.style.display = 'none';
   }, 3000);
 }
+
+// ==================== Quiz Section ====================
+const quizToggle = document.getElementById('quiz-toggle') as HTMLElement;
+const quizContent = document.getElementById('quiz-content') as HTMLElement;
+const quizStart = document.getElementById('quiz-start') as HTMLElement;
+const quizPlay = document.getElementById('quiz-play') as HTMLElement;
+const quizResult = document.getElementById('quiz-result') as HTMLElement;
+
+// Quiz state
+let quizEntries: VocabularyEntry[] = [];
+let currentQuizIndex = 0;
+let quizStats = { favorited: 0, deleted: 0, reviewed: 0 };
+
+/**
+ * 퀴즈 섹션 초기화
+ */
+function initQuiz(): void {
+  // Toggle quiz section
+  quizToggle.addEventListener('click', () => {
+    const isOpen = quizContent.style.display !== 'none';
+    quizContent.style.display = isOpen ? 'none' : 'block';
+    quizToggle.classList.toggle('open', !isOpen);
+    if (!isOpen) updateQuizStats();
+  });
+
+  // Start quiz button
+  document.getElementById('btn-start-quiz')?.addEventListener('click', startQuiz);
+  
+  // Show answer button
+  document.getElementById('btn-show-answer')?.addEventListener('click', showAnswer);
+  
+  // Quiz action buttons
+  document.getElementById('btn-quiz-favorite')?.addEventListener('click', toggleFavorite);
+  document.getElementById('btn-quiz-delete')?.addEventListener('click', deleteQuizWord);
+  document.getElementById('btn-quiz-next')?.addEventListener('click', nextQuizWord);
+  document.getElementById('btn-quiz-end')?.addEventListener('click', endQuiz);
+  document.getElementById('btn-quiz-restart')?.addEventListener('click', restartQuiz);
+}
+
+/**
+ * 퀴즈 통계 업데이트
+ */
+function updateQuizStats(): void {
+  const total = allEntries.length;
+  const favorites = allEntries.filter(e => e.favorite).length;
+  
+  const totalEl = document.getElementById('quiz-total-count');
+  const favEl = document.getElementById('quiz-favorite-count');
+  
+  if (totalEl) totalEl.textContent = total.toString();
+  if (favEl) favEl.textContent = favorites.toString();
+}
+
+/**
+ * 퀴즈 시작
+ */
+function startQuiz(): void {
+  const mode = (document.querySelector('input[name="quiz-mode"]:checked') as HTMLInputElement)?.value || 'all';
+  
+  // Filter entries based on mode
+  if (mode === 'favorites') {
+    quizEntries = allEntries.filter(e => e.favorite);
+  } else {
+    quizEntries = [...allEntries];
+  }
+  
+  if (quizEntries.length === 0) {
+    alert(mode === 'favorites' ? '즐겨찾기된 단어가 없습니다.' : '단어장이 비어있습니다.');
+    return;
+  }
+  
+  // Shuffle entries
+  quizEntries = shuffleArray(quizEntries);
+  currentQuizIndex = 0;
+  quizStats = { favorited: 0, deleted: 0, reviewed: 0 };
+  
+  // Show quiz play screen
+  quizStart.style.display = 'none';
+  quizPlay.style.display = 'block';
+  quizResult.style.display = 'none';
+  
+  showQuizWord();
+}
+
+/**
+ * 배열 셔플 (Fisher-Yates)
+ */
+function shuffleArray<T>(array: T[]): T[] {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+/**
+ * 현재 퀴즈 단어 표시
+ */
+function showQuizWord(): void {
+  const entry = quizEntries[currentQuizIndex];
+  if (!entry) return;
+  
+  // Update progress
+  const currentEl = document.getElementById('quiz-current');
+  const totalEl = document.getElementById('quiz-total');
+  if (currentEl) currentEl.textContent = (currentQuizIndex + 1).toString();
+  if (totalEl) totalEl.textContent = quizEntries.length.toString();
+  
+  // Show word
+  const wordEl = document.getElementById('quiz-word');
+  const posEl = document.getElementById('quiz-pos');
+  const meaningsEl = document.getElementById('quiz-meanings');
+  const exampleEl = document.getElementById('quiz-example');
+  
+  if (wordEl) wordEl.textContent = entry.word;
+  if (posEl) posEl.textContent = getPosLabel(entry.pos);
+  if (meaningsEl) meaningsEl.textContent = entry.meanings.join(', ');
+  if (exampleEl) {
+    exampleEl.textContent = entry.example || '';
+    exampleEl.style.display = entry.example ? 'block' : 'none';
+  }
+  
+  // Reset state
+  const answerEl = document.getElementById('quiz-answer');
+  const actionsEl = document.getElementById('quiz-actions');
+  const showBtn = document.getElementById('btn-show-answer');
+  
+  if (answerEl) answerEl.style.display = 'none';
+  if (actionsEl) actionsEl.style.display = 'none';
+  if (showBtn) showBtn.style.display = 'block';
+  
+  // Update favorite button state
+  updateFavoriteButton(entry.favorite || false);
+}
+
+/**
+ * 품사 라벨
+ */
+function getPosLabel(pos: string): string {
+  const labels: Record<string, string> = {
+    'noun': '명사',
+    'verb': '동사',
+    'adj': '형용사',
+    'adv': '부사',
+    'prep': '전치사',
+    'conj': '접속사',
+    'pron': '대명사',
+    'interj': '감탄사',
+  };
+  return labels[pos] || pos || '';
+}
+
+/**
+ * 정답 보기
+ */
+function showAnswer(): void {
+  const answerEl = document.getElementById('quiz-answer');
+  const actionsEl = document.getElementById('quiz-actions');
+  const showBtn = document.getElementById('btn-show-answer');
+  
+  if (answerEl) answerEl.style.display = 'block';
+  if (actionsEl) actionsEl.style.display = 'flex';
+  if (showBtn) showBtn.style.display = 'none';
+  
+  quizStats.reviewed++;
+}
+
+/**
+ * 즐겨찾기 토글
+ */
+async function toggleFavorite(): Promise<void> {
+  const entry = quizEntries[currentQuizIndex];
+  if (!entry) return;
+  
+  const newFavorite = !entry.favorite;
+  entry.favorite = newFavorite;
+  
+  // Update in storage
+  try {
+    await chrome.runtime.sendMessage({
+      type: 'UPDATE',
+      id: entry.id,
+      updates: { favorite: newFavorite }
+    });
+    
+    // Update UI
+    updateFavoriteButton(newFavorite);
+    
+    if (newFavorite) {
+      quizStats.favorited++;
+    } else {
+      quizStats.favorited = Math.max(0, quizStats.favorited - 1);
+    }
+    
+    // Update local entries
+    const idx = allEntries.findIndex(e => e.id === entry.id);
+    if (idx !== -1) {
+      allEntries[idx].favorite = newFavorite;
+    }
+  } catch (error) {
+    console.error('Failed to update favorite:', error);
+  }
+}
+
+/**
+ * 즐겨찾기 버튼 업데이트
+ */
+function updateFavoriteButton(isFavorite: boolean): void {
+  const btn = document.getElementById('btn-quiz-favorite');
+  if (btn) {
+    btn.innerHTML = isFavorite 
+      ? '<span class="btn-icon">✅</span> 즐겨찾기됨'
+      : '<span class="btn-icon">⭐</span> 즐겨찾기';
+    btn.classList.toggle('active', isFavorite);
+  }
+}
+
+/**
+ * 퀴즈 단어 삭제
+ */
+async function deleteQuizWord(): Promise<void> {
+  const entry = quizEntries[currentQuizIndex];
+  if (!entry) return;
+  
+  if (!confirm(`"${entry.word}"를 단어장에서 삭제하시겠습니까?`)) return;
+  
+  try {
+    await chrome.runtime.sendMessage({
+      type: 'DELETE',
+      id: entry.id
+    });
+    
+    quizStats.deleted++;
+    
+    // Remove from local arrays
+    allEntries = allEntries.filter(e => e.id !== entry.id);
+    quizEntries.splice(currentQuizIndex, 1);
+    
+    // Move to next or end
+    if (quizEntries.length === 0) {
+      endQuiz();
+    } else {
+      if (currentQuizIndex >= quizEntries.length) {
+        currentQuizIndex = quizEntries.length - 1;
+      }
+      showQuizWord();
+    }
+  } catch (error) {
+    console.error('Failed to delete word:', error);
+  }
+}
+
+/**
+ * 다음 단어
+ */
+function nextQuizWord(): void {
+  currentQuizIndex++;
+  
+  if (currentQuizIndex >= quizEntries.length) {
+    endQuiz();
+  } else {
+    showQuizWord();
+  }
+}
+
+/**
+ * 퀴즈 종료
+ */
+function endQuiz(): void {
+  quizPlay.style.display = 'none';
+  quizResult.style.display = 'block';
+  
+  const reviewedEl = document.getElementById('quiz-reviewed-count');
+  const favoritedEl = document.getElementById('result-favorited');
+  const deletedEl = document.getElementById('result-deleted');
+  
+  if (reviewedEl) reviewedEl.textContent = quizStats.reviewed.toString();
+  if (favoritedEl) favoritedEl.textContent = quizStats.favorited.toString();
+  if (deletedEl) deletedEl.textContent = quizStats.deleted.toString();
+  
+  // Refresh vocabulary table
+  loadVocabulary();
+}
+
+/**
+ * 퀴즈 다시 시작
+ */
+function restartQuiz(): void {
+  quizResult.style.display = 'none';
+  quizStart.style.display = 'block';
+  updateQuizStats();
+}
+
+// Initialize quiz when page loads
+initQuiz();
 
 // 초기화 실행
 init();
