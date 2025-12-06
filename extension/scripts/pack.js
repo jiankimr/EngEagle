@@ -59,7 +59,7 @@ for (const file of requiredFiles) {
 
 // 아이콘 검증 (경고만)
 console.log('\n🖼️  Checking icons:');
-const iconSizes = ['16', '48', '128', '256'];
+const iconSizes = ['16', '32', '48', '128', '256'];
 for (const size of iconSizes) {
   const iconPath = resolve(distDir, `icons/${size}.png`);
   if (existsSync(iconPath)) {

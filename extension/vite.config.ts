@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
-import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync, cpSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { copyFileSync, mkdirSync, existsSync, readdirSync, statSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // 재귀적으로 디렉터리 복사
 function copyDirRecursive(src: string, dest: string) {
@@ -69,7 +73,7 @@ export default defineConfig({
         if (!existsSync(iconsDir)) {
           mkdirSync(iconsDir, { recursive: true });
         }
-        const iconSizes = ['16', '48', '128', '256'];
+        const iconSizes = ['16', '32', '48', '128', '256'];
         iconSizes.forEach((size) => {
           const iconPath = resolve(__dirname, `icons/${size}.png`);
           if (existsSync(iconPath)) {
