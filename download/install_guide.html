@@ -4,19 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EngEagle 설치 가이드</title>
+  <meta name="description" content="EngEagle Chrome 확장 프로그램 설치 방법을 단계별로 안내합니다.">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
-
-    :root {
-      --bg: #0a0a0f;
-      --bg-card: #12121a;
-      --border: #1e1e2a;
-      --text: #e8e8ec;
-      --text-dim: #8888a0;
-      --accent: #00c8ff;
-      --accent-glow: rgba(0, 200, 255, 0.15);
-      --success: #22c55e;
-      --warning: #f59e0b;
+    :root { 
+      --ee-primary: #1a73e8; 
+      --ee-accent: #0ea5e9; 
+      --ee-dark: #0f172a; 
+      --ee-gray: #64748b;
+      --ee-light-bg: #f8fafc;
+      --ee-gradient: linear-gradient(135deg, #6ea8ff 0%, #1a73e8 50%, #0ea5e9 100%);
+      --ee-gradient-soft: linear-gradient(135deg, #e0e7ff 0%, #dbeafe 100%);
     }
 
     * {
@@ -26,119 +27,172 @@
     }
 
     body {
-      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: #1e293b;
       line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 50%, #f8fafc 100%);
+      min-height: 100vh;
     }
 
+    /* Navbar */
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 12px rgba(2,6,23,.04);
+    }
+
+    .navbar .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.8em;
+      color: var(--ee-primary);
+      font-weight: 800;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .nav-link {
+      color: var(--ee-gray);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover {
+      color: var(--ee-primary);
+    }
+
+    /* Container */
     .container {
       max-width: 800px;
       margin: 0 auto;
-      padding: 60px 24px 80px;
+      padding: 0 24px;
     }
 
-    /* 네비게이션 */
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 500;
-      margin-bottom: 32px;
-      transition: opacity 0.2s;
-    }
-
-    .back-link:hover {
-      opacity: 0.8;
-    }
-
-    /* 헤더 */
+    /* Header */
     header {
-      margin-bottom: 48px;
+      padding: 140px 0 60px;
+      text-align: center;
+    }
+
+    .logo-icon {
+      font-size: 56px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
     }
 
     h1 {
-      font-size: 36px;
-      font-weight: 800;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    h1 .icon {
       font-size: 40px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      color: var(--ee-dark);
     }
 
     .intro {
       font-size: 18px;
-      color: var(--text-dim);
+      color: var(--ee-gray);
+      font-weight: 500;
     }
 
-    /* 단계 카드 */
+    /* Steps */
     .steps {
       display: flex;
       flex-direction: column;
       gap: 24px;
+      margin-bottom: 48px;
     }
 
     .step {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px 36px;
+      box-shadow: 0 4px 20px rgba(2,6,23,.06);
+      border: 1px solid #f1f5f9;
       position: relative;
+      padding-left: 100px;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(2,6,23,.1);
     }
 
     .step-number {
       position: absolute;
-      top: -12px;
-      left: 24px;
-      background: linear-gradient(135deg, var(--accent), #a855f7);
+      top: 32px;
+      left: 32px;
+      background: var(--ee-gradient);
       color: #fff;
-      width: 32px;
-      height: 32px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
+      font-weight: 900;
+      font-size: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 14px;
+      box-shadow: 0 8px 20px rgba(26,115,232,.3);
     }
 
     .step h2 {
       font-size: 20px;
       font-weight: 700;
+      color: var(--ee-dark);
       margin-bottom: 12px;
-      padding-top: 8px;
     }
 
     .step p {
-      color: var(--text-dim);
-      margin-bottom: 16px;
+      color: var(--ee-gray);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.7;
+      margin-bottom: 12px;
     }
 
     .step p:last-child {
       margin-bottom: 0;
     }
 
-    /* 코드 블록 */
+    /* Code Block */
     .code-block {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 16px 20px;
+      background: var(--ee-light-bg);
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 20px;
       font-family: 'SF Mono', Monaco, Consolas, monospace;
       font-size: 14px;
-      color: var(--accent);
-      overflow-x: auto;
+      color: var(--ee-primary);
       margin: 16px 0;
     }
 
-    /* 체크리스트 */
+    /* Checklist */
     .checklist {
       list-style: none;
       margin: 16px 0;
@@ -149,20 +203,33 @@
       align-items: flex-start;
       gap: 12px;
       padding: 8px 0;
+      font-size: 15px;
+      color: var(--ee-gray);
+      font-weight: 500;
     }
 
     .checklist li::before {
       content: '☐';
       font-size: 18px;
-      color: var(--accent);
+      color: var(--ee-primary);
       flex-shrink: 0;
     }
 
-    /* 경고 박스 */
+    .checklist a {
+      color: var(--ee-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .checklist a:hover {
+      text-decoration: underline;
+    }
+
+    /* Alert Boxes */
     .warning {
-      background: rgba(245, 158, 11, 0.1);
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      border-radius: 10px;
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      border-radius: 12px;
       padding: 16px 20px;
       display: flex;
       gap: 12px;
@@ -171,20 +238,20 @@
 
     .warning::before {
       content: '⚠️';
-      font-size: 20px;
+      font-size: 18px;
       flex-shrink: 0;
     }
 
     .warning p {
       margin: 0;
-      color: var(--warning);
+      color: #92400e;
+      font-weight: 500;
     }
 
-    /* 성공 박스 */
     .success {
-      background: rgba(34, 197, 94, 0.1);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-      border-radius: 10px;
+      background: #d1fae5;
+      border: 1px solid #6ee7b7;
+      border-radius: 12px;
       padding: 16px 20px;
       display: flex;
       gap: 12px;
@@ -193,89 +260,162 @@
 
     .success::before {
       content: '✅';
-      font-size: 20px;
+      font-size: 18px;
       flex-shrink: 0;
     }
 
     .success p {
       margin: 0;
-      color: var(--success);
+      color: #065f46;
+      font-weight: 600;
     }
 
-    /* 체크섬 섹션 */
+    /* Checksum Section */
     .checksum-section {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 28px;
-      margin-top: 40px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(2,6,23,.06);
+      border: 1px solid #f1f5f9;
+      margin-bottom: 48px;
     }
 
     .checksum-section h2 {
       font-size: 18px;
       font-weight: 700;
-      margin-bottom: 12px;
+      color: var(--ee-dark);
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
-    .checksum-section h2::before {
-      content: '🔐';
+    .checksum-section h3 {
+      font-size: 14px;
+      color: var(--ee-gray);
+      font-weight: 600;
+      margin-top: 16px;
     }
 
     /* FAQ */
     .faq {
-      margin-top: 48px;
+      margin-bottom: 60px;
     }
 
-    .faq h2 {
-      font-size: 24px;
-      font-weight: 700;
+    .faq > h2 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--ee-dark);
       margin-bottom: 24px;
+      text-align: center;
     }
 
     .faq-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px 24px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 24px 28px;
+      box-shadow: 0 4px 20px rgba(2,6,23,.06);
+      border: 1px solid #f1f5f9;
       margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(2,6,23,.08);
     }
 
     .faq-item h3 {
       font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--accent);
+      font-weight: 700;
+      color: var(--ee-primary);
+      margin-bottom: 10px;
     }
 
     .faq-item p {
-      color: var(--text-dim);
-      font-size: 14px;
+      color: var(--ee-gray);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.7;
     }
 
-    /* 반응형 */
-    @media (max-width: 640px) {
-      h1 { font-size: 28px; }
-      .step { padding: 24px 20px; }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 48px 0;
+      border-top: 1px solid #e2e8f0;
+      background: #fff;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 20px;
+    }
+
+    .footer-links a {
+      color: var(--ee-gray);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--ee-primary);
+    }
+
+    .copyright {
+      font-size: 14px;
+      color: #94a3b8;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header {
+        padding: 120px 0 50px;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      .step {
+        padding: 28px 24px 28px 80px;
+      }
+
+      .step-number {
+        left: 20px;
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+      }
+
+      .navbar .container {
+        flex-direction: column;
+        gap: 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <a href="index.html" class="back-link">← 다운로드 페이지로 돌아가기</a>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="../" class="logo">EngEagle 🦅</a>
+      <a href="index.html" class="nav-link">← 다운로드 페이지로</a>
+    </div>
+  </nav>
 
+  <div class="container">
     <header>
-      <h1>
-        <span class="icon">📋</span>
-        EngEagle 설치 가이드
-      </h1>
+      <div class="logo-icon">📋</div>
+      <h1>EngEagle 설치 가이드</h1>
       <p class="intro">Chrome에 EngEagle 확장 프로그램을 설치하는 단계별 가이드입니다.</p>
     </header>
 
     <div class="steps">
-      <!-- 단계 1 -->
       <div class="step">
         <div class="step-number">1</div>
         <h2>ZIP 파일 다운로드</h2>
@@ -283,7 +423,6 @@
         <div class="code-block">EngEagle_v1.0.0_mv3.zip</div>
       </div>
 
-      <!-- 단계 2 -->
       <div class="step">
         <div class="step-number">2</div>
         <h2>ZIP 파일 압축 해제</h2>
@@ -293,7 +432,6 @@
         </div>
       </div>
 
-      <!-- 단계 3 -->
       <div class="step">
         <div class="step-number">3</div>
         <h2>Chrome 확장 프로그램 페이지 열기</h2>
@@ -302,14 +440,12 @@
         <p>또는 Chrome 메뉴 → 도구 더보기 → 확장 프로그램을 선택합니다.</p>
       </div>
 
-      <!-- 단계 4 -->
       <div class="step">
         <div class="step-number">4</div>
         <h2>개발자 모드 활성화</h2>
         <p>확장 프로그램 페이지 우측 상단의 <strong>"개발자 모드"</strong> 토글을 켭니다.</p>
       </div>
 
-      <!-- 단계 5 -->
       <div class="step">
         <div class="step-number">5</div>
         <h2>확장 프로그램 로드</h2>
@@ -320,23 +456,21 @@
         </div>
       </div>
 
-      <!-- 단계 6 -->
       <div class="step">
         <div class="step-number">6</div>
         <h2>DeepL API 설정 (선택)</h2>
         <p>더 많은 단어 번역을 위해 DeepL API를 설정하세요.</p>
         <ul class="checklist">
-          <li><a href="https://www.deepl.com/pro-api" target="_blank" style="color: var(--accent);">DeepL 무료 API 키 발급받기</a></li>
-          <li>확장 프로그램 옵션 페이지 열기</li>
+          <li><a href="https://www.deepl.com/pro-api" target="_blank">DeepL 무료 API 키 발급받기 →</a></li>
+          <li>확장 프로그램 옵션 페이지 열기 (아이콘 우클릭 → 옵션)</li>
           <li>DeepL API 설정 섹션에 API 키 입력</li>
           <li>연결 테스트 후 저장</li>
         </ul>
       </div>
 
-      <!-- 단계 7 -->
       <div class="step">
         <div class="step-number">7</div>
-        <h2>사용 시작</h2>
+        <h2>사용 시작! 🎉</h2>
         <p>이제 EngEagle을 사용할 준비가 되었습니다!</p>
         <ul class="checklist">
           <li>영문 웹페이지에서 단어를 더블클릭하세요</li>
@@ -347,19 +481,19 @@
       </div>
     </div>
 
-    <!-- 체크섬 검증 -->
     <div class="checksum-section">
-      <h2>파일 무결성 검증 (선택)</h2>
-      <p>다운로드한 파일이 변조되지 않았는지 확인하려면 SHA256 체크섬을 검증하세요.</p>
+      <h2>🔐 파일 무결성 검증 (선택)</h2>
+      <p style="color: var(--ee-gray); font-size: 15px; margin-bottom: 16px;">다운로드한 파일이 변조되지 않았는지 확인하려면 SHA256 체크섬을 검증하세요.</p>
       
-      <h3 style="margin-top: 16px; font-size: 14px; color: var(--text-dim);">Windows (PowerShell)</h3>
+      <h3>Windows (PowerShell)</h3>
       <div class="code-block">Get-FileHash EngEagle_v1.0.0_mv3.zip -Algorithm SHA256</div>
       
-      <h3 style="margin-top: 16px; font-size: 14px; color: var(--text-dim);">macOS / Linux</h3>
+      <h3>macOS / Linux</h3>
       <div class="code-block">sha256sum EngEagle_v1.0.0_mv3.zip</div>
+      
+      <p style="color: var(--ee-gray); font-size: 14px; margin-top: 16px;">출력된 해시 값이 다운로드 페이지의 체크섬과 일치하면 안전합니다.</p>
     </div>
 
-    <!-- FAQ -->
     <div class="faq">
       <h2>자주 묻는 질문</h2>
       
@@ -384,5 +518,16 @@
       </div>
     </div>
   </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="https://github.com/jiankimr/EngEagle" target="_blank">GitHub</a>
+        <a href="../">메인 페이지</a>
+        <a href="index.html">다운로드</a>
+      </div>
+      <p class="copyright">© 2025 EngEagle. All Rights Reserved.</p>
+    </div>
+  </footer>
 </body>
 </html>
