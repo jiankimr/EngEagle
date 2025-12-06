@@ -1,10 +1,11 @@
 /**
  * 로컬 사전 로더 및 LRU 캐시
- * 오프라인 사전 조회 + DeepL 온라인 fallback
+ * 조회 순서: 캐시 → 로컬 사전 → Free Dictionary (영영) → DeepL (번역)
  */
 
 import { getLemmaCandidates } from './lemma';
 import { loadDeepLConfig, translateWithDeepL, deepLResultToDictEntry } from './deepl';
+import { lookupFreeDictionary, enrichWithKoreanTranslation } from './freedict';
 
 /**
  * 사전 엔트리 타입
@@ -26,7 +27,7 @@ export interface LookupResult {
   entry?: DictEntry;
   cached: boolean;
   lookupTime: number;
-  source?: 'local' | 'deepl' | 'cache';
+  source?: 'local' | 'freedict' | 'deepl' | 'cache';
 }
 
 // LRU 캐시 구현
@@ -229,15 +230,32 @@ export async function lookupWord(word: string): Promise<LookupResult> {
     };
   }
 
-  // 3. DeepL API fallback (최근 실패한 경우 스킵)
+  // 3. Free Dictionary API (영영 사전 + 한국어 번역)
   const lastFailed = failedLookupCache.get(normalizedWord);
-  const shouldTryDeepL = !lastFailed || (Date.now() - lastFailed > FAILED_CACHE_TTL);
+  const shouldTryOnline = !lastFailed || (Date.now() - lastFailed > FAILED_CACHE_TTL);
   
-  if (shouldTryDeepL) {
+  if (shouldTryOnline) {
+    // Free Dictionary 먼저 시도
+    const freeDictResult = await lookupWithFreeDictionary(word);
+    
+    if (freeDictResult) {
+      failedLookupCache.delete(normalizedWord);
+      lookupCache.set(normalizedWord, freeDictResult);
+      
+      const lookupTime = performance.now() - startTime;
+      return {
+        found: true,
+        entry: freeDictResult,
+        cached: false,
+        lookupTime,
+        source: 'freedict',
+      };
+    }
+
+    // 4. DeepL API fallback (Free Dictionary에서 못 찾은 경우)
     const deepLResult = await lookupWithDeepL(word);
     
     if (deepLResult) {
-      // 성공 시 실패 캐시 제거 및 결과 캐시
       failedLookupCache.delete(normalizedWord);
       lookupCache.set(normalizedWord, deepLResult);
       
@@ -251,7 +269,7 @@ export async function lookupWord(word: string): Promise<LookupResult> {
       };
     }
     
-    // DeepL 실패 시 5분간 재시도 방지 (영구 캐시 X)
+    // 모두 실패 시 5분간 재시도 방지
     failedLookupCache.set(normalizedWord, Date.now());
   }
   
@@ -261,6 +279,37 @@ export async function lookupWord(word: string): Promise<LookupResult> {
     cached: false,
     lookupTime,
   };
+}
+
+/**
+ * Free Dictionary API로 조회 (영영 사전 + DeepL 한국어 번역)
+ */
+async function lookupWithFreeDictionary(word: string): Promise<DictEntry | null> {
+  try {
+    console.log(`[EngEagle] Looking up "${word}" with Free Dictionary...`);
+    const entry = await lookupFreeDictionary(word);
+    
+    if (!entry) {
+      return null;
+    }
+
+    console.log(`[EngEagle] Free Dictionary found: ${entry.meanings[0]?.substring(0, 50)}...`);
+    
+    // DeepL로 첫 번째 의미를 한국어로 번역
+    const config = await loadDeepLConfig();
+    if (config?.apiKey && entry.meanings.length > 0) {
+      const enriched = await enrichWithKoreanTranslation(entry, async (text) => {
+        const translation = await translateWithDeepL(text, config);
+        return translation?.meanings[0] || null;
+      });
+      return enriched;
+    }
+    
+    return entry;
+  } catch (error) {
+    console.error('[EngEagle] Free Dictionary lookup failed:', error);
+    return null;
+  }
 }
 
 /**
