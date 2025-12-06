@@ -13,6 +13,7 @@ interface LookupMessage {
   type: 'LOOKUP';
   word: string;
   sourceUrl?: string;
+  saveToVocabulary?: boolean;
 }
 
 interface SaveMessage {
@@ -269,7 +270,7 @@ async function handleMessage(message: Message): Promise<unknown> {
  * 단어 조회 처리
  */
 async function handleLookup(message: LookupMessage): Promise<unknown> {
-  const { word, sourceUrl = '' } = message;
+  const { word, sourceUrl = '', saveToVocabulary = false } = message;
   
   // 영어 단어 검증
   if (!isEnglishWord(word)) {
@@ -290,8 +291,10 @@ async function handleLookup(message: LookupMessage): Promise<unknown> {
     };
   }
   
-  // 자동 저장 (비차단)
-  saveWordAsync(result.entry, sourceUrl);
+  // saveToVocabulary가 true일 때만 저장
+  if (saveToVocabulary) {
+    saveWordAsync(result.entry, sourceUrl);
+  }
   
   return {
     success: true,

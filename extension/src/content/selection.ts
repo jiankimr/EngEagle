@@ -447,9 +447,9 @@ interface TriggerConfig {
 }
 
 let triggerConfig: TriggerConfig = {
-  dblclick: true,
-  ctrlDblclick: false,
-  dblRightclick: false,
+  dblclick: false,
+  ctrlDblclick: true,  // Ctrl + 더블 우클릭 = 번역 + 저장
+  dblRightclick: true, // 더블 우클릭 = 번역만
   contextMenu: true,
 };
 
@@ -474,8 +474,9 @@ async function loadTriggerConfig(): Promise<void> {
 
 /**
  * 번역 실행
+ * @param saveToVocabulary - true면 단어장에 저장, false면 번역만
  */
-async function performTranslation(word: string, range: Range): Promise<void> {
+async function performTranslation(word: string, range: Range, saveToVocabulary: boolean = false): Promise<void> {
   const startTime = performance.now();
 
   // 로딩 표시
@@ -487,14 +488,17 @@ async function performTranslation(word: string, range: Range): Promise<void> {
       type: 'LOOKUP',
       word: word,
       sourceUrl: window.location.href,
+      saveToVocabulary: saveToVocabulary,
     });
 
     const elapsed = performance.now() - startTime;
-    console.log(`[EngEagle] Lookup completed in ${elapsed.toFixed(1)}ms`);
+    console.log(`[EngEagle] Lookup completed in ${elapsed.toFixed(1)}ms, saved: ${saveToVocabulary}`);
 
     if (response.success && response.entry) {
       showResultPopup(range, response.entry);
-      showToast('Saved to Vocabulary');
+      if (saveToVocabulary) {
+        showToast('단어장에 저장됨');
+      }
     } else {
       showErrorPopup(range, '사전에 없는 단어입니다');
     }
@@ -514,11 +518,14 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
     return;
   }
 
-  // Ctrl + 더블클릭 모드
+  let saveToVocabulary = false;
+
+  // Ctrl + 더블클릭 모드 = 번역 + 저장
   if (e.ctrlKey || e.metaKey) {
     if (!triggerConfig.ctrlDblclick) return;
+    saveToVocabulary = true;
   } else {
-    // 일반 더블클릭 모드
+    // 일반 더블클릭 모드 = 번역만
     if (!triggerConfig.dblclick) return;
   }
 
@@ -528,11 +535,13 @@ async function handleDoubleClick(e: MouseEvent): Promise<void> {
     return;
   }
 
-  await performTranslation(selected.word, selected.range);
+  await performTranslation(selected.word, selected.range, saveToVocabulary);
 }
 
 /**
  * 우클릭 핸들러 (더블 우클릭 감지)
+ * 더블 우클릭 = 번역만 (저장 X)
+ * Ctrl + 더블 우클릭 = 번역 + 저장
  */
 function handleContextMenu(e: MouseEvent): void {
   if (!triggerConfig.dblRightclick) return;
@@ -545,7 +554,9 @@ function handleContextMenu(e: MouseEvent): void {
     
     const selected = getSelectedWord();
     if (selected) {
-      performTranslation(selected.word, selected.range);
+      // Ctrl 키를 누르고 있으면 저장도 함
+      const saveToVocabulary = e.ctrlKey || e.metaKey;
+      performTranslation(selected.word, selected.range, saveToVocabulary);
     }
     
     lastRightClickTime = 0; // 리셋
