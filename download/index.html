@@ -482,6 +482,255 @@
         font-size: 16px;
       }
     }
+
+    /* Install Guide Section */
+    .install-guide {
+      background: #fff;
+      padding: 80px 0;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .install-guide .container {
+      max-width: 800px;
+    }
+
+    .guide-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .guide-icon {
+      font-size: 56px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .guide-header h2 {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--ee-dark);
+      margin-bottom: 12px;
+    }
+
+    .guide-intro {
+      font-size: 18px;
+      color: var(--ee-gray);
+      font-weight: 500;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .step {
+      background: var(--ee-light-bg);
+      border-radius: 20px;
+      padding: 32px 36px 32px 100px;
+      border: 1px solid #e2e8f0;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .step:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 35px rgba(2,6,23,.08);
+    }
+
+    .step-number {
+      position: absolute;
+      top: 32px;
+      left: 32px;
+      background: var(--ee-gradient);
+      color: #fff;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-weight: 900;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 20px rgba(26,115,232,.3);
+    }
+
+    .step h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ee-dark);
+      margin-bottom: 12px;
+    }
+
+    .step p {
+      color: var(--ee-gray);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .step p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step .hint {
+      font-size: 14px;
+      color: var(--ee-gray);
+      margin-top: 12px;
+    }
+
+    .code-block {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 20px;
+      font-family: 'SF Mono', Monaco, Consolas, monospace;
+      font-size: 14px;
+      color: var(--ee-primary);
+      margin: 16px 0;
+    }
+
+    .checklist {
+      list-style: none;
+      margin: 16px 0;
+    }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 0;
+      font-size: 15px;
+      color: var(--ee-gray);
+      font-weight: 500;
+    }
+
+    .checklist li::before {
+      content: '☐';
+      font-size: 18px;
+      color: var(--ee-primary);
+      flex-shrink: 0;
+    }
+
+    .checklist a {
+      color: var(--ee-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .checklist a:hover {
+      text-decoration: underline;
+    }
+
+    .warning {
+      background: #fef3c7;
+      border: 1px solid #fcd34d;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .warning::before {
+      content: '⚠️';
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .warning p {
+      margin: 0 !important;
+      color: #92400e !important;
+      font-weight: 500;
+    }
+
+    .success {
+      background: #d1fae5;
+      border: 1px solid #6ee7b7;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .success::before {
+      content: '✅';
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .success p {
+      margin: 0 !important;
+      color: #065f46 !important;
+      font-weight: 600;
+    }
+
+    /* FAQ */
+    .faq {
+      margin-top: 60px;
+    }
+
+    .faq > h2 {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--ee-dark);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .faq-item {
+      background: var(--ee-light-bg);
+      border-radius: 16px;
+      padding: 24px 28px;
+      border: 1px solid #e2e8f0;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(2,6,23,.06);
+    }
+
+    .faq-item h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--ee-primary);
+      margin-bottom: 10px;
+    }
+
+    .faq-item p {
+      color: var(--ee-gray);
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.7;
+    }
+
+    .faq-item a {
+      color: var(--ee-primary);
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .step {
+        padding: 28px 24px 28px 80px;
+      }
+
+      .step-number {
+        left: 20px;
+        width: 42px;
+        height: 42px;
+        font-size: 18px;
+      }
+
+      .guide-header h2 {
+        font-size: 28px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -533,8 +782,8 @@
           <div class="checksum-value" id="checksum">로딩 중...</div>
         </div>
 
-        <a href="install_guide.html" class="guide-link">
-          📋 설치 가이드 보기 →
+        <a href="#install-guide" class="guide-link">
+          📋 설치 가이드 보기 ↓
         </a>
       </div>
 
@@ -565,13 +814,140 @@
     </div>
   </section>
 
+  <!-- Install Guide Section -->
+  <section class="install-guide" id="install-guide">
+    <div class="container">
+      <div class="guide-header">
+        <div class="guide-icon">📋</div>
+        <h2>설치 가이드</h2>
+        <p class="guide-intro">Chrome에 EngEagle 확장 프로그램을 설치하는 단계별 가이드입니다.</p>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>ZIP 파일 다운로드</h3>
+          <p>위의 다운로드 버튼을 클릭하여 최신 버전의 ZIP 파일을 다운로드합니다.</p>
+          <div class="code-block">EngEagle_v1.0.0_mv3.zip</div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>안전한 위치에 폴더 만들기</h3>
+          <p><strong>바탕화면</strong>이나 <strong>문서</strong> 폴더처럼 실수로 삭제하지 않을 안전한 위치에 새 폴더를 만듭니다.</p>
+          <div class="code-block">예: 바탕화면 → 우클릭 → 새 폴더 → "EngEagle" 등 원하는 이름으로 설정</div>
+          <div class="warning">
+            <p>이 폴더를 삭제하면 확장 프로그램이 동작하지 않습니다! 삭제하지 않을 위치를 선택하세요.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>ZIP 파일 압축 해제</h3>
+          <p>다운로드한 ZIP 파일을 <strong>2단계에서 만든 폴더 안에</strong> 압축 해제합니다.</p>
+          <ul class="checklist">
+            <li>ZIP 파일 우클릭 → <strong>압축 풀기</strong> 또는 <strong>여기에 압축 풀기</strong></li>
+            <li>압축 해제 위치를 2단계에서 만든 폴더로 지정</li>
+          </ul>
+          <p class="hint">💡 압축 해제 후 폴더 안에 <code>manifest.json</code> 파일이 있으면 성공입니다.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Chrome 확장 프로그램 페이지 열기</h3>
+          <p>Chrome 주소창에 다음을 입력하고 Enter를 누릅니다:</p>
+          <div class="code-block">chrome://extensions/</div>
+          <p>또는 Chrome 메뉴(⋮) → 도구 더보기 → 확장 프로그램을 선택합니다.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">5</div>
+          <h3>개발자 모드 활성화</h3>
+          <p>확장 프로그램 페이지 <strong>우측 상단</strong>의 <strong>"개발자 모드"</strong> 토글을 켭니다.</p>
+          <p class="hint">💡 토글을 켜면 상단에 새로운 버튼들이 나타납니다.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">6</div>
+          <h3>"압축해제된 확장 프로그램을 로드합니다" 클릭</h3>
+          <p>개발자 모드를 켜면 나타나는 <strong>"압축해제된 확장 프로그램을 로드합니다"</strong> 버튼을 클릭합니다.</p>
+          <p>폴더 선택 창이 열리면, <strong>2-3단계에서 만들어서 압축 해제한 폴더</strong>를 선택합니다.</p>
+          <div class="warning">
+            <p>manifest.json 파일이 있는 폴더를 선택해야 합니다! ZIP 파일이 아닌 압축 해제된 폴더를 선택하세요.</p>
+          </div>
+          <div class="success">
+            <p>EngEagle 아이콘이 도구 모음에 나타나면 설치 완료! 🎉</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-number">7</div>
+          <h3>DeepL API 설정 (선택, 무료)</h3>
+          <p>로컬 사전에 없는 단어도 번역하려면 DeepL API를 설정하세요.</p>
+          <div class="success">
+            <p><strong>DeepL API Free는 무료입니다!</strong> 한 달에 최대 500,000자까지 번역할 수 있습니다.</p>
+          </div>
+          <ul class="checklist">
+            <li><a href="https://www.deepl.com/pro-api" target="_blank"><strong>여기서 무료 API 키 발급받기 →</strong></a></li>
+            <li>확장 프로그램 아이콘 우클릭 → <strong>옵션</strong> 선택</li>
+            <li><strong>DeepL API 설정</strong> 섹션에서 API 키 입력</li>
+            <li><strong>연결 테스트</strong> 버튼으로 확인 후 <strong>저장</strong></li>
+          </ul>
+          <p class="hint">💡 API 키는 브라우저에 저장되며, 수정 전까지 계속 유지됩니다.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">8</div>
+          <h3>사용 시작! 🎉</h3>
+          <p>이제 EngEagle을 사용할 준비가 되었습니다!</p>
+          <ul class="checklist">
+            <li>영문 웹페이지에서 단어를 더블클릭하세요</li>
+            <li>번역 팝업이 표시됩니다</li>
+            <li>단어가 자동으로 단어장에 저장됩니다</li>
+            <li>옵션 페이지에서 단어장을 관리하세요</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="faq">
+        <h2>자주 묻는 질문</h2>
+        
+        <div class="faq-item">
+          <h3>확장 프로그램이 동작하지 않아요</h3>
+          <p>페이지를 새로고침하거나, chrome://extensions에서 확장 프로그램을 비활성화했다가 다시 활성화해 보세요.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>단어가 사전에 없다고 나와요</h3>
+          <p>DeepL API를 설정하면 모든 영어 단어를 번역할 수 있습니다. <a href="https://www.deepl.com/pro-api" target="_blank">무료 API 키를 발급</a>받고 옵션 페이지에서 설정하세요.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>DeepL API는 무료인가요?</h3>
+          <p><strong>네, 무료입니다!</strong> DeepL API Free는 한 달에 최대 500,000자까지 무료로 번역할 수 있습니다.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>단어장 데이터는 어디에 저장되나요?</h3>
+          <p>모든 데이터는 브라우저의 IndexedDB에 로컬 저장됩니다. 외부 서버로 전송되지 않습니다.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>다른 PC로 단어장을 옮길 수 있나요?</h3>
+          <p>옵션 페이지에서 JSON 또는 CSV로 내보내기 후, 다른 PC에서 가져오기 하면 됩니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-links">
         <a href="https://github.com/jiankimr/EngEagle" target="_blank">GitHub</a>
         <a href="../">메인 페이지</a>
-        <a href="install_guide.html">설치 가이드</a>
+        <a href="#install-guide">설치 가이드</a>
       </div>
       <p class="copyright">© 2025 EngEagle. All Rights Reserved.</p>
     </div>
@@ -609,6 +985,20 @@
     }
 
     loadVersionInfo();
+
+    // 부드러운 스크롤
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
   </script>
 </body>
 </html>
