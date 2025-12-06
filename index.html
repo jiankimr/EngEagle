@@ -1140,22 +1140,26 @@
                 return existingHash;
             }
 
-            var visitorData = JSON.stringify({
-                "id": getUVfromCookie(),
-                "landingUrl": window.location.href,
-                "ip": ip,
-                "referer": document.referrer,
-                "time_stamp": getTimeStamp(),
-                "utm": utm,
-                "device": mobile
-            });
+            // 세션당 한 번만 추적 (중복 방지)
+            var alreadyTracked = sessionStorage.getItem('engeagle_tracked');
+            
+            if(addrScript && !alreadyTracked) {
+                var visitorData = JSON.stringify({
+                    "id": getUVfromCookie(),
+                    "landingUrl": window.location.href,
+                    "ip": ip,
+                    "referer": document.referrer,
+                    "time_stamp": getTimeStamp(),
+                    "utm": utm,
+                    "device": mobile
+                });
 
-            if(addrScript) {
                 $.ajax({
                     url: addrScript + '?action=insert&table=visitors&data=' + encodeURIComponent(visitorData),
                     dataType: 'jsonp',
                     success: function (data) {
                         console.log('Visitor tracked:', data);
+                        sessionStorage.setItem('engeagle_tracked', 'true');
                     },
                     error: function (xhr) {
                         console.error('Tracking error:', xhr);
