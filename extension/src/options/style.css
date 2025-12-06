@@ -651,6 +651,43 @@ body {
   text-decoration: underline;
 }
 
+/* API 정보 박스 */
+.api-info-box {
+  background: linear-gradient(135deg, rgba(63, 185, 80, 0.1), rgba(88, 166, 255, 0.1));
+  border: 1px solid rgba(63, 185, 80, 0.3);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin: 16px 0;
+}
+
+.api-info-box p {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.api-info-box p:last-of-type {
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+}
+
+.api-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: color 0.15s;
+}
+
+.api-link:hover {
+  color: #79b8ff;
+  text-decoration: underline;
+}
+
 .input-with-btn {
   display: flex;
   gap: 8px;
