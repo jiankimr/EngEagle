@@ -71,6 +71,7 @@ export async function translateWithDeepL(
       headers: {
         'Authorization': `DeepL-Auth-Key ${config.apiKey}`,
         'Content-Type': 'application/json',
+        'User-Agent': 'EngEagle/1.0.0',
       },
       body: JSON.stringify({
         text: [word],
@@ -129,6 +130,7 @@ export async function testDeepLConnection(config: DeepLConfig): Promise<{
       method: 'GET',
       headers: {
         'Authorization': `DeepL-Auth-Key ${config.apiKey}`,
+        'User-Agent': 'EngEagle/1.0.0',
       },
     });
 
