@@ -237,9 +237,11 @@ function renderTable(): void {
     const favoriteIcon = entry.favorite ? '⭐' : '☆';
 
     tr.innerHTML = `
+      <td class="col-fav">
+        <button class="${favoriteClass}" title="즐겨찾기 토글">${favoriteIcon}</button>
+      </td>
       <td class="col-word">
         <div class="word-cell">
-          <button class="${favoriteClass}" title="즐겨찾기">${favoriteIcon}</button>
           <span class="word-text">${escapeHtml(entry.word)}</span>
           <span class="${posClass}" data-pos="${escapeHtml(entry.pos)}" title="클릭하여 품사 편집">${escapeHtml(posLabel)}</span>
         </div>
@@ -322,7 +324,7 @@ function setupEventListeners(): void {
     });
   });
 
-  // 삭제, 즐겨찾기, 품사 편집
+  // 삭제, 즐겨찾기, 품사 편집, 인라인 편집
   vocabBody.addEventListener('click', async (e) => {
     const target = e.target as HTMLElement;
     if (target.classList.contains('btn-delete')) {
@@ -341,6 +343,24 @@ function setupEventListeners(): void {
       const tr = target.closest('tr') as HTMLTableRowElement;
       const id = tr.dataset.id!;
       showPosEditor(target, id);
+    }
+    // 단어 편집
+    else if (target.classList.contains('word-text')) {
+      const tr = target.closest('tr') as HTMLTableRowElement;
+      const id = tr.dataset.id!;
+      showInlineEditor(target, id, 'word');
+    }
+    // 뜻 편집
+    else if (target.classList.contains('meaning-cell')) {
+      const tr = target.closest('tr') as HTMLTableRowElement;
+      const id = tr.dataset.id!;
+      showInlineEditor(target, id, 'meanings');
+    }
+    // 예문 편집
+    else if (target.classList.contains('example-cell')) {
+      const tr = target.closest('tr') as HTMLTableRowElement;
+      const id = tr.dataset.id!;
+      showInlineEditor(target, id, 'example');
     }
   });
 
@@ -790,6 +810,111 @@ async function updatePos(id: string, newPos: string): Promise<void> {
   } catch (error) {
     console.error('Update failed:', error);
   }
+}
+
+/**
+ * 인라인 편집기 표시 (단어, 뜻, 예문)
+ */
+function showInlineEditor(target: HTMLElement, id: string, field: 'word' | 'meanings' | 'example'): void {
+  // 이미 편집 중이면 무시
+  if (target.querySelector('input')) return;
+
+  const entry = allEntries.find(e => e.id === id);
+  if (!entry) return;
+
+  let currentValue = '';
+  if (field === 'word') {
+    currentValue = entry.word;
+  } else if (field === 'meanings') {
+    currentValue = entry.meanings.join(', ');
+  } else if (field === 'example') {
+    currentValue = entry.example;
+  }
+
+  const originalText = target.textContent || '';
+  const originalWidth = target.offsetWidth;
+
+  // 입력 필드 생성
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.value = currentValue;
+  input.className = 'inline-editor';
+  input.style.width = `${Math.max(originalWidth, 100)}px`;
+
+  // 기존 텍스트 숨기고 입력 필드 추가
+  target.textContent = '';
+  target.appendChild(input);
+  input.focus();
+  input.select();
+
+  // 저장 함수
+  const saveEdit = async () => {
+    const newValue = input.value.trim();
+    
+    // 값이 비어있으면 원래 값으로 복원
+    if (!newValue && field !== 'example') {
+      target.textContent = originalText;
+      return;
+    }
+
+    // 값이 변경되지 않았으면 복원
+    if (newValue === currentValue) {
+      target.textContent = originalText;
+      return;
+    }
+
+    try {
+      let updates: Record<string, string | string[]> = {};
+      
+      if (field === 'word') {
+        updates = { word: newValue, lemma: newValue.toLowerCase() };
+      } else if (field === 'meanings') {
+        updates = { meanings: newValue.split(',').map(m => m.trim()).filter(m => m) };
+      } else if (field === 'example') {
+        updates = { example: newValue };
+      }
+
+      const response = await chrome.runtime.sendMessage({
+        type: 'UPDATE',
+        id,
+        updates
+      });
+
+      if (response.success) {
+        // allEntries 업데이트
+        const entryIdx = allEntries.findIndex(e => e.id === id);
+        if (entryIdx !== -1) {
+          if (field === 'word') {
+            allEntries[entryIdx].word = newValue;
+            allEntries[entryIdx].lemma = newValue.toLowerCase();
+          } else if (field === 'meanings') {
+            allEntries[entryIdx].meanings = newValue.split(',').map(m => m.trim()).filter(m => m);
+          } else if (field === 'example') {
+            allEntries[entryIdx].example = newValue;
+          }
+        }
+        filterAndRender();
+      } else {
+        target.textContent = originalText;
+      }
+    } catch (error) {
+      console.error('Update failed:', error);
+      target.textContent = originalText;
+    }
+  };
+
+  // blur 이벤트
+  input.addEventListener('blur', saveEdit);
+
+  // Enter/Escape 키
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      input.blur();
+    } else if (e.key === 'Escape') {
+      target.textContent = originalText;
+    }
+  });
 }
 
 /**
