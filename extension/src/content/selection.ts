@@ -603,18 +603,24 @@ function handleKeyDown(e: KeyboardEvent): void {
  * 백그라운드 메시지 수신 (컨텍스트 메뉴, 설정 변경)
  */
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  console.log('[EngEagle] Content script received message:', message.type);
+  
   if (message.type === 'SHOW_TRANSLATION') {
     // 컨텍스트 메뉴에서 번역 요청
+    console.log('[EngEagle] SHOW_TRANSLATION received:', message);
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       
       if (message.result && message.result.found && message.result.entry) {
+        console.log('[EngEagle] Showing popup for:', message.result.entry);
         showResultPopup(range, message.result.entry);
-        showToast('Saved to Vocabulary');
       } else {
+        console.log('[EngEagle] Word not found in dictionary');
         showErrorPopup(range, '사전에 없는 단어입니다');
       }
+    } else {
+      console.log('[EngEagle] No selection found');
     }
     sendResponse({ success: true });
   } else if (message.type === 'TRIGGER_CONFIG_CHANGED') {

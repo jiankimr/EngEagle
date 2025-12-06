@@ -149,12 +149,17 @@ async function setupContextMenu(): Promise<void> {
 }
 
 /**
- * 트리거 설정 로드
+ * 트리거 설정 로드 (기본값과 병합)
  */
 async function loadTriggerConfig(): Promise<TriggerConfig> {
   try {
     const result = await chrome.storage.local.get(TRIGGER_CONFIG_KEY);
-    return result[TRIGGER_CONFIG_KEY] || DEFAULT_TRIGGER_CONFIG;
+    const saved = result[TRIGGER_CONFIG_KEY];
+    if (saved) {
+      // 기본값과 병합하여 새 필드가 누락되지 않도록 함
+      return { ...DEFAULT_TRIGGER_CONFIG, ...saved };
+    }
+    return DEFAULT_TRIGGER_CONFIG;
   } catch {
     return DEFAULT_TRIGGER_CONFIG;
   }
@@ -171,19 +176,44 @@ async function saveTriggerConfig(config: TriggerConfig): Promise<void> {
 
 // 컨텍스트 메뉴 클릭 핸들러
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+  console.log('[EngEagle] Context menu clicked:', info.menuItemId, info.selectionText);
+  
   if (info.menuItemId === 'engeagle-translate' && info.selectionText && tab?.id) {
     const word = info.selectionText.trim().split(/\s+/)[0];
+    console.log('[EngEagle] Looking up word:', word);
     
     if (isEnglishWord(word)) {
-      const result = await lookupWord(word);
-      
-      // 탭에 결과 전송
-      chrome.tabs.sendMessage(tab.id, {
-        type: 'SHOW_TRANSLATION',
-        word,
-        result,
-        sourceUrl: tab.url || '',
-      });
+      try {
+        const result = await lookupWord(word);
+        console.log('[EngEagle] Lookup result:', result);
+        
+        // 먼저 content script가 로드되어 있는지 확인하고 주입
+        try {
+          await chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            files: ['src/content/selection.js']
+          });
+        } catch {
+          // 이미 로드되어 있거나 접근 불가능한 페이지
+        }
+        
+        // 탭에 결과 전송
+        try {
+          await chrome.tabs.sendMessage(tab.id, {
+            type: 'SHOW_TRANSLATION',
+            word,
+            result,
+            sourceUrl: tab.url || '',
+          });
+          console.log('[EngEagle] Message sent to tab');
+        } catch (sendError) {
+          console.warn('[EngEagle] Could not send message to tab (page may not support content scripts):', sendError);
+        }
+      } catch (error) {
+        console.error('[EngEagle] Context menu translation error:', error);
+      }
+    } else {
+      console.log('[EngEagle] Not an English word:', word);
     }
   }
 });
