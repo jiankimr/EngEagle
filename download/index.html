@@ -779,7 +779,7 @@
           </div>
         </div>
 
-        <a href="#" class="download-btn" id="download-btn">
+        <a href="./releases/EngEagle_v1.0.0_mv3.zip" class="download-btn" id="download-btn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
           </svg>
@@ -995,8 +995,11 @@
 
     loadVersionInfo();
 
-    // 부드러운 스크롤
+    // 부드러운 스크롤 (다운로드 버튼 제외)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      // 다운로드 버튼은 제외
+      if (anchor.id === 'download-btn') return;
+      
       anchor.addEventListener('click', function (e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
