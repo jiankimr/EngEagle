@@ -9,6 +9,14 @@
     "128": "icons/128.png",
     "256": "icons/256.png"
   },
+  "action": {
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    },
+    "default_title": "EngEagle - 영어 단어 번역"
+  },
   "background": {
     "service_worker": "src/background/service.js",
     "type": "module"
