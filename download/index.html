@@ -843,21 +843,21 @@
         </div>
 
         <!-- 체크섬 확인 권장 안내 -->
-        <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px; padding: 20px 24px; margin: 24px 0; border-left: 4px solid #f59e0b;">
-          <h4 style="margin: 0 0 12px 0; color: #92400e; font-size: 16px;">🔐 파일 무결성 확인 (권장)</h4>
-          <p style="margin: 0 0 16px 0; color: #78350f; font-size: 14px; line-height: 1.6;">
-            다운로드한 파일이 원본과 동일한지 확인하려면 SHA256 체크섬을 비교하세요. 
-            이 단계는 선택 사항이지만, 보안을 위해 <strong>권장</strong>됩니다.
-          </p>
-          <div style="background: rgba(0,0,0,0.1); border-radius: 8px; padding: 12px 16px; margin-bottom: 12px;">
-            <div style="font-size: 12px; color: #92400e; margin-bottom: 4px;">SHA256 체크섬</div>
-            <div id="checksum-guide" style="font-family: monospace; font-size: 13px; color: #78350f; word-break: break-all;">로딩 중...</div>
+        <div class="step" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fcd34d;">
+          <div class="step-number" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">🔐</div>
+          <h3 style="color: #92400e;">파일 무결성 확인 <span style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; font-size: 12px; padding: 4px 10px; border-radius: 20px; margin-left: 8px; font-weight: 600;">권장</span></h3>
+          <p style="color: #78350f;">다운로드한 파일이 원본과 동일한지 확인하려면 SHA256 체크섬을 비교하세요. 이 단계는 선택 사항이지만, 보안을 위해 권장됩니다.</p>
+          
+          <div class="code-block" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 1px solid #fcd34d; color: #78350f;">
+            <div style="font-size: 11px; color: #92400e; margin-bottom: 6px; font-weight: 600;">SHA256 체크섬</div>
+            <div id="checksum-guide" style="font-family: 'SF Mono', Consolas, monospace; font-size: 12px; word-break: break-all;">로딩 중...</div>
           </div>
-          <p style="margin: 0; font-size: 13px; color: #92400e; line-height: 1.7;">
+          
+          <p class="hint" style="color: #92400e; margin-top: 16px;">
             💡 <strong>확인 방법:</strong><br>
-            • Windows: PowerShell에서 <code style="background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px;">Get-FileHash 파일명.zip</code><br>
-            • Mac/Linux: 터미널에서 <code style="background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 4px;">shasum -a 256 파일명.zip</code><br>
-            실행 후 위 값과 동일한지 비교하세요.
+            <span style="display: inline-block; margin-top: 8px;">• Windows: PowerShell에서 <code style="background: rgba(146,64,14,0.1); color: #78350f;">Get-FileHash 파일명.zip</code></span><br>
+            <span style="display: inline-block; margin-top: 4px;">• Mac/Linux: 터미널에서 <code style="background: rgba(146,64,14,0.1); color: #78350f;">shasum -a 256 파일명.zip</code></span><br>
+            <span style="display: inline-block; margin-top: 8px;">실행 후 위 값과 동일한지 비교하세요.</span>
           </p>
         </div>
 
