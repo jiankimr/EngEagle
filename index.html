@@ -1149,16 +1149,14 @@
                     "device": mobile
                 });
 
-                $.ajax({
-                    url: addrScript + '?action=insert&table=visitors&data=' + encodeURIComponent(visitorData),
-                    dataType: 'jsonp',
-                    success: function (data) {
-                        console.log('Visitor tracked:', data);
-                        sessionStorage.setItem('engeagle_tracked', 'true');
-                    },
-                    error: function (xhr) {
-                        console.error('Tracking error:', xhr);
-                    }
+                fetch(addrScript + '?action=insert&table=visitors&data=' + encodeURIComponent(visitorData), {
+                    method: 'GET',
+                    mode: 'no-cors'
+                }).then(function() {
+                    console.log('Visitor tracked');
+                    sessionStorage.setItem('engeagle_tracked', 'true');
+                }).catch(function(err) {
+                    console.error('Tracking error:', err);
                 });
             }
 
@@ -1188,21 +1186,19 @@
                 });
 
                 $.busyLoadFull("show", { text: "전송 중..." });
-                $.ajax({
-                    url: addrScript + '?action=insert&table=tab_final&data=' + encodeURIComponent(finalData),
-                    dataType: 'jsonp',
-                    success: function (data) {
-                        console.log('Submission successful:', data);
-                        $('#submit-email').val('');
-                        $('#submit-advice').val('');
-                        $.busyLoadFull("hide");
-                        $.fn.simplePopup({ type: "html", htmlSelector: "#popup" });
-                    },
-                    error: function (xhr) {
-                        console.error('Submission error:', xhr);
-                        $.busyLoadFull("hide");
-                        alert("전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
-                    }
+                fetch(addrScript + '?action=insert&table=tab_final&data=' + encodeURIComponent(finalData), {
+                    method: 'GET',
+                    mode: 'no-cors'
+                }).then(function() {
+                    console.log('Submission successful');
+                    $('#submit-email').val('');
+                    $('#submit-advice').val('');
+                    $.busyLoadFull("hide");
+                    $.fn.simplePopup({ type: "html", htmlSelector: "#popup" });
+                }).catch(function(err) {
+                    console.error('Submission error:', err);
+                    $.busyLoadFull("hide");
+                    alert("전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
                 });
             });
         });
