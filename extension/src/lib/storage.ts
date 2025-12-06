@@ -223,6 +223,47 @@ export async function restoreWord(entry: VocabularyEntry): Promise<boolean> {
 }
 
 /**
+ * 단어 업데이트 (품사 등 수정)
+ */
+export async function updateWord(id: string, updates: Partial<Pick<VocabularyEntry, 'pos' | 'meanings' | 'example'>>): Promise<VocabularyEntry | null> {
+  try {
+    const db = await openDatabase();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction(STORE_NAME, 'readwrite');
+      const store = transaction.objectStore(STORE_NAME);
+      const getRequest = store.get(id);
+      
+      getRequest.onsuccess = () => {
+        const existing = getRequest.result as VocabularyEntry | undefined;
+        
+        if (!existing) {
+          resolve(null);
+          return;
+        }
+        
+        const updatedEntry: VocabularyEntry = {
+          ...existing,
+          ...updates,
+        };
+        
+        const putRequest = store.put(updatedEntry);
+        
+        putRequest.onsuccess = () => resolve(updatedEntry);
+        putRequest.onerror = () => reject(putRequest.error);
+      };
+      
+      getRequest.onerror = () => reject(getRequest.error);
+      
+      transaction.oncomplete = () => db.close();
+    });
+  } catch (error) {
+    console.error('[EngEagle] Update failed:', error);
+    return null;
+  }
+}
+
+/**
  * 접두어 검색
  */
 export async function searchWords(prefix: string): Promise<VocabularyEntry[]> {

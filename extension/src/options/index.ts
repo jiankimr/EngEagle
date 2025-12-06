@@ -71,7 +71,22 @@ const posLabels: Record<string, string> = {
   'pron': '대명사',
   'interj': '감탄사',
   'other': '기타',
+  '': '품사 선택',
 };
+
+// 품사 옵션 (편집용)
+const posOptions: { value: string; label: string }[] = [
+  { value: '', label: '없음' },
+  { value: 'noun', label: '명사' },
+  { value: 'verb', label: '동사' },
+  { value: 'adj', label: '형용사' },
+  { value: 'adv', label: '부사' },
+  { value: 'prep', label: '전치사' },
+  { value: 'conj', label: '접속사' },
+  { value: 'pron', label: '대명사' },
+  { value: 'interj', label: '감탄사' },
+  { value: 'other', label: '기타' },
+];
 
 /**
  * 초기화
@@ -196,15 +211,16 @@ function renderTable(): void {
     const tr = document.createElement('tr');
     tr.dataset.id = entry.id;
     
-    const posLabel = posLabels[entry.pos] || entry.pos;
+    const posLabel = posLabels[entry.pos] || entry.pos || '품사 선택';
     const meanings = entry.meanings.join(', ');
     const date = formatDate(entry.created_at);
+    const posClass = entry.pos ? 'word-pos' : 'word-pos word-pos-empty';
 
     tr.innerHTML = `
       <td class="col-word">
         <div class="word-cell">
           <span class="word-text">${escapeHtml(entry.word)}</span>
-          <span class="word-pos">${escapeHtml(posLabel)}</span>
+          <span class="${posClass}" data-pos="${escapeHtml(entry.pos)}" title="클릭하여 품사 편집">${escapeHtml(posLabel)}</span>
         </div>
       </td>
       <td class="col-meaning">
@@ -292,6 +308,12 @@ function setupEventListeners(): void {
       const tr = target.closest('tr') as HTMLTableRowElement;
       const id = tr.dataset.id!;
       deleteEntry(id);
+    }
+    // 품사 편집
+    else if (target.classList.contains('word-pos')) {
+      const tr = target.closest('tr') as HTMLTableRowElement;
+      const id = tr.dataset.id!;
+      showPosEditor(target, id);
     }
   });
 
@@ -634,6 +656,86 @@ function showDeepLStatus(message: string, type: 'success' | 'error' | 'loading')
   deepLStatus.textContent = message;
   deepLStatus.className = 'deepl-status ' + type;
   deepLStatus.style.display = 'block';
+}
+
+/**
+ * 품사 편집 드롭다운 표시
+ */
+function showPosEditor(target: HTMLElement, id: string): void {
+  // 기존 편집기 제거
+  const existingEditor = document.querySelector('.pos-editor');
+  if (existingEditor) {
+    existingEditor.remove();
+  }
+
+  const currentPos = target.dataset.pos || '';
+  
+  // 드롭다운 생성
+  const select = document.createElement('select');
+  select.className = 'pos-editor';
+  
+  for (const option of posOptions) {
+    const opt = document.createElement('option');
+    opt.value = option.value;
+    opt.textContent = option.label;
+    if (option.value === currentPos) {
+      opt.selected = true;
+    }
+    select.appendChild(opt);
+  }
+
+  // 위치 설정
+  const rect = target.getBoundingClientRect();
+  select.style.position = 'fixed';
+  select.style.top = `${rect.top}px`;
+  select.style.left = `${rect.left}px`;
+  select.style.zIndex = '1000';
+
+  // 변경 이벤트
+  select.addEventListener('change', async () => {
+    const newPos = select.value;
+    await updatePos(id, newPos);
+    select.remove();
+  });
+
+  // 포커스 잃으면 닫기
+  select.addEventListener('blur', () => {
+    setTimeout(() => select.remove(), 100);
+  });
+
+  // ESC로 닫기
+  select.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      select.remove();
+    }
+  });
+
+  document.body.appendChild(select);
+  select.focus();
+}
+
+/**
+ * 품사 업데이트
+ */
+async function updatePos(id: string, newPos: string): Promise<void> {
+  try {
+    const response = await chrome.runtime.sendMessage({
+      type: 'UPDATE',
+      id,
+      updates: { pos: newPos }
+    });
+
+    if (response.success) {
+      // allEntries 업데이트
+      const entry = allEntries.find(e => e.id === id);
+      if (entry) {
+        entry.pos = newPos;
+      }
+      filterAndRender();
+    }
+  } catch (error) {
+    console.error('Update failed:', error);
+  }
 }
 
 // 초기화 실행

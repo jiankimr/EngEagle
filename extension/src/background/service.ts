@@ -4,7 +4,7 @@
  */
 
 import { loadDictionary, lookupWord, isDictionaryLoaded, getDictionarySize, clearCache } from '../lib/dict';
-import { saveWord, getAllWords, deleteWord, restoreWord, searchWords, exportToJSON, exportToCSV, importFromJSON, getWordCount, type VocabularyEntry } from '../lib/storage';
+import { saveWord, getAllWords, deleteWord, restoreWord, updateWord, searchWords, exportToJSON, exportToCSV, importFromJSON, getWordCount, type VocabularyEntry } from '../lib/storage';
 import { isEnglishWord } from '../lib/lemma';
 import { saveDeepLConfig, loadDeepLConfig, testDeepLConnection, isFreeApiKey, type DeepLConfig } from '../lib/deepl';
 
@@ -53,6 +53,12 @@ interface StatusMessage {
   type: 'STATUS';
 }
 
+interface UpdateMessage {
+  type: 'UPDATE';
+  id: string;
+  updates: { pos?: string; meanings?: string[]; example?: string };
+}
+
 // DeepL 관련 메시지 타입
 interface DeepLSaveConfigMessage {
   type: 'DEEPL_SAVE_CONFIG';
@@ -74,6 +80,7 @@ type Message =
   | GetAllMessage 
   | DeleteMessage 
   | RestoreMessage 
+  | UpdateMessage
   | SearchMessage 
   | ExportMessage 
   | ImportMessage 
@@ -127,6 +134,9 @@ async function handleMessage(message: Message): Promise<unknown> {
     
     case 'RESTORE':
       return handleRestore(message);
+    
+    case 'UPDATE':
+      return handleUpdate(message);
     
     case 'SEARCH':
       return handleSearch(message);
@@ -272,6 +282,24 @@ async function handleRestore(message: RestoreMessage): Promise<unknown> {
   try {
     const success = await restoreWord(message.entry);
     return { success };
+  } catch (error) {
+    return {
+      success: false,
+      error: (error as Error).message,
+    };
+  }
+}
+
+/**
+ * 단어 업데이트 (품사 등)
+ */
+async function handleUpdate(message: UpdateMessage): Promise<unknown> {
+  try {
+    const entry = await updateWord(message.id, message.updates);
+    if (entry) {
+      return { success: true, entry };
+    }
+    return { success: false, error: 'Word not found' };
   } catch (error) {
     return {
       success: false,
