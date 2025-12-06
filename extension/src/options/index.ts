@@ -233,10 +233,13 @@ function renderTable(): void {
     const meanings = entry.meanings.join(', ');
     const date = formatDate(entry.created_at);
     const posClass = entry.pos ? 'word-pos' : 'word-pos word-pos-empty';
+    const favoriteClass = entry.favorite ? 'btn-favorite active' : 'btn-favorite';
+    const favoriteIcon = entry.favorite ? '⭐' : '☆';
 
     tr.innerHTML = `
       <td class="col-word">
         <div class="word-cell">
+          <button class="${favoriteClass}" title="즐겨찾기">${favoriteIcon}</button>
           <span class="word-text">${escapeHtml(entry.word)}</span>
           <span class="${posClass}" data-pos="${escapeHtml(entry.pos)}" title="클릭하여 품사 편집">${escapeHtml(posLabel)}</span>
         </div>
@@ -319,13 +322,19 @@ function setupEventListeners(): void {
     });
   });
 
-  // 삭제
-  vocabBody.addEventListener('click', (e) => {
+  // 삭제, 즐겨찾기, 품사 편집
+  vocabBody.addEventListener('click', async (e) => {
     const target = e.target as HTMLElement;
     if (target.classList.contains('btn-delete')) {
       const tr = target.closest('tr') as HTMLTableRowElement;
       const id = tr.dataset.id!;
       deleteEntry(id);
+    }
+    // 즐겨찾기 토글
+    else if (target.classList.contains('btn-favorite')) {
+      const tr = target.closest('tr') as HTMLTableRowElement;
+      const id = tr.dataset.id!;
+      await toggleFavorite(id, target);
     }
     // 품사 편집
     else if (target.classList.contains('word-pos')) {
@@ -418,6 +427,33 @@ async function deleteEntry(id: string): Promise<void> {
     }
   } catch (error) {
     console.error('Delete failed:', error);
+  }
+}
+
+/**
+ * 즐겨찾기 토글
+ */
+async function toggleFavorite(id: string, button: HTMLElement): Promise<void> {
+  try {
+    const response = await chrome.runtime.sendMessage({ type: 'TOGGLE_FAVORITE', id });
+    if (response.success && response.entry) {
+      // 로컬 상태 업데이트
+      const entryIndex = allEntries.findIndex(e => e.id === id);
+      if (entryIndex !== -1) {
+        allEntries[entryIndex] = response.entry;
+      }
+      
+      // 버튼 UI 업데이트
+      if (response.entry.favorite) {
+        button.classList.add('active');
+        button.textContent = '⭐';
+      } else {
+        button.classList.remove('active');
+        button.textContent = '☆';
+      }
+    }
+  } catch (error) {
+    console.error('Toggle favorite failed:', error);
   }
 }
 
@@ -863,7 +899,7 @@ function initQuiz(): void {
   document.getElementById('btn-show-answer')?.addEventListener('click', showAnswer);
   
   // Quiz action buttons
-  document.getElementById('btn-quiz-favorite')?.addEventListener('click', toggleFavorite);
+  document.getElementById('btn-quiz-favorite')?.addEventListener('click', toggleQuizFavorite);
   document.getElementById('btn-quiz-delete')?.addEventListener('click', deleteQuizWord);
   document.getElementById('btn-quiz-next')?.addEventListener('click', nextQuizWord);
   document.getElementById('btn-quiz-end')?.addEventListener('click', endQuiz);
@@ -1000,9 +1036,9 @@ function showAnswer(): void {
 }
 
 /**
- * 즐겨찾기 토글
+ * 퀴즈 즐겨찾기 토글
  */
-async function toggleFavorite(): Promise<void> {
+async function toggleQuizFavorite(): Promise<void> {
   const entry = quizEntries[currentQuizIndex];
   if (!entry) return;
   

@@ -793,35 +793,74 @@
           지금 다운로드 (ZIP)
       </a>
 
-        <a href="#install-guide" class="guide-link">
-          📋 설치 가이드 보기 ↓
-      </a>
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;">
+          <a href="#faq" class="guide-link">
+            ❓ 자주 묻는 질문 보기 ↓
+          </a>
+          <a href="#install-guide" class="guide-link">
+            📋 설치 가이드 보기 ↓
+          </a>
+        </div>
     </div>
+    </div>
+  </section>
 
-      <!-- Features -->
-    <div class="features">
-      <div class="feature">
-        <div class="feature-icon">⚡</div>
-          <h3>200ms 내 즉시 번역</h3>
-          <p>로컬 사전 + DeepL API로 네트워크 지연 없이 즉시 번역을 표시합니다.</p>
+  <!-- FAQ Section -->
+  <section class="install-guide" id="faq" style="background: linear-gradient(180deg, #f8fafc 0%, #fff 100%);">
+    <div class="container">
+      <div class="guide-header">
+        <div class="guide-icon">❓</div>
+        <h2>자주 묻는 질문</h2>
+        <p class="guide-intro">EngEagle 사용 전 궁금한 점을 확인하세요.</p>
       </div>
-      <div class="feature">
-        <div class="feature-icon">📚</div>
-        <h3>자동 단어장 저장</h3>
-        <p>조회한 단어를 자동으로 저장하고 빈도를 추적합니다.</p>
+
+      <div class="faq" style="margin-top: 0;">
+        <div class="faq-item">
+          <h3>확장 프로그램이 동작하지 않아요</h3>
+          <p>페이지를 새로고침하거나, chrome://extensions에서 확장 프로그램을 비활성화했다가 다시 활성화해 보세요.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>단어가 사전에 없다고 나와요</h3>
+          <p>DeepL API를 설정하면 모든 영어 단어를 번역할 수 있습니다. <a href="https://www.deepl.com/pro-api" target="_blank">무료 API 키를 발급</a>받고 옵션 페이지에서 설정하세요.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>DeepL API는 무료인가요?</h3>
+          <p><strong>네, 무료입니다!</strong> DeepL API Free는 한 달에 최대 500,000자까지 무료로 번역할 수 있습니다.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>단어장 데이터는 어디에 저장되나요?</h3>
+          <p>모든 데이터는 브라우저의 IndexedDB에 로컬 저장됩니다. 외부 서버로 전송되지 않습니다.</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>다른 PC로 단어장을 옮길 수 있나요?</h3>
+          <p>옵션 페이지에서 JSON 또는 CSV로 내보내기 후, 다른 PC에서 가져오기 하면 됩니다.</p>
+        </div>
+        
+        <div class="faq-item" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b;">
+          <h3>⚠️ 브라우저 캐시/데이터를 지우면 단어장이 삭제되나요?</h3>
+          <p><strong>네, 삭제됩니다!</strong> 단어장 데이터는 브라우저의 IndexedDB에 저장되므로, 브라우저 데이터를 삭제하면 함께 사라집니다.</p>
+          <p style="margin-top: 12px;"><strong>💡 권장사항:</strong> 브라우저 캐시/데이터를 지우기 전에 반드시 <strong>옵션 페이지 → 단어장 → 내보내기(JSON/CSV)</strong> 기능을 사용하여 백업하세요!</p>
+        </div>
+        
+        <div class="faq-item">
+          <h3>번역에 어떤 API를 사용하나요?</h3>
+          <p>EngEagle은 다음 순서로 단어를 조회합니다:</p>
+          <ol style="margin-top: 8px; margin-left: 20px; line-height: 1.8;">
+            <li><strong>로컬 사전</strong> - 기본 내장 영한 사전 (오프라인)</li>
+            <li><strong>Free Dictionary API</strong> - 무료 영영 사전 (정의 + 예문)</li>
+            <li><strong>DeepL API</strong> - 영어 정의를 한국어로 번역 (API 키 필요, 무료)</li>
+          </ol>
+          <p style="margin-top: 12px;">Free Dictionary API는 API 키 없이 무료로 사용 가능하며, 영어 정의와 예문을 제공합니다. DeepL API를 함께 설정하면 한국어 번역도 함께 표시됩니다.</p>
+        </div>
       </div>
-      <div class="feature">
-          <div class="feature-icon">🌐</div>
-          <h3>DeepL API 지원 (무료)</h3>
-          <p>DeepL API Free는 <strong>무료</strong>입니다. 한 달에 최대 500,000자까지 번역할 수 있으며, 더 필요하시면 Pro로 업그레이드 가능합니다.</p>
-          <a href="https://www.deepl.com/pro-api" target="_blank" style="color: var(--ee-primary); font-weight: 600; font-size: 14px; text-decoration: none;">👉 무료 API 키 발급받기 →</a>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🛡️</div>
-        <h3>개인정보 보호</h3>
-        <p>데이터 수집 없음, 모든 정보는 브라우저에만 저장됩니다.</p>
-      </div>
-    </div>
+
+      <a href="#install-guide" class="guide-link" style="margin-top: 40px; display: inline-block;">
+        📋 설치 가이드 보기 ↓
+      </a>
     </div>
   </section>
 
@@ -939,52 +978,6 @@
         </div>
       </div>
 
-      <!-- FAQ -->
-      <div class="faq">
-        <h2>자주 묻는 질문</h2>
-        
-        <div class="faq-item">
-          <h3>확장 프로그램이 동작하지 않아요</h3>
-          <p>페이지를 새로고침하거나, chrome://extensions에서 확장 프로그램을 비활성화했다가 다시 활성화해 보세요.</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3>단어가 사전에 없다고 나와요</h3>
-          <p>DeepL API를 설정하면 모든 영어 단어를 번역할 수 있습니다. <a href="https://www.deepl.com/pro-api" target="_blank">무료 API 키를 발급</a>받고 옵션 페이지에서 설정하세요.</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3>DeepL API는 무료인가요?</h3>
-          <p><strong>네, 무료입니다!</strong> DeepL API Free는 한 달에 최대 500,000자까지 무료로 번역할 수 있습니다.</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3>단어장 데이터는 어디에 저장되나요?</h3>
-          <p>모든 데이터는 브라우저의 IndexedDB에 로컬 저장됩니다. 외부 서버로 전송되지 않습니다.</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3>다른 PC로 단어장을 옮길 수 있나요?</h3>
-          <p>옵션 페이지에서 JSON 또는 CSV로 내보내기 후, 다른 PC에서 가져오기 하면 됩니다.</p>
-        </div>
-        
-        <div class="faq-item" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b;">
-          <h3>⚠️ 브라우저 캐시/데이터를 지우면 단어장이 삭제되나요?</h3>
-          <p><strong>네, 삭제됩니다!</strong> 단어장 데이터는 브라우저의 IndexedDB에 저장되므로, 브라우저 데이터를 삭제하면 함께 사라집니다.</p>
-          <p style="margin-top: 12px;"><strong>💡 권장사항:</strong> 브라우저 캐시/데이터를 지우기 전에 반드시 <strong>옵션 페이지 → 단어장 → 내보내기(JSON/CSV)</strong> 기능을 사용하여 백업하세요!</p>
-        </div>
-        
-        <div class="faq-item">
-          <h3>번역에 어떤 API를 사용하나요?</h3>
-          <p>EngEagle은 다음 순서로 단어를 조회합니다:</p>
-          <ol style="margin-top: 8px; margin-left: 20px; line-height: 1.8;">
-            <li><strong>로컬 사전</strong> - 기본 내장 영한 사전 (오프라인)</li>
-            <li><strong>Free Dictionary API</strong> - 무료 영영 사전 (정의 + 예문)</li>
-            <li><strong>DeepL API</strong> - 영어 정의를 한국어로 번역 (API 키 필요, 무료)</li>
-          </ol>
-          <p style="margin-top: 12px;">Free Dictionary API는 API 키 없이 무료로 사용 가능하며, 영어 정의와 예문을 제공합니다. DeepL API를 함께 설정하면 한국어 번역도 함께 표시됩니다.</p>
-        </div>
-      </div>
     </div>
   </section>
 
