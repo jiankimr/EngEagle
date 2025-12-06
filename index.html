@@ -872,6 +872,56 @@
         padding-right: 20px;
       }
     }
+    
+    /* Hide desktop-only line breaks on mobile */
+    @media (max-width: 767px) {
+      .desktop-br {
+        display: none;
+      }
+      
+      /* Better text flow on mobile */
+      .hero .banner_taital {
+        word-break: keep-all;
+      }
+      
+      .section-title {
+        word-break: keep-all;
+      }
+      
+      .section-lead {
+        word-break: keep-all;
+      }
+      
+      .stats_section .stat_label {
+        word-break: keep-all;
+      }
+      
+      /* Accordion card title - single line on mobile */
+      .accordion-card h4 span:first-child {
+        display: block;
+      }
+      
+      /* Feature card - prevent awkward breaks */
+      .feature-card h3 {
+        word-break: keep-all;
+      }
+      
+      /* Footer text */
+      .copyright_text {
+        word-break: keep-all;
+      }
+    }
+    
+    /* Show mobile-only line breaks */
+    .mobile-br {
+      display: none;
+    }
+    
+    @media (max-width: 767px) {
+      .mobile-br {
+        display: block;
+      }
+    }
   </style>
 </head>
 
