@@ -80,27 +80,38 @@ body {
 .logo {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 28px;
-  font-weight: 700;
+  gap: 14px;
+  font-size: 32px;
+  font-weight: 800;
   color: var(--text-primary);
+  transition: transform 0.3s ease;
 }
 
-.logo-icon {
-  font-size: 32px;
+.logo:hover {
+  transform: scale(1.02);
+}
+
+.logo-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(88, 166, 255, 0.3));
 }
 
 .logo-text {
-  background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+  background: linear-gradient(135deg, #58a6ff, #a371f7);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: -0.02em;
 }
 
 .tagline {
   color: var(--text-secondary);
-  font-size: 14px;
-  margin-left: 44px;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 8px;
+  letter-spacing: -0.01em;
 }
 
 /* 통계 */
