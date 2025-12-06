@@ -1118,14 +1118,14 @@
    <!-- CTA section start -->
    <div class="news_section layout_padding">
       <div id="form" class="container text-center">
-         <h1 class="section-title">EngEagle 출시,<br>가장 먼저 소식을 받아보세요</h1>
-         <p class="section-lead">정식 버전이 출시되면 가장 먼저 알림과 3개월 무료 이용권을 보내드립니다.<br>서비스 개선을 위한 소중한 의견도 남겨주세요.</p>
+         <h1 class="section-title">서비스에 대한 의견을 남겨주세요!</h1>
+         <p class="section-lead">이메일을 남겨주시면 서비스 사용 만족도에 관한 설문 이메일을 보내드립니다.<br>여러분의 소중한 피드백이 EngEagle을 더 나은 서비스로 만듭니다.</p>
          <div class="form-container">
-            <input id="submit-email" type="email" placeholder="알림을 받으실 이메일 주소" class="form-control-ee">
-            <textarea id="submit-advice" rows="4" placeholder="서비스에 대한 조언을 자유롭게 남겨주세요 (선택 사항)" class="form-control-ee"></textarea>
-            <button id="submit" class="btn-primary-ee" style="width: 100%; font-size: 18px; padding: 20px;">출시 알림 신청하기 →</button>
+            <input id="submit-email" type="email" placeholder="이메일 주소를 입력하세요" class="form-control-ee">
+            <textarea id="submit-advice" rows="4" placeholder="서비스에 대한 의견을 자유롭게 남겨주세요 (선택 사항)" class="form-control-ee"></textarea>
+            <button id="submit" class="btn-primary-ee" style="width: 100%; font-size: 18px; padding: 20px;">의견 제출하기 →</button>
          </div>
-         <p style="margin-top: 20px; color: var(--ee-gray); font-size: 14px;">💳 카드 등록 불필요  · ⚡️ 5초 만에 신청 완료  · 🔒 개인정보 안전 보장</p>
+         <p style="margin-top: 20px; color: var(--ee-gray); font-size: 14px;">📧 설문 이메일 발송  · ⚡️ 5초 만에 제출 완료  · 🔒 개인정보 안전 보장</p>
       </div>
    </div>
    <!-- CTA section end -->
@@ -1133,7 +1133,7 @@
    <!-- Popup -->
     <div id="popup" style="display:none; text-align: center;">
         <h1 style="font-weight: 800; font-size: 36px; color: var(--ee-dark);">감사합니다!</h1>
-        <p style="font-size: 18px; color: var(--ee-gray); margin-top: 16px;">소중한 의견이 EngEagle을 더 나은 서비스로 만듭니다.<br>출시 소식으로 가장 먼저 찾아뵙겠습니다.</p>
+        <p style="font-size: 18px; color: var(--ee-gray); margin-top: 16px;">소중한 의견이 EngEagle을 더 나은 서비스로 만듭니다.<br>곧 만족도 설문 이메일을 보내드리겠습니다.</p>
     </div>
    
    <!-- footer section start -->
@@ -1167,8 +1167,8 @@
    <!-- Visitor Tracking & Form Submission Script -->
     <script>
         $(document).ready(function () {
-            // TODO: 본인의 Google Apps Script 웹 앱 URL을 여기에 입력하세요.
-            var addrScript = "https://script.google.com/macros/s/AKfycbwv5OugAFwRuIp6K6_kpBRn3LF1nZb-t28g2s-jh9cv5NtOR07SAAfyDrSj6spsGVTM/exec";
+            // Google Apps Script 웹 앱 URL
+            var addrScript = "https://script.google.com/macros/s/AKfycbyEdUXhnAST0C86-G1TYwZrtyPEmdUX9Rgrd37-AjK9HzSfh36hDjcq2NH2DYBxcQQ/exec";
 
             var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
             var queryString = location.search;
