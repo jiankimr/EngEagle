@@ -1004,19 +1004,14 @@
         // 다운로드 버튼 링크
         document.getElementById('download-btn').href = `./releases/${data.files.zip}`;
         
-        // 체크섬
-        if (data.checksum) {
-          const checksumEl = document.getElementById('checksum-guide');
-          if (checksumEl) checksumEl.textContent = data.checksum;
-        }
+        // 체크섬은 HTML에 하드코딩되어 있으므로 건드리지 않음
       } catch (error) {
         console.error('Failed to load version info:', error);
         document.getElementById('version-badge').textContent = 'v1.0.0 최신';
         document.getElementById('version-number').textContent = 'v1.0.0';
         document.getElementById('release-date').textContent = '2025-12-06';
         document.getElementById('download-btn').href = './releases/EngEagle_v1.0.0_mv3.zip';
-        const checksumEl = document.getElementById('checksum-guide');
-        if (checksumEl) checksumEl.textContent = '파일 다운로드 후 검증하세요';
+        // 체크섬은 HTML에 하드코딩되어 있으므로 건드리지 않음
       }
     }
 
